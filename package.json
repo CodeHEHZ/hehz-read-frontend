@@ -8,8 +8,8 @@
     "build": "rimraf dist && webpack -p --progress --hide-modules"
   },
   "dependencies": {
+    "babel-polyfill": "^6.23.0",
     "element-ui": "^1.1.2",
-    "es6-promise": "^4.1.0",
     "vue": "^2.1.8",
     "vue-chartjs": "^2.5.1",
     "vue-cookie": "^1.1.3",

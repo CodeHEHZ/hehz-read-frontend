@@ -1,3 +1,5 @@
+import 'babel-polyfill'
+
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import ElementUI from 'element-ui'
@@ -12,7 +14,6 @@ import QuizResult from './components/QuizResult.vue'
 
 import Question from './components/Question.vue'
 
-require('es6-promise').polyfill();
 
 const routes = [
     { path: '/', component: Hello },
