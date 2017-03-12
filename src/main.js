@@ -12,6 +12,8 @@ import QuizResult from './components/QuizResult.vue'
 
 import Question from './components/Question.vue'
 
+require('es6-promise').polyfill();
+
 const routes = [
     { path: '/', component: Hello },
     { path: '/quiz/result', component: QuizResult },

@@ -5,7 +5,7 @@
             <el-menu-item index="/quiz">测试</el-menu-item>
         </el-menu>
         <transition name="component-fade" mode="out-in">
-            <router-view></router-view>
+            <router-view class="marginForFooter"></router-view>
         </transition>
         <div class="footer">
             <footers></footers>
@@ -38,6 +38,7 @@
     body {
         margin: 0;
         min-height: 100vh;
+        font-family: Georgia, 'Times New Roman', Times, "Microsoft YaHei", "微软雅黑", "SimHei", "黑体", "STXihei", "华文细黑", serif;
     }
 
     #app {
@@ -53,8 +54,11 @@
         width: 100%;
     }
 
+    .margin {
+        margin-bottom: 2rem;
+    }
+
     a, span, p {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
         line-height: 125%;
     }
 

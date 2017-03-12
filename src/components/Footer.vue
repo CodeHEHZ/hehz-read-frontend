@@ -2,7 +2,7 @@
     <div class="full">
         <div class="split">
             <a href="http://hehlzx.cn">© 2017 华二黄流中学</a>
-            <a href="https://github.com/CodeHEHZ">CodeHEHZ @<img src="../assets/GitHub-Mark-64px.png"></a>
+            <a href="https://github.com/CodeHEHZ/hehz-read-frontend">CodeHEHZ @<img src="../assets/GitHub-Mark-64px.png"></a>
         </div>
     </div>
 </template>
@@ -31,10 +31,13 @@
         align-items: center;
         color: grey;
         font-size: .6rem;
+        padding: 0 1rem;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     }
 
     a {
         height: 100%;
+        min-width: 6rem;
         display: flex;
         justify-content: flex-end;
         align-items: center;

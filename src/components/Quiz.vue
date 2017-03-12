@@ -1,17 +1,21 @@
 <template>
     <div class="center" v-loading.fullscreen.lock="fullscreenLoading">
-        <div :class="[transition]">
-            <router-view></router-view>
+        <div class="router-view">
+            <router-view :class="[transition]"></router-view>
         </div>
 
         <div class="buttons">
-            <el-button type="primary" icon="arrow-left" @click="last" :disabled="isLoading || !isLastAvailable">
-                上一问
-            </el-button>
-            <el-button :type="isNextAvailable ? 'primary' : 'success'" @click="next" :disabled="isLoading">
-                {{ isNextAvailable ? "下一问" : "提交答卷" }}
-                <i :class="[rightIcon]" class="el-icon--right"></i>
-            </el-button>
+            <div class="button-left">
+                <el-button type="primary" icon="arrow-left" @click="last" :disabled="isLoading || !isLastAvailable">
+                    上一问
+                </el-button>
+            </div>
+            <div class="button-right">
+                <el-button :type="isNextAvailable ? 'primary' : 'success'" @click="next" :disabled="isLoading">
+                    {{ isNextAvailable ? "下一问" : "提交答卷" }}
+                    <i :class="[rightIcon]" class="el-icon--right"></i>
+                </el-button>
+            </div>
         </div>
 
         <div class="progress-bar">
@@ -56,15 +60,12 @@
             next() {
                 if (this.isNextAvailable) {
                     this.transition = 'slide-out-leftward'
-                    this.isLoading = true
                     setTimeout(() => {
                         this.$store.commit('nextQuestion')
                         this.transition = 'slide-in-leftward'
                         this.$router.push('/quiz/' + (this.$store.state.questionNumber + 1))
-                        this.isLoading = false
                     }, 250)
                 } else {
-
                     this.$confirm(this.submitConfirmationText(), '确认提交', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
@@ -86,12 +87,10 @@
             },
             last() {
                 this.transition = 'slide-out-rightward'
-                this.isLoading = true
                 setTimeout(() => {
                     this.$store.commit('lastQuestion')
                     this.transition = 'slide-in-rightward'
                     this.$router.push('/quiz/' + (this.$store.state.questionNumber + 1))
-                    this.isLoading = false
                 }, 250)
             },
             unansweredQuestion() {
@@ -101,7 +100,6 @@
                     if (!this.$store.state.answer[i])
                         unansweredList.push(i + 1)
                 }
-                console.log(unansweredList)
                 return unansweredList
             },
             submitConfirmationText() {
@@ -131,11 +129,26 @@
         justify-content: space-between;
     }
 
+    .button-left {
+        width: 10rem;
+        display: flex;
+        height: 2.5rem;
+        justify-content: flex-start;
+    }
+
+    .button-right {
+        width: 10rem;
+        display: flex;
+        height: 2.5rem;
+        justify-content: flex-end;
+    }
+
     .progress-bar {
         width: 100%;
         height: .2rem;
         position: absolute;
         top: 0;
+        left: 0;
     }
 
     .progress {
@@ -146,6 +159,10 @@
 
     .el-progress-bar__inner {
         transition: width .25s;
+    }
+
+    .router-view {
+        width: 100%;
     }
 
     .slide-out-leftward {
@@ -162,26 +179,6 @@
         opacity: 1;
     }
 
-    @keyframes slide-out-leftward {
-        from {
-            margin-left: 0;
-        }
-
-        to {
-            margin-left: -10%;
-        }
-    }
-
-    @keyframes slide-in-leftward {
-        from {
-            margin-left: 10%;
-        }
-
-        to {
-            margin-left: 0;
-        }
-    }
-
     .slide-out-rightward {
         animation-duration: .25s;
         animation-name: slide-out-rightward;
@@ -196,23 +193,50 @@
         opacity: 1;
     }
 
-    @keyframes slide-out-rightward {
+    @media(max-width: 768px) {
+        .buttons {
+            width: 90%;
+            min-width: inherit;
+        }
+    }
+
+    @keyframes slide-out-leftward {
         from {
-            margin-right: 0;
+            margin-left: 0 !important;
         }
 
         to {
-            margin-right: -10%;
+            margin-left: -10% !important;
+        }
+    }
+
+    @keyframes slide-in-leftward {
+        from {
+            margin-left: 10% !important;
+        }
+
+        to {
+            margin-left: 0 !important;
+        }
+    }
+
+    @keyframes slide-out-rightward {
+        from {
+            margin-right: 0 !important;
+        }
+
+        to {
+            margin-right: -10% !important;
         }
     }
 
     @keyframes slide-in-rightward {
         from {
-            margin-right: 10%;
+            margin-right: 10% !important;
         }
 
         to {
-            margin-right: 0;
+            margin-right: 0 !important;
         }
     }
 </style>

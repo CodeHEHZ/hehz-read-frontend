@@ -25,7 +25,6 @@
 <style scoped>
     .full {
         display: flex;
-        height: 100%;
         justify-content: center;
         align-items: center;
     }
@@ -41,5 +40,11 @@
     p {
         font-size: 1.5rem;
         line-height: 150%;
+    }
+
+    @media(max-width: 768px) {
+        .result {
+            max-width: 90%;
+        }
     }
 </style>

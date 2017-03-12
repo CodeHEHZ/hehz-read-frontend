@@ -55,6 +55,13 @@
         justify-content: center;
     }
 
+    @media(max-width: 768px) {
+        .content {
+            width: 100%;
+            margin: 1rem;
+        }
+    }
+
     .el-radio-group {
         display: flex;
         flex-direction: column;

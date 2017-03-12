@@ -4,7 +4,7 @@ const {
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const url = require('url')
-const publicPath = ''
+const publicPath = '/'
 
 module.exports = (options = {}) => ({
   entry: {
@@ -76,7 +76,7 @@ module.exports = (options = {}) => ({
     }
   },
   devServer: {
-    host: '127.0.0.1',
+    host: '0.0.0.0',
     port: 8010,
     proxy: {
       '/api/': {
