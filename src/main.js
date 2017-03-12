@@ -11,6 +11,7 @@ import App from './App.vue'
 import Hello from './components/Hello.vue'
 import Quiz from './components/Quiz.vue'
 import QuizResult from './components/QuizResult.vue'
+import Login from './components/Login.vue'
 
 import Question from './components/Question.vue'
 
@@ -24,7 +25,9 @@ const routes = [
                 path: ':id',
                 component: Question
             }
-        ]},
+        ]
+    },
+    { path: '/login', component: Login },
     { path: '*', redirect: '/' }
 ];
 
