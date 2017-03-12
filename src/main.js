@@ -8,11 +8,13 @@ import './assets/element.css'
 import App from './App.vue'
 import Hello from './components/Hello.vue'
 import Quiz from './components/Quiz.vue'
+import QuizResult from './components/QuizResult.vue'
 
 import Question from './components/Question.vue'
 
 const routes = [
     { path: '/', component: Hello },
+    { path: '/quiz/result', component: QuizResult },
     { path: '/quiz', redirect: '/quiz/1', component: Quiz,
         children: [
             {
@@ -70,12 +72,10 @@ const store = new Vuex.Store({
         nextQuestion (state) {
             if (state.questionNumber < state.quiz.length - 1)
                 state.questionNumber++
-            console.log(state.questionNumber)
         },
         lastQuestion (state) {
             if (state.questionNumber > 0)
                 state.questionNumber--
-            console.log(state.questionNumber)
         },
         setQuestion (state, m) {
             state.questionNumber = m

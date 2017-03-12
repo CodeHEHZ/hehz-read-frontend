@@ -20,12 +20,11 @@
             return {
                 radio: '',
                 quiz,
-
             }
         },
         computed: {
             question: function() {
-                this.radio = ''
+                this.radio = this.$store.state.answer[this.$store.state.questionNumber] || ''
                 return this.$store.state.questionNumber
             }
         },

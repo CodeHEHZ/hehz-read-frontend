@@ -1,21 +1,21 @@
 <template>
-    <div class="center">
+    <div class="center" v-loading.fullscreen.lock="fullscreenLoading">
         <div :class="[transition]">
             <router-view></router-view>
         </div>
 
         <div class="buttons">
-            <el-button type="primary" icon="arrow-left" @click="last" :disabled="isLoading || isLastAvailable">
+            <el-button type="primary" icon="arrow-left" @click="last" :disabled="isLoading || !isLastAvailable">
                 上一问
             </el-button>
-            <el-button type="primary" @click="next" :disabled="isLoading || isNextAvailable">
-                下一页
-                <i class="el-icon-arrow-right el-icon--right"></i>
+            <el-button :type="isNextAvailable ? 'primary' : 'success'" @click="next" :disabled="isLoading">
+                {{ isNextAvailable ? "下一问" : "提交答卷" }}
+                <i :class="[rightIcon]" class="el-icon--right"></i>
             </el-button>
         </div>
 
         <div class="progress-bar">
-            <div class="progress" :style="'width: ' + progress * 100 + '%'"></div>
+            <div class="progress" :style="'width: ' + (submitting ? 100 : progress * 100) + '%'"></div>
         </div>
     </div>
 </template>
@@ -27,7 +27,9 @@
         data: function() {
             return {
                 transition: '',
-                isLoading: false
+                isLoading: false,
+                fullscreenLoading: false,
+                submitting: false
             }
         },
         components: {
@@ -35,25 +37,52 @@
         },
         computed: {
             isNextAvailable: function() {
-                return !(this.$store.state.questionNumber < this.$store.state.quiz.length - 1)
+                return this.$store.state.questionNumber < this.$store.state.quiz.length - 1
             },
             isLastAvailable: function() {
-                return !(this.$store.state.questionNumber > 0)
+                return this.$store.state.questionNumber > 0
             },
             progress: function() {
                 return (this.$store.state.questionNumber) / this.$store.state.quiz.length
+            },
+            questionNumber: function() {
+                return this.$store.state.questionNumber
+            },
+            rightIcon: function() {
+                return this.isNextAvailable ? 'el-icon-arrow-right' : 'el-icon-check'
             }
         },
         methods: {
             next() {
-                this.transition = 'slide-out-leftward'
-                this.isLoading = true
-                setTimeout(() => {
-                    this.$store.commit('nextQuestion')
-                    this.transition = 'slide-in-leftward'
-                    this.$router.push('/quiz/' + (this.$store.state.questionNumber + 1))
-                    this.isLoading = false
-                }, 250)
+                if (this.isNextAvailable) {
+                    this.transition = 'slide-out-leftward'
+                    this.isLoading = true
+                    setTimeout(() => {
+                        this.$store.commit('nextQuestion')
+                        this.transition = 'slide-in-leftward'
+                        this.$router.push('/quiz/' + (this.$store.state.questionNumber + 1))
+                        this.isLoading = false
+                    }, 250)
+                } else {
+
+                    this.$confirm(this.submitConfirmationText(), '确认提交', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: this.unansweredQuestion().length == 0 ? 'success' : 'warning'
+                    }).then(() => {
+                        this.submitting = true
+                        this.fullscreenLoading = true
+                        setTimeout(() => {
+                            this.fullscreenLoading = false
+                            this.$router.push('/quiz/result')
+                        }, 1000)
+                    }).catch(() => {
+                        this.$message({
+                            type: 'info',
+                            message: '已取消提交'
+                        });
+                    });
+                }
             },
             last() {
                 this.transition = 'slide-out-rightward'
@@ -64,6 +93,22 @@
                     this.$router.push('/quiz/' + (this.$store.state.questionNumber + 1))
                     this.isLoading = false
                 }, 250)
+            },
+            unansweredQuestion() {
+                let unansweredList = []
+                for (let i = 0; i < this.$store.state.quiz.length; i++) {
+                    console.log(this.$store.state.answer[i])
+                    if (!this.$store.state.answer[i])
+                        unansweredList.push(i + 1)
+                }
+                console.log(unansweredList)
+                return unansweredList
+            },
+            submitConfirmationText() {
+                if (this.unansweredQuestion().length == 0)
+                    return '您已完成所有问题，确定提交？'
+                else
+                    return "您还有第 " + this.unansweredQuestion().join(" 题、第 ") + " 题未完成，确定提交？"
             }
         }
     }
@@ -80,7 +125,8 @@
     }
 
     .buttons {
-        max-width: 20rem;
+        min-width: 20rem;
+        max-width: 25rem;
         display: flex;
         justify-content: space-between;
     }
