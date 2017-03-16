@@ -1,13 +1,11 @@
 <template>
-    <div class="full">
-        <div class="content">
-            <p>{{ (this.$store.state.questionNumber + 1) + '、' + quiz[question].text }}</p>
-            <el-radio-group v-model="radio" @change="select">
-                <el-radio v-for="option in quiz[question].answers" :label="option.label">
-                    {{ option.answer }}
-                </el-radio>
-            </el-radio-group>
-        </div>
+    <div class="content">
+        <p>{{ (this.$store.state.questionNumber + 1) + '、' + quiz[question].text }}</p>
+        <el-radio-group v-model="radio" @change="select">
+            <el-radio v-for="option in quiz[question].answers" :label="option.label">
+                {{ option.answer }}
+            </el-radio>
+        </el-radio-group>
     </div>
 </template>
 
@@ -41,15 +39,9 @@
 </script>
 
 <style scoped>
-    .full {
-        width: 100%;
-        min-height: 20rem;
-        display: flex;
-        justify-content: center;
-    }
-
     .content {
         width: 30rem;
+        min-height: 20rem;
         display: flex;
         flex-direction: column;
         justify-content: center;

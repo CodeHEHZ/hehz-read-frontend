@@ -157,12 +157,17 @@
         transition: width .4s;
     }
 
+    .el-button--success:hover {
+        background-color: #13bb11;
+        border-color: #13bb11;
+    }
+
     .el-progress-bar__inner {
         transition: width .25s;
     }
 
     .router-view {
-        width: 100%;
+        display: block;
     }
 
     .slide-out-leftward {
@@ -202,41 +207,41 @@
 
     @keyframes slide-out-leftward {
         from {
-            margin-left: 0 !important;
+            transform: translate(0);
         }
 
         to {
-            margin-left: -10% !important;
+            transform: translate(-10%);
         }
     }
 
     @keyframes slide-in-leftward {
         from {
-            margin-left: 10% !important;
+            transform: translate(10%);
         }
 
         to {
-            margin-left: 0 !important;
+            transform: translate(0);
         }
     }
 
     @keyframes slide-out-rightward {
         from {
-            margin-right: 0 !important;
+            transform: translate(0);
         }
 
         to {
-            margin-right: -10% !important;
+            transform: translate(10%);
         }
     }
 
     @keyframes slide-in-rightward {
         from {
-            margin-right: 10% !important;
+            transform: translate(-10%);
         }
 
         to {
-            margin-right: 0 !important;
+            transform: translate(0);
         }
     }
 </style>
