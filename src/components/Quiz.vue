@@ -1,7 +1,9 @@
 <template>
     <div class="center" v-loading.fullscreen.lock="fullscreenLoading">
         <div class="router-view">
-            <router-view :class="[transition]"></router-view>
+            <transition :name="transition" mode="out-in">
+                <router-view :key="questionNumber" class="transition"></router-view>
+            </transition>
         </div>
 
         <div class="buttons">
@@ -30,10 +32,10 @@
     export default {
         data: function() {
             return {
-                transition: '',
                 isLoading: false,
                 fullscreenLoading: false,
-                submitting: false
+                submitting: false,
+                transition: 'next-question'
             }
         },
         components: {
@@ -59,12 +61,9 @@
         methods: {
             next() {
                 if (this.isNextAvailable) {
-                    this.transition = 'slide-out-leftward'
-                    setTimeout(() => {
-                        this.$store.commit('nextQuestion')
-                        this.transition = 'slide-in-leftward'
-                        this.$router.push('/quiz/' + (this.$store.state.questionNumber + 1))
-                    }, 250)
+                    this.transition = 'next-question'
+                    this.$store.commit('nextQuestion')
+                    this.$router.push('/quiz/' + (this.$store.state.questionNumber + 1))
                 } else {
                     this.$confirm(this.submitConfirmationText(), '确认提交', {
                         confirmButtonText: '确定',
@@ -86,12 +85,9 @@
                 }
             },
             last() {
-                this.transition = 'slide-out-rightward'
-                setTimeout(() => {
-                    this.$store.commit('lastQuestion')
-                    this.transition = 'slide-in-rightward'
-                    this.$router.push('/quiz/' + (this.$store.state.questionNumber + 1))
-                }, 250)
+                this.transition = 'last-question'
+                this.$store.commit('lastQuestion')
+                this.$router.push('/quiz/' + (this.$store.state.questionNumber + 1))
             },
             unansweredQuestion() {
                 let unansweredList = []
@@ -146,7 +142,7 @@
     .progress-bar {
         width: 100%;
         height: .2rem;
-        position: absolute;
+        position: fixed;
         top: 0;
         left: 0;
     }
@@ -170,32 +166,44 @@
         display: block;
     }
 
-    .slide-out-leftward {
-        animation-duration: .25s;
-        animation-name: slide-out-leftward;
-        transition: opacity .25s;
+    .transition {
+        transition: all .25s;
+    }
+
+    .next-question-enter {
+        transition: all .25s;
         opacity: 0;
     }
 
-    .slide-in-leftward {
+    .next-question-enter-active {
         animation-duration: .25s;
         animation-name: slide-in-leftward;
-        transition: opacity .25s;
+        transition: all .25s;
         opacity: 1;
     }
 
-    .slide-out-rightward {
+    .next-question-leave-active {
         animation-duration: .25s;
-        animation-name: slide-out-rightward;
-        transition: opacity .25s;
+        animation-name: slide-out-leftward;
         opacity: 0;
     }
 
-    .slide-in-rightward {
+    .last-question-enter {
+        transition: all .25s;
+        opacity: 0;
+    }
+
+    .last-question-enter-active {
         animation-duration: .25s;
         animation-name: slide-in-rightward;
-        transition: opacity .25s;
+        transition: all .25s;
         opacity: 1;
+    }
+
+    .last-question-leave-active {
+        animation-duration: .25s;
+        animation-name: slide-out-rightward;
+        opacity: 0;
     }
 
     @media(max-width: 768px) {

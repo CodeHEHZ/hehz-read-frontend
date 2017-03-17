@@ -63,7 +63,7 @@
     }
 
     .el-button {
-        transition: background .25s, background-color .25s, border .25s, border-color .25s, color .25s, length .25s;
+        transition: all .25s;
     }
 
     .component-fade-enter-active, .component-fade-leave-active {
