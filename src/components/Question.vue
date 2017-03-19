@@ -10,27 +10,35 @@
 </template>
 
 <script>
+    import { mapState } from 'vuex'
+    let _ = require('lodash')
+
     export default {
         data: function() {
             this.$store.commit('setQuestion', this.$route.params.id - 1)
 
-            let quiz = this.$store.state.quiz
             return {
-                radio: '',
-                quiz,
+                radio: ''
             }
         },
-        computed: {
-            question: function() {
-                this.radio = this.$store.state.answer[this.$store.state.questionNumber] || ''
-                return this.$store.state.questionNumber
-            }
-        },
+        computed: _.defaultsDeep(
+            {
+                question() {
+                    this.radio = this.$store.state.answer[this.questionNumber] || ''
+                    return this.questionNumber
+                }
+            },
+            mapState([
+                'answer',
+                'questionNumber',
+                'quiz'
+            ])
+        ),
         methods: {
             select() {
                 if (this.radio != '')
                     this.$store.commit('select', {
-                        number: this.$store.state.questionNumber,
+                        number: this.questionNumber,
                         label: this.radio
                     })
             }
