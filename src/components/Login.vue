@@ -32,10 +32,6 @@
 
 <style scoped>
     .full {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex: 1;
     }
 
     .container {
@@ -43,7 +39,11 @@
         flex-direction: column;
         justify-content: center;
         width: 20rem;
-        margin-bottom: 5rem;
+        margin-bottom: 1rem;
+        background-color: white;
+        padding: 3rem 2rem 4rem 3rem;
+        border-radius: .5rem;
+
     }
 
     .form {
