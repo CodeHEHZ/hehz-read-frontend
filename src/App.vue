@@ -1,13 +1,13 @@
 <template>
     <div id="app">
-        <el-menu :default-active="active" class="el-menu-demo" mode="horizontal" :router="true">
+        <el-menu :default-active="active" class="el-menu-demo" mode="horizontal" :router="true" v-show="showMenu">
             <el-menu-item index="/">首页</el-menu-item>
             <el-menu-item index="/quiz">测试</el-menu-item>
         </el-menu>
         <transition name="component-fade" mode="out-in">
             <router-view class="marginForFooter"></router-view>
         </transition>
-        <div class="footer">
+        <div class="footer" v-show="showMenu">
             <footers></footers>
         </div>
     </div>
@@ -25,6 +25,11 @@
             return {
                 active,
                 true: true
+            }
+        },
+        computed: {
+            showMenu() {
+                return this.$route.path != '/'
             }
         },
         components: {
