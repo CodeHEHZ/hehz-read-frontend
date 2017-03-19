@@ -24,8 +24,9 @@
             'login': Login,
             'book-cover': FrontpageBook
         }
-
     }
+    
+    
 </script>
 
 <style scoped>
@@ -58,6 +59,10 @@
         background-color: white;
         opacity: .9;
         flex-grow: 0;
+
+    }
+
+    @media (min-width: 4096px), (min-height: 2160px) {
 
     }
 
