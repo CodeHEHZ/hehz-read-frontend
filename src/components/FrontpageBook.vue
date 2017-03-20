@@ -1,18 +1,27 @@
 <template>
-    <img :src="url" class="book-cover" :style="style" @load="style.opacity = 1">
+    <img :src="bookInfo.url"
+         :title="bookInfo.name"
+         class="book-cover"
+         :style="style"
+         @load="style.opacity = 1"/>
 </template>
 
 
 <script>
     export default{
         data: function() {
+            console.log(this.bookInfo)
             return {
                 style: {
                     opacity: 0
                 }
             }
         },
-        props: ['url']
+
+        props: ['bookInfo'] //format: {name, url}
+
+
+
     }
 
 
@@ -20,6 +29,9 @@
 
 <style scoped>
     .book-cover {
+        display: flex;
+        height: 100px;
+        width: 80px;
         object-fit: cover;
         opacity: 0;
         transition: all .3s;
