@@ -14,6 +14,12 @@
                 <p>密码</p>
                 <el-input v-model="password" type="password" placeholder="*********"></el-input>
             </div>
+
+            <div class="buttons">
+                <el-button type="text">找回密码</el-button>
+                <el-button type="primary">愉快地登录</el-button>
+            </div>
+
         </div>
     </div>
 </template>
@@ -38,10 +44,10 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        width: 20rem;
+        width: 15rem;
         margin-bottom: 1rem;
         background-color: white;
-        padding: 3rem 2rem 4rem 3rem;
+        padding: 3rem;
         border-radius: .5rem;
 
     }
@@ -50,8 +56,14 @@
         display: flex;
     }
 
+    .buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: .3rem;
+    }
+
     .el-input {
-        margin: .3rem 1rem;
+        margin: .3rem 0 .3rem 1rem;
     }
 
     p {
@@ -62,6 +74,7 @@
         align-self: center;
         font-size: 3rem;
         line-height: 150%;
+        margin-bottom: 1rem;
         font-family: Arial, "Lucida Sans", "Lucida Sans Regular", "SimHei", "黑体", "STHeiti", "华文黑体", serif;
     }
 </style>

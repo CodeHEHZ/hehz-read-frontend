@@ -61,7 +61,7 @@
 <style scoped>
 
     .backbook {
-        background-color: #666666;
+        background-color: #c8e0cd;
         display: flex;
         flex-wrap: wrap;
         width: 100%;
@@ -94,7 +94,8 @@
 
     .login {
         background-color: white;
-        opacity: .9;
+        border-radius: .25rem;
+        /*opacity: .9;*/
         flex-grow: 0;
         position: fixed;
         z-index: 5;
