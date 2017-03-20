@@ -21,6 +21,7 @@
         data() {
             let active = this.$route.path
             if (active.includes('quiz'))
+
                 active = '/quiz'
             return {
                 active,

@@ -5,6 +5,7 @@ import VueRouter from 'vue-router'
 import ElementUI from 'element-ui'
 import Vuex from 'vuex'
 import VueCookie from 'vue-cookie'
+var VueResource = require('vue-resource');
 import './assets/element.css'
 
 import App from './App.vue'
@@ -15,7 +16,7 @@ import Login from './components/Login.vue'
 import BookList from './components/BookList.vue'
 
 import Question from './components/Question.vue'
-
+import Dashboard from './components/Dashboard.vue'
 import storeInfo from './store'
 
 
@@ -31,6 +32,7 @@ const routes = [
         ]
     },
     { path: '/login', component: Login },
+    { path: '/Dashboard', component: Dashboard },
     { path: '/booklist', component: BookList },
     { path: '*', redirect: '/' }
 ];
@@ -44,15 +46,22 @@ Vue.use(ElementUI)
 Vue.use(VueRouter)
 Vue.use(Vuex)
 Vue.use(VueCookie)
+Vue.use(VueResource);
 
 let store = new Vuex.Store(storeInfo)
 
 const cookie = Vue.cookie
+
+let http = {
+    root: '/root',
+    headers: { }
+}
 
 new Vue({
     el: '#app',
     router,
     store,
     cookie,
+    http,
     render: h => h(App)
 })

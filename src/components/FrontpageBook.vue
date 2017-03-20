@@ -4,7 +4,7 @@
              :title="bookInfo.name"
              class="book-cover"
              :style="style"
-             @load="style.opacity = 0.5"/>
+             @load="style.opacity = 0.3"/>
     </div>
 </template>
 
