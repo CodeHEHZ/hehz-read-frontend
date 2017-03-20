@@ -1,18 +1,18 @@
 <template>
     <div class="full">
         <div class="backbook">
-            <h1>Hello~</h1>
-            <book-cover v-for="book in bookList"
+            <book-cover
+                v-for="(book, index) in bookList"
                 :bookInfo="book"
-                :key="book.name"
+                :key="index"
             >
 
             </book-cover>
 
-
         </div>
-            <login  class="login"></login>
-
+        <div class="frontlogin">
+            <login class="login"></login>
+        </div>
     </div>
 </template>
 
@@ -33,8 +33,7 @@
 
         computed: {
             bookList() {
-                console.log(this.$store.state.booklist[0].name)
-                return this.$store.state.booklist
+                return this.$store.state.bookList
             }
 //            bookInfoRandom: function() {
 //                var Arr=this.bookInfo;
@@ -62,19 +61,35 @@
 <style scoped>
 
     .backbook {
+        background-color: #666666;
         display: flex;
-        flex-grow: 1;
+        flex-wrap: wrap;
         width: 100%;
         height: 100%;
-        /*z-index: 1;*/
+        position: fixed;
+        z-index: 2;
     }
 
     .full {
+        /*display: flex;*/
+        /*flex-direction: column;*/
+        /*align-items: center;*/
+        /*justify-content: center;*/
+        /*flex-grow: 1;*/
+        /*width: 100vw;*/
+        /*height: 100vh;*/
+    }
+
+    .frontlogin {
+        width: 100%;
+        height: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        flex-grow: 1;
+        position: fixed;
+        z-index: 4;
+        visibility: hidden ;
     }
 
     .login {
@@ -82,6 +97,8 @@
         opacity: .9;
         flex-grow: 0;
         position: fixed;
+        z-index: 5;
+        visibility: visible
     }
 
     @media (min-width: 4096px), (min-height: 2160px) {
