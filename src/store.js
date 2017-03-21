@@ -24,12 +24,59 @@ let quiz = [{
     ]
 }]
 
+let bookList = [
+    {name: '《卡拉马佐夫兄弟》', url: '/src/assets/covers/cover1.png'},
+    {name: '《他改变了中国》', url: '/src/assets/covers/cover2.jpg'},
+    {name: '《卡拉马佐夫兄弟》', url: '/src/assets/covers/cover1.png'},
+    {name: '《他改变了中国》', url: '/src/assets/covers/cover2.jpg'},
+    {name: '《卡拉马佐夫兄弟》', url: '/src/assets/covers/cover1.png'},
+    {name: '《他改变了中国》', url: '/src/assets/covers/cover2.jpg'},
+    {name: '《卡拉马佐夫兄弟》', url: '/src/assets/covers/cover1.png'},
+    {name: '《他改变了中国》', url: '/src/assets/covers/cover2.jpg'},
+    {name: '《卡拉马佐夫兄弟》', url: '/src/assets/covers/cover1.png'},
+    {name: '《他改变了中国》', url: '/src/assets/covers/cover2.jpg'},
+    {name: '《卡拉马佐夫兄弟》', url: '/src/assets/covers/cover1.png'},
+    {name: '《他改变了中国》', url: '/src/assets/covers/cover2.jpg'},
+    {name: '《卡拉马佐夫兄弟》', url: '/src/assets/covers/cover1.png'},
+    {name: '《他改变了中国》', url: '/src/assets/covers/cover2.jpg'},
+    {name: '《卡拉马佐夫兄弟》', url: '/src/assets/covers/cover1.png'},
+    {name: '《他改变了中国》', url: '/src/assets/covers/cover2.jpg'},
+    {name: '《卡拉马佐夫兄弟》', url: '/src/assets/covers/cover1.png'},
+    {name: '《他改变了中国》', url: '/src/assets/covers/cover2.jpg'},
+    {name: '《卡拉马佐夫兄弟》', url: '/src/assets/covers/cover1.png'},
+    {name: '《他改变了中国》', url: '/src/assets/covers/cover2.jpg'},
+    {name: '《卡拉马佐夫兄弟》', url: '/src/assets/covers/cover1.png'},
+    {name: '《他改变了中国》', url: '/src/assets/covers/cover2.jpg'},
+    {name: '《卡拉马佐夫兄弟》', url: '/src/assets/covers/cover1.png'},
+    {name: '《他改变了中国》', url: '/src/assets/covers/cover2.jpg'},
+    {name: '《卡拉马佐夫兄弟》', url: '/src/assets/covers/cover1.png'},
+    {name: '《他改变了中国》', url: '/src/assets/covers/cover2.jpg'},
+    {name: '《卡拉马佐夫兄弟》', url: '/src/assets/covers/cover1.png'},
+    {name: '《他改变了中国》', url: '/src/assets/covers/cover2.jpg'},
+    {name: '《卡拉马佐夫兄弟》', url: '/src/assets/covers/cover1.png'},
+    {name: '《他改变了中国》', url: '/src/assets/covers/cover2.jpg'},
+    {name: '《卡拉马佐夫兄弟》', url: '/src/assets/covers/cover1.png'},
+    {name: '《他改变了中国》', url: '/src/assets/covers/cover2.jpg'},
+    {name: '《卡拉马佐夫兄弟》', url: '/src/assets/covers/cover1.png'},
+    {name: '《他改变了中国》', url: '/src/assets/covers/cover2.jpg'},
+    {name: '《卡拉马佐夫兄弟》', url: '/src/assets/covers/cover1.png'},
+    {name: '《他改变了中国》', url: '/src/assets/covers/cover2.jpg'},
+    {name: '《卡拉马佐夫兄弟》', url: '/src/assets/covers/cover1.png'},
+    {name: '《他改变了中国》', url: '/src/assets/covers/cover2.jpg'},
+    {name: '《卡拉马佐夫兄弟》', url: '/src/assets/covers/cover1.png'},
+    {name: '《他改变了中国》', url: '/src/assets/covers/cover2.jpg'}
+]
+
+
+
 let storeInfo = {
     state: {
         quiz,
+        bookList,
         answer: [],
         answerCount: 0,
-        questionNumber: 0
+        questionNumber: 0,
+        JinTianDeIP: 'http://10.160.172.180:3000/'
     },
     mutations: {
         nextQuestion (state) {

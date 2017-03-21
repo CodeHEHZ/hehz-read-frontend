@@ -4,15 +4,15 @@
             <b>登录</b>
             <div class="form">
                 <p>姓名</p>
-                <el-input v-model="name" placeholder="谢大叔"></el-input>
-            </div>
-            <div class="form">
-                <p>学号</p>
-                <el-input v-model="id" placeholder="201900520"></el-input>
+                <el-input v-model="name" placeholder="谢大叔" @keyup.enter="clear" autofocus="true"></el-input>
             </div>
             <div class="form">
                 <p>密码</p>
-                <el-input v-model="password" type="password" placeholder="*********"></el-input>
+                <el-input ref="pw" v-model="password" type="password" placeholder="*********" @keyup.enter="login"></el-input>
+            </div>
+            <div class="buttons">
+                <el-button type="text">找回密码</el-button>
+                <el-button type="primary" @click="login">愉快地登录</el-button>
             </div>
         </div>
     </div>
@@ -24,9 +24,36 @@
             return {
                 name: '',
                 id: '',
-                password: ''
+                password: '',
+                nameFocus: true,
+                passwordFocus: false
+            }
+        },
+
+        methods: {
+            login: function(event){
+                var postData = {username: this.name, password: this.password};
+                this.$http.post(this.$store.state.JinTianDeIP+'user/login', postData).then(response => {
+                    if(response.status===200) this.$router.push('/dashboard')
+                    else this.clear();
+                },
+                response => {
+                    this.clear();
+                });
+            },
+
+            switchfocus: function(event) {
+                console.log("switchfocus")
+                this.nameFocus = false;
+                this.passwordFocus = true;
+            },
+
+            clear: function(){
+                this.$message.error('错了哦');
+                this.password="";
             }
         }
+
     }
 </script>
 
@@ -38,10 +65,10 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        width: 20rem;
+        width: 15rem;
         margin-bottom: 1rem;
         background-color: white;
-        padding: 3rem 2rem 4rem 3rem;
+        padding: 3rem;
         border-radius: .5rem;
 
     }
@@ -50,8 +77,14 @@
         display: flex;
     }
 
+    .buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: .3rem;
+    }
+
     .el-input {
-        margin: .3rem 1rem;
+        margin: .3rem 0 .3rem 1rem;
     }
 
     p {
@@ -62,6 +95,7 @@
         align-self: center;
         font-size: 3rem;
         line-height: 150%;
+        margin-bottom: 1rem;
         font-family: Arial, "Lucida Sans", "Lucida Sans Regular", "SimHei", "黑体", "STHeiti", "华文黑体", serif;
     }
 </style>
