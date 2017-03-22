@@ -3,6 +3,7 @@ const {
 } = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const url = require('url')
 const publicPath = '/'
 
@@ -63,6 +64,10 @@ module.exports = (options = {}) => ({
     ]
   },
   plugins: [
+    new CopyWebpackPlugin([{
+      from: 'src/assets',
+      to: 'assets'
+    }]),
     new webpack.optimize.CommonsChunkPlugin({
       names: ['vendor', 'manifest']
     }),

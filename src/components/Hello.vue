@@ -53,7 +53,6 @@
             updateBackground() {
                 if (window.innerWidth >= 600) {
                     if (this.bookLoadingCount < 3) {
-
                         let emptyBook = []
 
                         for (let i = 0; i < this.bookCoverList.length; i++) {
@@ -152,7 +151,6 @@
         border-radius: .25rem;
         /*opacity: .9;*/
         flex-grow: 0;
-        position: fixed;
         z-index: 5;
         visibility: visible
     }
