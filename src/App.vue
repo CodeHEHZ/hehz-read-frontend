@@ -54,8 +54,16 @@
         flex-direction: column;
     }
 
+    .el-menu-demo {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+    }
+
     .footer {
-        position: absolute;
+        position: relative;
         bottom: 0;
         width: 100%;
         z-index: 3;

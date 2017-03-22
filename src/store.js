@@ -25,8 +25,8 @@ let quiz = [{
 }]
 
 let bookList = [
-    {name: '《卡拉马佐夫兄弟》', url: '/src/assets/covers/cover1.png'},
-    {name: '《他改变了中国》', url: '/src/assets/covers/cover2.jpg'}
+    {name: '《卡拉马佐夫兄弟》', url: '/assets/covers/cover1.png'},
+    {name: '《他改变了中国》', url: '/assets/covers/cover2.jpg'}
 ]
 
 let storeInfo = {
@@ -36,7 +36,7 @@ let storeInfo = {
         answer: [],
         answerCount: 0,
         questionNumber: 0,
-        JinTianDeIP: 'http://localhost:3000/'
+        api: 'https://api.read.hehlzx.cn/'
     },
     mutations: {
         nextQuestion (state) {

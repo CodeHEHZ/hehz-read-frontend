@@ -149,7 +149,6 @@
     .login {
         background-color: white;
         border-radius: .25rem;
-        /*opacity: .9;*/
         flex-grow: 0;
         z-index: 5;
         visibility: visible
