@@ -4,7 +4,7 @@
             <b>登录</b>
             <div class="form">
                 <p>姓名</p>
-                <el-input v-model="name" placeholder="谢大叔" @keyup.enter="clear" autofocus="true"></el-input>
+                <el-input v-model="name" placeholder="谢大叔" @keyup.enter.native="switchfocus " :autofocus="true"></el-input>
             </div>
             <div class="form">
                 <p>密码</p>
@@ -33,7 +33,7 @@
         methods: {
             login: function(event){
                 var postData = {username: this.name, password: this.password};
-                this.$http.post(this.$store.state.JinTianDeIP+'user/login', postData).then(response => {
+                this.$http.post(this.$store.state.JinTianDeIP+'user/login', postData, { credentials: true }).then(response => {
                     if(response.status===200) this.$router.push('/dashboard')
                     else this.clear();
                 },
@@ -43,9 +43,7 @@
             },
 
             switchfocus: function(event) {
-                console.log("switchfocus")
-                this.nameFocus = false;
-                this.passwordFocus = true;
+                this.$refs.pw.inputSelect();
             },
 
             clear: function(){
