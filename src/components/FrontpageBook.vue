@@ -8,7 +8,6 @@
     </div>
 </template>
 
-
 <script>
     export default{
         data: function() {
@@ -20,8 +19,6 @@
         },
 
         props: ['bookInfo'] //format: {name, url}
-
-
 
     }
 

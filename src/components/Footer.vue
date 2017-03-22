@@ -18,8 +18,11 @@
         display: flex;
         height: 2rem;
         padding: .2rem;
+        position: relative;
         justify-content: center;
         align-items: center;
+        width: 100%;
+        z-index: 3;
         background-color: rgb(238, 245, 246);
     }
 

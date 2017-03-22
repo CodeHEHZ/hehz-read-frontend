@@ -97,7 +97,7 @@
         border-radius: .25rem;
         /*opacity: .9;*/
         flex-grow: 0;
-        position: fixed;
+        /*position: fixed;*/
         z-index: 5;
         visibility: visible
     }

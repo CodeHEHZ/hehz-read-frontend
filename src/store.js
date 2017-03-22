@@ -76,7 +76,7 @@ let storeInfo = {
         answer: [],
         answerCount: 0,
         questionNumber: 0,
-        JinTianDeIP: 'http://10.160.172.180:3000/'
+        api: 'http://localhost:3000/'
     },
     mutations: {
         nextQuestion (state) {

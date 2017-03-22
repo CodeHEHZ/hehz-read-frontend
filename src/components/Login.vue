@@ -4,16 +4,19 @@
             <b>登录</b>
             <div class="form">
                 <p>姓名</p>
-                <el-input v-model="name" placeholder="谢大叔" @keyup.enter="clear" autofocus="true"></el-input>
+                <el-input v-model="name" placeholder="谢大叔" @keyup.enter.native="switchfocus" :autofocus="true"></el-input>
             </div>
             <div class="form">
                 <p>密码</p>
-                <el-input ref="pw" v-model="password" type="password" placeholder="*********" @keyup.enter="login"></el-input>
+                <el-input ref="pw" v-model="password" type="password" placeholder="*********" @keyup.enter.native="login"></el-input>
             </div>
             <div class="buttons">
                 <el-button type="text">找回密码</el-button>
                 <el-button type="primary" @click="login">愉快地登录</el-button>
             </div>
+            <!--<div class="buttons">-->
+                <!--<el-button type="text" @click="ikyuu">Ikyuu的御用注册通道</el-button>-->
+            <!--</div>-->
         </div>
     </div>
 </template>
@@ -33,9 +36,11 @@
         methods: {
             login: function(event){
                 var postData = {username: this.name, password: this.password};
-                this.$http.post(this.$store.state.JinTianDeIP+'user/login', postData).then(response => {
-                    if(response.status===200) this.$router.push('/dashboard')
-                    else this.clear();
+                this.$http.post(this.$store.state.api+'user/login', postData, { credentials: true }).then(response => {
+                    if(response.status===200)
+                        this.$router.push('/dashboard')
+                    else
+                        this.clear();
                 },
                 response => {
                     this.clear();
@@ -43,15 +48,24 @@
             },
 
             switchfocus: function(event) {
-                console.log("switchfocus")
-                this.nameFocus = false;
-                this.passwordFocus = true;
+                this.$refs.pw.inputSelect();
             },
 
             clear: function(){
                 this.$message.error('错了哦');
                 this.password="";
-            }
+            },
+
+            cookieandpush: function(cookieContent) {
+//                this.$cookie.set('username',cookieContent.body.username);
+//                this.$cookie.set('group',cookieContent.body.group);
+            },
+
+
+//            ikyuu: function(event) {
+//                var postData = {username: 'ikyuustudent', schoolId: '233333333', group: 'student', password: '233'};
+//                this.$http.post(this.$store.state.api + 'user/register', postData, {credentials: true})
+//            }
         }
 
     }
@@ -75,6 +89,7 @@
 
     .form {
         display: flex;
+        align-items: center;
     }
 
     .buttons {
