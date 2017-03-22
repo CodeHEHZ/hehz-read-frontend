@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.23.0",
+    "copy-webpack-plugin": "^4.0.1",
+    "core-js": "^2.4.1",
     "element-ui": "^1.1.2",
     "lodash": "^4.17.4",
     "vue": "^2.1.8",

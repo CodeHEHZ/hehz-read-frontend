@@ -1,10 +1,10 @@
 <template>
-    <div class="book-cover-container">
+    <div class="book-cover-container" :style="'background-color: rgba(176,212,184,' + containerOpacity + ')'">
         <img :src="bookInfo.url"
              :title="bookInfo.name"
              class="book-cover"
              :style="style"
-             @load="style.opacity = 0.3"/>
+             @load="loaded"/>
     </div>
 </template>
 
@@ -14,12 +14,19 @@
             return {
                 style: {
                     opacity: 0
-                }
+                },
+                containerOpacity: .7 + Math.random() * .4
             }
         },
 
-        props: ['bookInfo'] //format: {name, url}
+        props: ['bookInfo'], // format: { name, url },
 
+        methods: {
+            loaded() {
+                this.style.opacity = 0.3
+                this.$emit('loaded')
+            }
+        }
     }
 
 
@@ -33,6 +40,7 @@
         width: 150px;
         flex-grow: 1;
         align-items: center;
+        background-color: #c8e0cd;
     }
 
     .book-cover {
