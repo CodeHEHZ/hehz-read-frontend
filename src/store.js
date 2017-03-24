@@ -36,7 +36,8 @@ let storeInfo = {
         answer: [],
         answerCount: 0,
         questionNumber: 0,
-        api: 'https://api.read.hehlzx.cn/'
+        // api: 'https://api.read.hehlzx.cn/'
+        api: 'http://127.0.0.1:3000/'
     },
     mutations: {
         nextQuestion (state) {

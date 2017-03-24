@@ -37,13 +37,21 @@
             login: function(event){
                 var postData = {username: this.name, password: this.password};
                 this.$http.post(this.$store.state.api+'user/login', postData, { credentials: true }).then(response => {
-                    if(response.status===200)
+                    if (response.status === 200) {
+                        //For development
+                        this.$cookie.set('username','ikyuustudent');
+                        this.$cookie.set('group','student');
                         this.$router.push('/dashboard')
+                    }
                     else
                         this.clear();
                 },
                 response => {
-                    this.clear();
+//                    this.clear();
+                    //For development
+                    this.$router.push('/dashboard')
+                    this.$cookie.set('username','ikyuustudent');
+                    this.$cookie.set('group','student');
                 });
             },
 
