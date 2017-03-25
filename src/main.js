@@ -33,8 +33,9 @@ const routes = [
         ]
     },
     { path: '/login', component: Login },
-    { path: '/Dashboard', component: Dashboard },
+    { path: '/dashboard', component: Dashboard },
     { path: '/booklist', component: BookList },
+    { path: '/book/:name', component: BookDetail },
     { path: '*', redirect: '/' }
 ];
 

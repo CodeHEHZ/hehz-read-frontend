@@ -1,11 +1,11 @@
 <template>
-    <div class="full">
+    <div class="full" @click="gotoDetail">
         <img class="book-cover"
-             :src="this.imgsrc"
+             :src="this.cover"
              :style="style"
              @load="style.opacity = 1"
         >
-        <p class="bookname">{{ bookname }}</p>
+        <p class="name">{{ name }}</p>
         <p class="author">{{ author }}</p>
     </div>
 </template>
@@ -21,10 +21,16 @@
         },
 
         computed: {
-            imgsrc: function() { return this.bookInfo.imgUrl },
-            bookname: function() { return this.bookInfo.bookName },
+            cover: function() { return this.bookInfo.cover },
+            name: function() { return this.bookInfo.name },
             author: function() { return this.bookInfo.author }
         },
+
+        methods: {
+            gotoDetail: function() {
+                this.$router.push('/book/'+this.name)
+            }
+       },
 
         props: ['bookInfo'] //format: {name, author, imgUrl, ref}
 
@@ -55,7 +61,7 @@
         transition: all .3s;
     }
 
-    .bookname {
+    .name {
         font-size: 15px;
         margin: 4px 0 2px 0;
     }

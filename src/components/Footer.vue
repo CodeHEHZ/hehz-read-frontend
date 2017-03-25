@@ -17,7 +17,6 @@
     .full {
         display: flex;
         height: 2rem;
-        padding: .2rem;
         position: relative;
         justify-content: center;
         align-items: center;

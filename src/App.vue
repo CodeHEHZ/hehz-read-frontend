@@ -3,6 +3,7 @@
         <el-menu :default-active="active" class="el-menu-demo" mode="horizontal" :router="true" v-show="showMenu">
             <el-menu-item index="/">首页</el-menu-item>
             <el-menu-item index="/quiz">测试</el-menu-item>
+            <el-menu-item index="/dashboard" v-show="dashboardVisible">图书馆</el-menu-item>
         </el-menu>
         <transition name="component-fade" mode="out-in">
             <router-view class="marginForFooter"></router-view>
@@ -21,7 +22,6 @@
         data() {
             let active = this.$route.path
             if (active.includes('quiz'))
-
                 active = '/quiz'
             return {
                 active,
@@ -31,8 +31,14 @@
         computed: {
             showMenu() {
                 return this.$route.path != '/'
+            },
+
+            dashboardVisible() {
+                return this.$cookie.get("group") != null //!!to be restricted
             }
+
         },
+
         components: {
             quiz: Quiz,
             footers: Footer
