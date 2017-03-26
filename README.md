@@ -1,5 +1,4 @@
-# 读书 @ 华二黄中
-
+# 读书 @ 华二黄中[![Build Status](https://travis-ci.org/CodeHEHZ/hehz-read-frontend.svg?branch=master)](https://travis-ci.org/CodeHEHZ/hehz-read-frontend)
 ## Environment
 
 `Node >= 6`
