@@ -15,6 +15,7 @@ import Quiz from './components/Quiz.vue'
 import QuizResult from './components/QuizResult.vue'
 import Login from './components/Login.vue'
 import BookList from './components/BookList.vue'
+import BookDetail from './components/BookDetail.vue'
 
 import Question from './components/Question.vue'
 import Dashboard from './components/Dashboard.vue'
