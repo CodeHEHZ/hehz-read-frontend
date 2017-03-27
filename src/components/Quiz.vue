@@ -20,6 +20,15 @@
             </div>
         </div>
 
+        <div class="progress-button-set">
+            <button v-for="(question, index) in quiz"
+                    :class="['progress-button', progressButtonActive(index)]"
+                    @click="jumpTo(index)"
+            >
+                {{ index + 1 }}
+            </button>
+        </div>
+
         <div class="progress-bar">
             <div class="progress" :style="'width: ' + (submitting ? 100 : progress * 100) + '%'"></div>
         </div>
@@ -39,7 +48,7 @@
             }
         },
         components: {
-            question: Question,
+            question: Question
         },
         computed: {
             isNextAvailable: function() {
@@ -56,6 +65,9 @@
             },
             rightIcon: function() {
                 return this.isNextAvailable ? 'el-icon-arrow-right' : 'el-icon-check'
+            },
+            quiz: function() {
+                return this.$store.state.quiz
             }
         },
         methods: {
@@ -89,6 +101,13 @@
                 this.$store.commit('lastQuestion')
                 this.$router.push('/quiz/' + (this.$store.state.questionNumber + 1))
             },
+            jumpTo(index) {
+                this.transition = this.$route.params.id - 1 > index
+                    ? 'last-question'
+                    : 'next-question'
+                this.$store.commit('setQuestion', index)
+                this.$router.push('/quiz/' + (this.$store.state.questionNumber + 1))
+            },
             unansweredQuestion() {
                 let unansweredList = []
                 for (let i = 0; i < this.$store.state.quiz.length; i++) {
@@ -103,6 +122,11 @@
                     return '您已完成所有问题，确定提交？'
                 else
                     return "您还有第 " + this.unansweredQuestion().join(" 题、第 ") + " 题未完成，确定提交？"
+            },
+            progressButtonActive: function(index) {
+                return this.$route.params.id - 1 == index
+                    ? 'progress-button-active'
+                    : ''
             }
         }
     }
@@ -137,6 +161,28 @@
         display: flex;
         height: 2.5rem;
         justify-content: flex-end;
+    }
+
+    .progress-button-set {
+        margin-top: 1rem;
+    }
+
+    .progress-button {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 0;
+        border: 1px solid rgb(191, 217, 212);
+        margin: .15rem;
+        background-color: rgb(238, 246, 246);
+        color: #03a678;
+        transition: all .2s;
+        outline: 0;
+    }
+
+    .progress-button-active {
+        background-color: #03a678;
+        border: none;
+        color: #fff;
     }
 
     .progress-bar {

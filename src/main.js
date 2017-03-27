@@ -6,7 +6,7 @@ import VueRouter from 'vue-router'
 import ElementUI from 'element-ui'
 import Vuex from 'vuex'
 import VueCookie from 'vue-cookie'
-var VueResource = require('vue-resource');
+import VueResource from 'vue-resource'
 import './assets/element.css'
 
 import App from './App.vue'
