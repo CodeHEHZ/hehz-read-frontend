@@ -1,6 +1,6 @@
 <template>
     <div class="full">
-        <div class="width-restriction"
+        <div class="width-restriction">
             <div class="cover-and-info">
                 <img class="cover"/>
                 <div class="info-and-button">
@@ -18,6 +18,9 @@
 <script>
     export default {
         data: function () {
+            return {
+
+            }
         },
 
         computed: {

@@ -6,7 +6,7 @@
             <el-menu-item index="/dashboard" v-show="dashboardVisible">图书馆</el-menu-item>
         </el-menu>
         <transition name="component-fade" mode="out-in">
-            <router-view class="marginForFooter"></router-view>
+            <router-view class="content"></router-view>
         </transition>
         <div class="footer" v-show="showMenu">
             <footers></footers>
@@ -47,15 +47,19 @@
 </script>
 
 <style>
+    html {
+        height: 100%;
+    }
+
     body {
         margin: 0;
-        min-height: 100vh;
+        height: 100%;
         font-family: Georgia, 'Times New Roman', Times, "Microsoft YaHei", "微软雅黑", "SimHei", "黑体", "STXihei", "华文细黑", serif;
     }
 
     #app {
         width: 100%;
-        min-height: 100vh;
+        height: 100%;
         display: flex;
         flex-direction: column;
     }
@@ -66,6 +70,10 @@
         left: 0;
         width: 100%;
         z-index: 1000;
+    }
+
+    .content {
+        height: 100%;
     }
 
     .footer {

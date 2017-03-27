@@ -6,7 +6,7 @@ import VueRouter from 'vue-router'
 import ElementUI from 'element-ui'
 import Vuex from 'vuex'
 import VueCookie from 'vue-cookie'
-var VueResource = require('vue-resource');
+import VueResource from 'vue-resource'
 import './assets/element.css'
 
 import App from './App.vue'
@@ -15,7 +15,7 @@ import Quiz from './components/Quiz.vue'
 import QuizResult from './components/QuizResult.vue'
 import Login from './components/Login.vue'
 import BookList from './components/BookList.vue'
-// import BookDetail from './components/BookDetail.vue'
+import BookDetail from './components/BookDetail.vue'
 
 import Question from './components/Question.vue'
 import Dashboard from './components/Dashboard.vue'

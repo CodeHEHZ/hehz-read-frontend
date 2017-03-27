@@ -9,12 +9,12 @@
                     class="search"
                     icon="search"
                     size="small"
-                    v-model="input2"
-                    :on-icon-click="handleIconClick">
+                    v-model="searchContent"
+                    :on-icon-click="search">
                 </el-input>
             </div>
             <div class="books">
-                <lib-book v-for="book in bookList" class="lib-book" :bookInfo="book"></lib-book>
+                <lib-book v-for="book in bookList" class="lib-book" :bookInfo="book" :key="book"></lib-book>
             </div>
         </div>
     </div>
@@ -24,6 +24,7 @@
 <script>
     import ReadStatus from './ReadStatus.vue'
     import LibBook from './LibBook.vue'
+
     export default {
         components: {
             'read-status': ReadStatus,
@@ -32,13 +33,6 @@
 
         data: function() {
             return{
-//                tempInfo: {
-//                    bookName: "《他改变了中国》",
-//                    author: "狗狗",
-//                    imgUrl: "/src/assets/covers/cover2.jpg",
-//                    ref: null
-//                },
-
                 bookList: [{
                     name: "《他改变了中国》",
                     author: "狗狗",
@@ -47,8 +41,8 @@
                     name: "《Hotstrip》",
                     author: "D. Fense Dragon",
                     cover: "/src/assets/covers/cover1.png",
-                }]
-
+                }],
+                searchContent: ''
             }
         },
 
@@ -57,9 +51,13 @@
                 console.log(this.$cookie.get('group'))
                 return this.$cookie.get('group') == 'student'
             }
+        },
+
+        methods: {
+            search() {
+                // doSomething
+            }
         }
-
-
     }
 </script>
 
