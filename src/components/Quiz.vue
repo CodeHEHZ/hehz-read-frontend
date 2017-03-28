@@ -22,7 +22,7 @@
 
         <div class="progress-button-set">
             <button v-for="(question, index) in quiz"
-                    :class="['progress-button', progressButtonActive(index)]"
+                    :class="['progress-button', progressButtonActive(index), progressButtonSelected(index)]"
                     @click="jumpTo(index)"
             >
                 {{ index + 1 }}
@@ -73,9 +73,11 @@
         methods: {
             next() {
                 if (this.isNextAvailable) {
+                    this.isLoading = true
                     this.transition = 'next-question'
                     this.$store.commit('nextQuestion')
                     this.$router.push('/quiz/' + (this.$store.state.questionNumber + 1))
+                    setTimeout(() => { this.isLoading = false }, 400)
                 } else {
                     this.$confirm(this.submitConfirmationText(), '确认提交', {
                         confirmButtonText: '确定',
@@ -97,21 +99,24 @@
                 }
             },
             last() {
+                this.isLoading = true;
                 this.transition = 'last-question'
                 this.$store.commit('lastQuestion')
                 this.$router.push('/quiz/' + (this.$store.state.questionNumber + 1))
+                setTimeout(() => { this.isLoading = false }, 400)
             },
             jumpTo(index) {
+                this.isLoading = true;
                 this.transition = this.$route.params.id - 1 > index
                     ? 'last-question'
                     : 'next-question'
                 this.$store.commit('setQuestion', index)
                 this.$router.push('/quiz/' + (this.$store.state.questionNumber + 1))
+                setTimeout(() => { this.isLoading = false }, 400)
             },
             unansweredQuestion() {
                 let unansweredList = []
                 for (let i = 0; i < this.$store.state.quiz.length; i++) {
-                    console.log(this.$store.state.answer[i])
                     if (!this.$store.state.answer[i])
                         unansweredList.push(i + 1)
                 }
@@ -127,7 +132,20 @@
                 return this.$route.params.id - 1 == index
                     ? 'progress-button-active'
                     : ''
+            },
+            progressButtonSelected: function(index) {
+                if (this.$store.state.visited[index]) {
+                    return this.$store.state.answer[index]
+                        ? 'progress-button-selected'
+                        : 'progress-button-missed'
+                } else
+                    return ''
+
             }
+        },
+        mounted() {
+            if (this.$route.params.id >= this.quiz.length)
+                this.jumpTo(0)
         }
     }
 </script>
@@ -165,23 +183,44 @@
 
     .progress-button-set {
         margin-top: 1rem;
+        display: flex;
+        flex-wrap: wrap;
+        max-width: 23rem;
     }
 
     .progress-button {
         width: 2rem;
         height: 2rem;
-        border-radius: 0;
+        border-radius: 50%;
         border: 1px solid rgb(191, 217, 212);
         margin: .15rem;
         background-color: rgb(238, 246, 246);
         color: #03a678;
-        transition: all .2s;
+        transition: all .25s;
         outline: 0;
+        cursor: pointer;
+        font-size: .9rem;
+    }
+
+    .progress-button:hover {
+        background-color: #35b893 !important;
+        color: #fff !important;
     }
 
     .progress-button-active {
-        background-color: #03a678;
+        background-color: #03a678 !important;
         border: none;
+        border-radius: 25%;
+        color: #fff;
+    }
+
+    .progress-button-selected {
+        background-color: #13ce66;
+        color: #fff;
+    }
+
+    .progress-button-missed {
+        background-color: #f7ba2a;
         color: #fff;
     }
 

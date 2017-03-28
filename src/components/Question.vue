@@ -1,8 +1,8 @@
 <template>
     <div class="content">
-        <p>{{ (this.$store.state.questionNumber + 1) + '、' + quiz[question].text }}</p>
+        <p>{{ (this.$store.state.questionNumber + 1) + '、' + (quiz[question] || {}).text }}</p>
         <el-radio-group v-model="radio" @change="select">
-            <el-radio v-for="option in quiz[question].answers" :label="option.label" :key="option">
+            <el-radio v-for="option in (quiz[question] || {}).answers" :label="option.label" :key="option">
                 {{ option.answer }}
             </el-radio>
         </el-radio-group>
@@ -42,6 +42,11 @@
                         label: this.radio
                     })
             }
+        },
+        beforeRouteUpdate(to, from, next) {
+            this.$store.commit('visit', to.params.id - 1)
+            this.$store.commit('visit', from.params.id - 1)
+            next()
         }
     }
 </script>

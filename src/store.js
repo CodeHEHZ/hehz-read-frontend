@@ -36,6 +36,7 @@ let storeInfo = {
         answer: [],
         answerCount: 0,
         questionNumber: 0,
+        visited: [],
         // api: 'https://api.read.hehlzx.cn/'
         api: 'http://127.0.0.1:3000/'
     },
@@ -55,6 +56,10 @@ let storeInfo = {
             if (!state.answer[m.number])
                 state.answerCount++
             state.answer[m.number] = m.label
+        },
+        visit (state, m) {
+            if (m < state.quiz.length)
+                state.visited[m] = 1
         }
     }
 }
