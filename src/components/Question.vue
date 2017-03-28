@@ -42,6 +42,11 @@
                         label: this.radio
                     })
             }
+        },
+        beforeRouteUpdate(to, from, next) {
+            this.$store.commit('visit', to.params.id - 1)
+            this.$store.commit('visit', from.params.id - 1)
+            next()
         }
     }
 </script>
