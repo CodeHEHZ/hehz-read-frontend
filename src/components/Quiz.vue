@@ -142,6 +142,10 @@
                     return ''
 
             }
+        },
+        mounted() {
+            if (this.$route.params.id >= this.quiz.length)
+                this.jumpTo(0)
         }
     }
 </script>
