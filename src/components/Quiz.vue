@@ -106,13 +106,17 @@
                 setTimeout(() => { this.isLoading = false }, 400)
             },
             jumpTo(index) {
-                this.isLoading = true;
-                this.transition = this.$route.params.id - 1 > index
-                    ? 'last-question'
-                    : 'next-question'
-                this.$store.commit('setQuestion', index)
-                this.$router.push('/quiz/' + (this.$store.state.questionNumber + 1))
-                setTimeout(() => { this.isLoading = false }, 400)
+                if (index != this.questionNumber) {
+                    this.isLoading = true;
+                    this.transition = this.$route.params.id - 1 > index
+                        ? 'last-question'
+                        : 'next-question'
+                    this.$store.commit('setQuestion', index)
+                    this.$router.push('/quiz/' + (this.$store.state.questionNumber + 1))
+                    setTimeout(() => {
+                        this.isLoading = false
+                    }, 400)
+                }
             },
             unansweredQuestion() {
                 let unansweredList = []
@@ -128,23 +132,22 @@
                 else
                     return "您还有第 " + this.unansweredQuestion().join(" 题、第 ") + " 题未完成，确定提交？"
             },
-            progressButtonActive: function(index) {
+            progressButtonActive(index) {
                 return this.$route.params.id - 1 == index
                     ? 'progress-button-active'
                     : ''
             },
-            progressButtonSelected: function(index) {
+            progressButtonSelected(index) {
                 if (this.$store.state.visited[index]) {
                     return this.$store.state.answer[index]
                         ? 'progress-button-selected'
                         : 'progress-button-missed'
                 } else
                     return ''
-
             }
         },
         mounted() {
-            if (this.$route.params.id >= this.quiz.length)
+            if (this.$route.params.id > this.quiz.length)
                 this.jumpTo(0)
         }
     }
@@ -200,6 +203,7 @@
         outline: 0;
         cursor: pointer;
         font-size: .9rem;
+        padding: 0;
     }
 
     .progress-button:hover {
@@ -221,6 +225,7 @@
 
     .progress-button-missed {
         background-color: #f7ba2a;
+        border: none;
         color: #fff;
     }
 
