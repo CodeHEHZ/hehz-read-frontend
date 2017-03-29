@@ -1,7 +1,7 @@
 <template>
     <div class="full">
         <div class="container">
-            <b>登录</b>
+            <b>读书@华二黄中</b>
             <div class="form">
                 <p>姓名</p>
                 <el-input v-model="name" placeholder="谢大叔" @keyup.enter.native="switchfocus" :autofocus="true"></el-input>
@@ -161,7 +161,7 @@
 
     b {
         align-self: center;
-        font-size: 3rem;
+        font-size: 2rem;
         line-height: 150%;
         margin-bottom: 1rem;
         font-family: Arial, "Lucida Sans", "Lucida Sans Regular", "SimHei", "黑体", "STHeiti", "华文黑体", serif;
