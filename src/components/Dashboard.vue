@@ -1,20 +1,22 @@
 <template>
     <div class="full">
-        <read-status class="read-status" v-show="readStatusVisible"></read-status>
-        <div class="books-with-title">
-            <div class="title">
-                <p>全部书目</p>
-                <el-input
-                    placeholder="搜索书名"
-                    class="search"
-                    icon="search"
-                    size="small"
-                    v-model="searchContent"
-                    :on-icon-click="search">
-                </el-input>
-            </div>
-            <div class="books">
-                <lib-book v-for="book in bookList" class="lib-book" :bookInfo="book" :key="book"></lib-book>
+        <div class="center">
+            <read-status class="read-status" v-show="readStatusVisible"></read-status>
+            <div class="books-with-title">
+                <div class="title">
+                    <p>全部书目</p>
+                    <el-input
+                        placeholder="搜索书名"
+                        class="search"
+                        icon="search"
+                        size="small"
+                        v-model="searchContent"
+                        :on-icon-click="search">
+                    </el-input>
+                </div>
+                <div class="books clearfix">
+                    <lib-book v-for="book in bookList" class="lib-book clearfix" :bookInfo="book" :key="book"></lib-book>
+                </div>
             </div>
         </div>
     </div>
@@ -41,6 +43,22 @@
                     name: "《Hotstrip》",
                     author: "D. Fense Dragon",
                     cover: "/src/assets/covers/cover1.png",
+                }, {
+                    name: "《他改变了中国》",
+                    author: "狗狗",
+                    cover: "/src/assets/covers/cover2.jpg",
+                }, {
+                    name: "《Hotstrip》",
+                    author: "D. Fense Dragon",
+                    cover: "/src/assets/covers/cover1.png",
+                }, {
+                    name: "《他改变了中国》",
+                    author: "狗狗",
+                    cover: "/src/assets/covers/cover2.jpg",
+                }, {
+                    name: "《Hotstrip》",
+                    author: "D. Fense Dragon",
+                    cover: "/src/assets/covers/cover1.png",
                 }],
                 searchContent: ''
             }
@@ -48,7 +66,6 @@
 
         computed: {
             readStatusVisible : function() {
-                console.log(this.$cookie.get('group'))
                 return this.$cookie.get('group') == 'student'
             }
         },
@@ -64,9 +81,14 @@
 <style scoped>
     .full {
         display: flex;
-        flex-direction: row;
         padding: 1rem;
-        padding-top: 3rem;
+        justify-content: center;
+    }
+
+    .center {
+        display: flex;
+        width: 100%;
+        max-width: 60rem;
     }
 
     .read-status {
@@ -77,9 +99,8 @@
         display: flex;
         flex-direction: column;
         flex-grow: 1;
-        min-height: 99vh;
-        min-width: 288px;
-        padding: 1.1rem;
+        padding: 1rem;
+        /*overflow: auto;*/
     }
 
     .title {
@@ -97,20 +118,20 @@
 
     .search {
         padding: 0;
-        width: 150px;
-        margin: 10px;
+        width: 10rem;
+        margin: .75rem;
     }
 
-    .books{
+    .books {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
         align-content: flex-start;
+        justify-content: center;
     }
 
     .lib-book {
-        display: flex;
+        width: 12rem;
+        margin: .6rem .3rem;
     }
-
-
 </style>

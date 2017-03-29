@@ -5,10 +5,11 @@
             <el-menu-item index="/quiz">测试</el-menu-item>
             <el-menu-item index="/dashboard" v-show="dashboardVisible">图书馆</el-menu-item>
         </el-menu>
+        <div :class="marginTop" id="margin-top"></div>
         <transition name="component-fade" mode="out-in">
-            <router-view class="content"></router-view>
+            <router-view class="content" id="router-view"></router-view>
         </transition>
-        <div class="footer" v-show="showMenu">
+        <div class="footer" id="footer" v-show="showFooter">
             <footers></footers>
         </div>
     </div>
@@ -32,11 +33,17 @@
             showMenu() {
                 return this.$route.path != '/'
             },
-
+            showFooter() {
+                return this.$route.path != '/'
+            },
             dashboardVisible() {
                 return this.$cookie.get("group") != null //!!to be restricted
+            },
+            marginTop() {
+                return this.$route.path == '/'
+                    ? ''
+                    : 'margin-top'
             }
-
         },
 
         components: {
@@ -59,7 +66,6 @@
 
     #app {
         width: 100%;
-        height: 100%;
         display: flex;
         flex-direction: column;
     }
@@ -72,8 +78,12 @@
         z-index: 1000;
     }
 
-    .content {
-        height: 100%;
+    .margin-top {
+        margin-top: 60px
+    }
+
+    #router-view {
+        min-height: calc(100vh - 60px - 2rem);
     }
 
     .footer {
@@ -83,8 +93,14 @@
         z-index: 3;
     }
 
-    .margin {
-        margin-bottom: 2rem;
+    .clearfix:before,
+    .clearfix:after {
+        display: table;
+        content: "";
+    }
+
+    .clearfix:after {
+        clear: both
     }
 
     a, span, p {

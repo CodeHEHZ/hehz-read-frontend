@@ -1,5 +1,5 @@
 <template>
-    <div class="full">
+    <div class="read-status-full">
         <el-table :data="booksFail" class="table">
             <el-table-column
                     prop="bookname"
@@ -36,7 +36,7 @@
 </script>
 
 <style scoped>
-    .full {
+    .read-status-full {
         display: flex;
         flex-direction: column;
     }

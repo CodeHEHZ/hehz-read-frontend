@@ -54,7 +54,6 @@
 <style scoped>
     .content {
         width: 30rem;
-        min-height: 20rem;
         display: flex;
         flex-direction: column;
         justify-content: center;
