@@ -14,6 +14,17 @@
                 <el-button type="text">找回密码</el-button>
                 <el-button type="primary" @click="login">愉快地登录</el-button>
             </div>
+            <div class="sponsors">
+                <span>由</span>
+                <a class="sponsor" href="https://qingcloud.com/about/nonprofits" title="感谢青云免费提供云主机服务" target="_blank">
+                    <img class="sponsor" src="../assets/qingcloud.jpg">
+                </a>
+                <a class="sponsor" href="https://www.upyun.com/league" title="感谢又拍云提供云加速服务" target="_blank">
+                    <img class="sponsor sponsor-upyun" src="../assets/upyun.png">
+                </a>
+                <span>驱动</span>
+            </div>
+            <a class="copyright" href="http://hehlzx.cn" target="_blank">© 2017 华二黄流中学</a>
             <!--<div class="buttons">-->
                 <!--<el-button type="text" @click="ikyuu">Ikyuu的御用注册通道</el-button>-->
             <!--</div>-->
@@ -88,9 +99,8 @@
         flex-direction: column;
         justify-content: center;
         width: 15rem;
-        margin-bottom: 1rem;
         background-color: white;
-        padding: 3rem;
+        padding: 3rem 3rem 2rem 3rem;
         border-radius: .5rem;
 
     }
@@ -104,6 +114,41 @@
         display: flex;
         justify-content: space-between;
         margin-top: .3rem;
+    }
+
+    .sponsors {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        height: 2rem;
+        justify-content: space-between;
+        margin-top: 1rem;
+    }
+
+    .sponsor {
+        height: 100%;
+        margin-top: .1rem;
+    }
+
+    span {
+        margin-top: .2rem;
+        font-size: .8rem;
+    }
+
+    .sponsor-upyun {
+        margin-top: 0;
+    }
+
+    .copyright {
+        height: 1rem;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-decoration: none;
+        color: grey !important;
+        font-size: .6rem;
+        margin-top: .25rem;
     }
 
     .el-input {
