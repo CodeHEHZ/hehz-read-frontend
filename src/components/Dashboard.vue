@@ -66,7 +66,6 @@
 
         computed: {
             readStatusVisible : function() {
-                console.log(this.$cookie.get('group'))
                 return this.$cookie.get('group') == 'student'
             }
         },

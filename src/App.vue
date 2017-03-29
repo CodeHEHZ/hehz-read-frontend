@@ -5,11 +5,11 @@
             <el-menu-item index="/quiz">测试</el-menu-item>
             <el-menu-item index="/dashboard" v-show="dashboardVisible">图书馆</el-menu-item>
         </el-menu>
-        <div :class="marginTop"></div>
+        <div :class="marginTop" id="margin-top"></div>
         <transition name="component-fade" mode="out-in">
-            <router-view class="content"></router-view>
+            <router-view class="content" id="router-view"></router-view>
         </transition>
-        <div class="footer" v-show="showFooter">
+        <div class="footer" id="footer" v-show="showFooter">
             <footers></footers>
         </div>
     </div>
@@ -34,7 +34,7 @@
                 return this.$route.path != '/'
             },
             showFooter() {
-                return this.$route.path != '/' && this.$route.path != '/dashboard'
+                return this.$route.path != '/'
             },
             dashboardVisible() {
                 return this.$cookie.get("group") != null //!!to be restricted
@@ -66,7 +66,6 @@
 
     #app {
         width: 100%;
-        height: 100%;
         display: flex;
         flex-direction: column;
     }
@@ -83,8 +82,8 @@
         margin-top: 60px
     }
 
-    .content {
-        height: 100%;
+    #router-view {
+        min-height: calc(100vh - 60px - 2rem);
     }
 
     .footer {
@@ -92,10 +91,6 @@
         bottom: 0;
         width: 100%;
         z-index: 3;
-    }
-
-    .margin {
-        margin-bottom: 2rem;
     }
 
     .clearfix:before,
