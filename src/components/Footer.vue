@@ -1,8 +1,8 @@
 <template>
     <div class="full">
         <div class="split">
-            <a href="http://hehlzx.cn">© 2017 华二黄流中学</a>
-            <a href="https://github.com/CodeHEHZ/hehz-read-frontend">CodeHEHZ @<img src="../assets/GitHub-Mark-64px.png"></a>
+            <a href="http://hehlzx.cn" target="_blank">© 2017 华二黄流中学</a>
+            <a href="https://github.com/CodeHEHZ/hehz-read-frontend" target="_blank">CodeHEHZ @<img src="../assets/GitHub-Mark-64px.png"></a>
         </div>
     </div>
 </template>
