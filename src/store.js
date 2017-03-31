@@ -38,7 +38,7 @@ let storeInfo = {
         questionNumber: 0,
         visited: [],
         // api: 'https://api.read.hehlzx.cn/'
-        api: 'http://127.0.0.1:3000/'
+        api: 'http://test.api.read.zehua.li/'
     },
     mutations: {
         nextQuestion (state) {

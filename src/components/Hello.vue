@@ -94,6 +94,10 @@
                 }
                 setTimeout(this.updateBackground, 500)
             }
+        },
+        beforeCreate() {
+            if (this.$cookie.get('username'))
+                this.$router.push('/dashboard')
         }
     }
 
@@ -138,7 +142,7 @@
 
     .login {
         background-color: white;
-        border-radius: .25rem;
+        border-radius: .5rem;
         flex-grow: 0;
         z-index: 5;
         visibility: visible

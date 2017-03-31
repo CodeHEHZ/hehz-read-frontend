@@ -1,34 +1,29 @@
 <template>
-    <div class="full">
-        <div class="container">
-            <b>读书@华二黄中</b>
-            <div class="form">
-                <p>姓名</p>
-                <el-input v-model="name" placeholder="谢大叔" @keyup.enter.native="switchfocus" :autofocus="true"></el-input>
-            </div>
-            <div class="form">
-                <p>密码</p>
-                <el-input ref="pw" v-model="password" type="password" placeholder="*********" @keyup.enter.native="login"></el-input>
-            </div>
-            <div class="buttons">
-                <el-button type="text">找回密码</el-button>
-                <el-button type="primary" @click="login">愉快地登录</el-button>
-            </div>
-            <div class="sponsors">
-                <span>由</span>
-                <a class="sponsor" href="https://qingcloud.com/about/nonprofits" title="感谢青云免费提供云主机服务" target="_blank">
-                    <img class="sponsor" src="../assets/qingcloud.jpg">
-                </a>
-                <a class="sponsor" href="https://www.upyun.com/league" title="感谢又拍云提供云加速服务" target="_blank">
-                    <img class="sponsor sponsor-upyun" src="../assets/upyun.png">
-                </a>
-                <span>驱动</span>
-            </div>
-            <a class="copyright" href="http://hehlzx.cn" target="_blank">© 2017 华二黄流中学</a>
-            <!--<div class="buttons">-->
-                <!--<el-button type="text" @click="ikyuu">Ikyuu的御用注册通道</el-button>-->
-            <!--</div>-->
+    <div class="container">
+        <b>读书@华二黄中</b>
+        <div class="form">
+            <p>账号</p>
+            <el-input ref="username" v-model="username" placeholder="谢大叔" @keyup.enter.native="switchfocus" :autofocus="true"></el-input>
         </div>
+        <div class="form">
+            <p>密码</p>
+            <el-input ref="password" v-model="password" type="password" placeholder="*********" @keyup.enter.native="login"></el-input>
+        </div>
+        <div class="buttons">
+            <el-button type="text">找回密码</el-button>
+            <el-button type="primary" @click="login">愉快地登录</el-button>
+        </div>
+        <div class="sponsors">
+            <span>由</span>
+            <a class="sponsor" href="https://qingcloud.com/about/nonprofits" title="感谢青云免费提供云主机服务" target="_blank">
+                <img class="sponsor" src="../assets/qingcloud.jpg">
+            </a>
+            <a class="sponsor" href="https://www.upyun.com/league" title="感谢又拍云提供云加速服务" target="_blank">
+                <img class="sponsor sponsor-upyun" src="../assets/upyun.png">
+            </a>
+            <span>驱动</span>
+        </div>
+        <a class="copyright" href="http://hehlzx.cn" target="_blank">© 2017 华二黄流中学</a>
     </div>
 </template>
 
@@ -36,7 +31,7 @@
     export default {
         data: function() {
             return {
-                name: '',
+                username: '',
                 id: '',
                 password: '',
                 nameFocus: true,
@@ -46,38 +41,47 @@
 
         methods: {
             login: function(event){
-                var postData = {username: this.name, password: this.password};
-                this.$http.post(this.$store.state.api+'user/login', postData, { credentials: true }).then(response => {
-                    if (response.status === 200) {
-                        //For development
-                        this.$cookie.set('username','ikyuustudent');
-                        this.$cookie.set('group','student');
-                        this.$router.push('/dashboard')
+                if (this.username.length == 0) {
+                    this.$refs.username.inputSelect();
+                    this.$message.warning('请输入您的用户名')
+                } else if (this.password.length == 0) {
+                    this.$refs.password.inputSelect();
+                    this.$message.warning('请输入您的密码')
+                } else {
+                    let postData = {
+                        username: this.username,
+                        password: this.password
                     }
-                    else
+                    this.$http.post(this.$store.state.api + 'user/login', postData, { credentials: true }).then(response => {
+                        if (response.status === 200) {
+                            //For development
+                            this.$cookie.set('username', 'ikyuustudent')
+                            this.$cookie.set('group', 'student')
+                            this.$router.push('/dashboard')
+                        }
+                    },
+                    response => {
+                        //For development
+//                        this.$router.push('/dashboard')
+//                        this.$cookie.set('username', 'ikyuustudent')
+//                        this.$cookie.set('group', 'student')
                         this.clear();
-                },
-                response => {
-//                    this.clear();
-                    //For development
-                    this.$router.push('/dashboard')
-                    this.$cookie.set('username','ikyuustudent');
-                    this.$cookie.set('group','student');
-                });
+                    })
+                }
             },
 
             switchfocus: function(event) {
-                this.$refs.pw.inputSelect();
+                this.$refs.password.inputSelect();
             },
 
             clear: function(){
-                this.$message.error('错了哦');
-                this.password="";
+                this.$message.error('用户名或密码错误');
+                this.password = '';
             },
 
-            cookieandpush: function(cookieContent) {
-//                this.$cookie.set('username',cookieContent.body.username);
-//                this.$cookie.set('group',cookieContent.body.group);
+            cookieAndPush: function(cookieContent) {
+//                this.$cookie.set('username', cookieContent.body.username);
+//                this.$cookie.set('group', cookieContent.body.group);
             },
 
 
@@ -91,9 +95,6 @@
 </script>
 
 <style scoped>
-    .full {
-    }
-
     .container {
         display: flex;
         flex-direction: column;
@@ -147,12 +148,18 @@
         align-items: center;
         text-decoration: none;
         color: grey !important;
-        font-size: .6rem;
+        font-size: .8rem;
         margin-top: .25rem;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
     .el-input {
         margin: .3rem 0 .3rem 1rem;
+    }
+
+    .el-message__group {
+        display: flex;
+        align-items: center;
     }
 
     p {
