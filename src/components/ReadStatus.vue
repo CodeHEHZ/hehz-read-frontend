@@ -1,6 +1,6 @@
 <template>
     <div class="read-status-full">
-        <read-book-pie></read-book-pie>
+        <read-book-pie class="read-book-pie"></read-book-pie>
         <div class="bookList table" v-if="passedBooks.length">
             <div class="bookListRow bookListHeader">
                 已通过测试书目
@@ -43,7 +43,12 @@
         display: flex;
         flex-direction: column;
         width: 15rem;
-        padding: 0 1rem;
+        padding: 1rem;
+    }
+
+    .read-book-pie {
+        width: 100%;
+        height: 250px;
     }
 
     .table {

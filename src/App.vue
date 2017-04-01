@@ -20,11 +20,7 @@
 
     export default {
         data() {
-            let active = this.$route.path
-            if (active.includes('quiz'))
-                active = '/quiz'
             return {
-                active,
                 true: true,
                 homepage: this.$cookie.get('username')
                     ? '/dashboard'
@@ -32,6 +28,12 @@
             }
         },
         computed: {
+            active() {
+                let active = this.$route.path
+                if (active.includes('quiz'))
+                    active = '/quiz'
+                return active
+            },
             showMenu() {
                 return this.$route.path != '/'
             },
