@@ -1,9 +1,8 @@
 <template>
     <div id="app">
         <el-menu :default-active="active" class="el-menu-demo" mode="horizontal" :router="true" v-show="showMenu">
-            <el-menu-item index="/">首页</el-menu-item>
+            <el-menu-item :index="homepage">首页</el-menu-item>
             <el-menu-item index="/quiz">测试</el-menu-item>
-            <el-menu-item index="/dashboard" v-show="dashboardVisible">图书馆</el-menu-item>
         </el-menu>
         <div :class="marginTop" id="margin-top"></div>
         <transition name="component-fade" mode="out-in">
@@ -26,7 +25,10 @@
                 active = '/quiz'
             return {
                 active,
-                true: true
+                true: true,
+                homepage: this.$cookie.get('username')
+                    ? '/dashboard'
+                    : ''
             }
         },
         computed: {
@@ -35,9 +37,6 @@
             },
             showFooter() {
                 return this.$route.path != '/'
-            },
-            dashboardVisible() {
-                return this.$cookie.get("group") != null //!!to be restricted
             },
             marginTop() {
                 return this.$route.path == '/'
@@ -109,6 +108,11 @@
 
     .el-button {
         transition: all .25s;
+    }
+
+    .el-message__group {
+        display: flex;
+        align-items: center;
     }
 
     .component-fade-enter-active, .component-fade-leave-active {

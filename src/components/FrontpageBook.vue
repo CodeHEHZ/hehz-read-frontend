@@ -1,7 +1,6 @@
 <template>
     <div class="book-cover-container" :style="'background-color: rgba(176,212,184,' + containerOpacity + ')'">
         <img :src="bookInfo.url"
-             :title="bookInfo.name"
              class="book-cover"
              :style="style"
              @load="loaded"/>

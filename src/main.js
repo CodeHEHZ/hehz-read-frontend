@@ -14,7 +14,6 @@ import Hello from './components/Hello.vue'
 import Quiz from './components/Quiz.vue'
 import QuizResult from './components/QuizResult.vue'
 import Login from './components/Login.vue'
-import BookList from './components/BookList.vue'
 import BookDetail from './components/BookDetail.vue'
 
 import Question from './components/Question.vue'
@@ -35,8 +34,7 @@ const routes = [
     },
     { path: '/login', component: Login },
     { path: '/dashboard', component: Dashboard },
-    { path: '/booklist', component: BookList },
-    { path: '/book/:name', component: BookDetail },
+    { path: '/book/:author/:name', component: BookDetail, name: 'BookDetail' },
     { path: '*', redirect: '/' }
 ];
 

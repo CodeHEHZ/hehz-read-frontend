@@ -19,8 +19,6 @@
 </template>
 
 <script>
-
-    import BookList from './BookList.vue'
     import Login from './Login.vue'
     import FrontpageBook from './FrontpageBook.vue'
 
@@ -45,7 +43,6 @@
             }
         },
         components: {
-            'book-list': BookList,
             'login': Login,
             'book-cover': FrontpageBook
         },
@@ -94,6 +91,10 @@
                 }
                 setTimeout(this.updateBackground, 500)
             }
+        },
+        beforeCreate() {
+            if (this.$cookie.get('username'))
+                this.$router.push('/dashboard')
         }
     }
 
@@ -138,7 +139,7 @@
 
     .login {
         background-color: white;
-        border-radius: .25rem;
+        border-radius: .5rem;
         flex-grow: 0;
         z-index: 5;
         visibility: visible
