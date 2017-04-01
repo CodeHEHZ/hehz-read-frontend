@@ -46,27 +46,27 @@
                 bookList: [{
                     name: "卡拉马佐夫兄弟",
                     author: "狗",
-                    cover: "/src/assets/covers/cover2.jpg"
+                    cover: "https://evangelion.b0.upaiyun.com/read/covers/cover1.png"
                 }, {
                     name: "Hotstrip",
                     author: "D. Fense Dragon",
-                    cover: "/src/assets/covers/cover1.png"
+                    cover: "https://evangelion.b0.upaiyun.com/read/covers/cover1.png"
                 }, {
                     name: "他改变了中国",
                     author: "狗狗",
-                    cover: "/src/assets/covers/cover2.jpg"
+                    cover: "https://evangelion.b0.upaiyun.com/read/covers/cover2.jpg"
                 }, {
                     name: "Hotstrip",
                     author: "D. Fense Dragon",
-                    cover: "/src/assets/covers/cover1.png"
+                    cover: "https://evangelion.b0.upaiyun.com/read/covers/cover1.png"
                 }, {
                     name: "他改变了中国",
                     author: "狗狗",
-                    cover: "/src/assets/covers/cover2.jpg"
+                    cover: "https://evangelion.b0.upaiyun.com/read/covers/cover2.jpg"
                 }, {
                     name: "Hotstrip",
                     author: "D. Fense Dragon",
-                    cover: "/src/assets/covers/cover1.png"
+                    cover: "https://evangelion.b0.upaiyun.com/read/covers/cover1.png"
                 }],
                 searchContent: '',
                 dialogBookVisible: false,

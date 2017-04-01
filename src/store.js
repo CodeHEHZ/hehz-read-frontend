@@ -25,8 +25,8 @@ let quiz = [{
 }]
 
 let bookList = [
-    { name: '卡拉马佐夫兄弟', url: '/src/assets/covers/cover1.png', author: '狗', tag: ['发射', '湃'] },
-    { name: '他改变了中国', url: '/src/assets/covers/cover2.jpg', author: '狗狗', tag: ['他', '挞', '塔', '踏'] }
+    { name: '卡拉马佐夫兄弟', url: 'https://evangelion.b0.upaiyun.com/read/covers/cover1.png', author: '狗', tag: ['发射', '湃'] },
+    { name: '他改变了中国', url: 'https://evangelion.b0.upaiyun.com/read/covers/cover2.jpg', author: '狗狗', tag: ['他', '挞', '塔', '踏'] }
 ]
 
 let storeInfo = {

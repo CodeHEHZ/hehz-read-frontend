@@ -55,7 +55,7 @@
             homepage() {
                 return this.$cookie.get('username')
                     ? '/dashboard'
-                    : ''
+                    : '/'
             },
             username() {
                 return this.$cookie.get('username')

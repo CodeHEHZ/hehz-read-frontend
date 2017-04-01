@@ -3,7 +3,7 @@
         <b>读书@华二黄中</b>
         <div class="form">
             <p>账号</p>
-            <el-input ref="username" v-model="username" placeholder="谢大叔" @keyup.enter.native="switchfocus" :autofocus="true"></el-input>
+            <el-input ref="username" v-model="username" placeholder="谢大叔" @keyup.enter.native="switchFocus" :autofocus="true"></el-input>
         </div>
         <div class="form">
             <p>密码</p>
@@ -11,7 +11,7 @@
         </div>
         <div class="buttons">
             <el-button type="text">找回密码</el-button>
-            <el-button type="primary" @click="login">愉快地登录</el-button>
+            <el-button type="primary" @click="login" :disabled="logging">{{ logging ? '正在登录中' : '愉快地登录' }}</el-button>
         </div>
         <div class="sponsors">
             <span>由</span>
@@ -35,7 +35,8 @@
                 id: '',
                 password: '',
                 nameFocus: true,
-                passwordFocus: false
+                passwordFocus: false,
+                logging: false
             }
         },
 
@@ -52,9 +53,9 @@
                         username: this.username,
                         password: this.password
                     }
+                    this.logging = true
                     this.$http.post(this.$store.state.api + 'user/login', postData, { credentials: true }).then(response => {
                         if (response.status === 200) {
-                            //For development
                             let user = JSON.parse(this.$cookie.get('user').slice(2, 1000))
                             this.$cookie.set('username', user.username)
                             this.$cookie.set('group', user.group)
@@ -64,32 +65,21 @@
                         }
                     },
                     response => {
-                        this.clear();
+                        this.clear()
+                        this.logging = false
                     })
                 }
             },
 
-            switchfocus: function(event) {
+            switchFocus: function(event) {
                 this.$refs.password.inputSelect();
             },
 
             clear: function(){
                 this.$message.error('用户名或密码错误');
                 this.password = '';
-            },
-
-            cookieAndPush: function(cookieContent) {
-//                this.$cookie.set('username', cookieContent.body.username);
-//                this.$cookie.set('group', cookieContent.body.group);
-            },
-
-
-//            ikyuu: function(event) {
-//                var postData = {username: 'ikyuustudent', schoolId: '233333333', group: 'student', password: '233'};
-//                this.$http.post(this.$store.state.api + 'user/register', postData, {credentials: true})
-//            }
+            }
         }
-
     }
 </script>
 

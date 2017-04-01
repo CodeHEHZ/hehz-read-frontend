@@ -91,6 +91,7 @@
         object-fit: contain;
         margin: 0 0 1rem 0;
         transition: all .3s;
+        background-color: #eef6f6;
     }
 
     .cover-and-info {

@@ -68,6 +68,7 @@
         width: 100%;
         height: 15rem;
         object-fit: cover;
+        background-color: #eef6f6;
      }
 
     .clearfix:before,
