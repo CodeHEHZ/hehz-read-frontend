@@ -3,7 +3,7 @@
         <el-menu :default-active="active" class="el-menu-container" mode="horizontal" :router="true" v-show="showMenu">
             <div class="menu-restrictor">
                 <div class="menu-left">
-                    <el-menu-item :index="homepage" class="menu-item">首页</el-menu-item>
+                    <el-menu-item index="/dashboard" class="menu-item">首页</el-menu-item>
                     <el-menu-item index="/quiz" class="menu-item">测试</el-menu-item>
                 </div>
                 <div class="menu-right">
@@ -51,11 +51,6 @@
                 return this.$route.path == '/'
                     ? ''
                     : 'margin-top'
-            },
-            homepage() {
-                return this.$cookie.get('username')
-                    ? '/dashboard'
-                    : '/'
             },
             username() {
                 return this.$cookie.get('username')
