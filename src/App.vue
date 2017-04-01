@@ -1,8 +1,18 @@
 <template>
     <div id="app">
-        <el-menu :default-active="active" class="el-menu-demo" mode="horizontal" :router="true" v-show="showMenu">
-            <el-menu-item :index="homepage">首页</el-menu-item>
-            <el-menu-item index="/quiz">测试</el-menu-item>
+        <el-menu :default-active="active" class="el-menu-container" mode="horizontal" :router="true" v-show="showMenu">
+            <div class="menu-restrictor">
+                <div class="menu-left">
+                    <el-menu-item :index="homepage" class="menu-item">首页</el-menu-item>
+                    <el-menu-item index="/quiz" class="menu-item">测试</el-menu-item>
+                </div>
+                <div class="menu-right">
+                    <el-submenu index="">
+                        <template slot="title">{{ username }}</template>
+                        <el-menu-item index="/logout">注销</el-menu-item>
+                    </el-submenu>
+                </div>
+            </div>
         </el-menu>
         <div :class="marginTop" id="margin-top"></div>
         <transition name="component-fade" mode="out-in">
@@ -21,10 +31,7 @@
     export default {
         data() {
             return {
-                true: true,
-                homepage: this.$cookie.get('username')
-                    ? '/dashboard'
-                    : ''
+                true: true
             }
         },
         computed: {
@@ -44,6 +51,14 @@
                 return this.$route.path == '/'
                     ? ''
                     : 'margin-top'
+            },
+            homepage() {
+                return this.$cookie.get('username')
+                    ? '/dashboard'
+                    : ''
+            },
+            username() {
+                return this.$cookie.get('username')
             }
         },
 
@@ -71,12 +86,30 @@
         flex-direction: column;
     }
 
-    .el-menu-demo {
+    .el-menu-container {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         z-index: 1000;
+        display: flex;
+        justify-content: center;
+    }
+
+    .menu-restrictor {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        max-width: 60rem;
+        justify-content: space-between;
+    }
+
+    .el-menu-item {
+        font-weight: bold;
+    }
+
+    .menu-item:hover {
+        border-bottom: .25rem solid #03a678;
     }
 
     .margin-top {

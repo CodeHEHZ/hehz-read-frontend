@@ -55,16 +55,15 @@
                     this.$http.post(this.$store.state.api + 'user/login', postData, { credentials: true }).then(response => {
                         if (response.status === 200) {
                             //For development
-                            this.$cookie.set('username', 'ikyuustudent')
-                            this.$cookie.set('group', 'student')
-                            this.$router.push('/dashboard')
+                            let user = JSON.parse(this.$cookie.get('user').slice(2, 1000))
+                            this.$cookie.set('username', user.username)
+                            this.$cookie.set('group', user.group)
+                            setTimeout(() => {
+                                this.$router.push('/dashboard')
+                            }, 250)
                         }
                     },
                     response => {
-                        //For development
-//                        this.$router.push('/dashboard')
-//                        this.$cookie.set('username', 'ikyuustudent')
-//                        this.$cookie.set('group', 'student')
                         this.clear();
                     })
                 }

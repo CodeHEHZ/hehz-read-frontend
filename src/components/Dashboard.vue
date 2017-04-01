@@ -77,7 +77,7 @@
 
         computed: {
             readStatusVisible : function() {
-                return this.$cookie.get('group') == 'student'
+                return this.$cookie.get('group')
             }
         },
 
@@ -94,6 +94,11 @@
             closeBookDialog() {
                 this.$router.push('/dashboard')
             }
+        },
+
+        created() {
+            if (!this.$cookie.get('username'))
+                this.$router.push('/')
         }
     }
 </script>

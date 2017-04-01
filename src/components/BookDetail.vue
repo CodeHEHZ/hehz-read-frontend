@@ -1,13 +1,15 @@
 <template>
     <div class="full">
         <div class="cover-and-info">
-            <img class="cover" :src="cover">
+            <img class="cover" :src="cover" :style="{ opacity }" :load="opacity = 1">
             <div class="info-and-button">
                 <div class="info">
                     <p class="book-name">{{ name }}</p>
                     <p>{{ author }} 著</p>
                     <div class="tags">
-                        <el-tag type="success" class="tag">标签四</el-tag><el-tag type="success" class="tag">标签四</el-tag>
+                        <el-tag type="success" class="tag" v-for="tag of tags" :key="tag">
+                            {{ tag }}
+                        </el-tag>
                     </div>
                 </div>
                 <div class="button-container">
@@ -30,7 +32,8 @@
         data() {
             return {
                 name: this.inputName || this.$route.params.name,
-                author: this.inputAuthor || this.$route.params.author
+                author: this.inputAuthor || this.$route.params.author,
+                opacity: 0
             }
         },
         computed: {
@@ -41,6 +44,9 @@
             },
             cover() {
                 return this.book ? this.book.url : ''
+            },
+            tags() {
+                return this.book ? this.book.tag : []
             }
         },
         methods: {
@@ -55,7 +61,15 @@
                 name: this.$route.params.name
             })
         },
-
+        watch: {
+            inputName: function(val, oldVal) {
+                this.name = val
+                this.opacity = 0
+            },
+            inputAuthor: function(val, oldVal) {
+                this.author = val
+            }
+        },
         props: ['inputName', 'inputAuthor']
     }
 </script>
@@ -76,6 +90,7 @@
         height: 20rem;
         object-fit: contain;
         margin: 0 0 1rem 0;
+        transition: all .3s;
     }
 
     .cover-and-info {
