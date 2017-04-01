@@ -25,8 +25,8 @@ let quiz = [{
 }]
 
 let bookList = [
-    {name: '《卡拉马佐夫兄弟》', url: '/src/assets/covers/cover1.png'},
-    {name: '《他改变了中国》', url: '/src/assets/covers/cover2.jpg'}
+    { name: '卡拉马佐夫兄弟', url: '/src/assets/covers/cover1.png', author: '狗' },
+    { name: '他改变了中国', url: '/src/assets/covers/cover2.jpg', author: '狗' }
 ]
 
 let storeInfo = {
@@ -37,7 +37,6 @@ let storeInfo = {
         answerCount: 0,
         questionNumber: 0,
         visited: [],
-        // api: 'https://api.read.hehlzx.cn/'
         api: 'http://test.api.read.zehua.li/'
     },
     mutations: {
@@ -60,6 +59,11 @@ let storeInfo = {
         visit (state, m) {
             if (m < state.quiz.length)
                 state.visited[m] = 1
+        }
+    },
+    actions: {
+        getBook () {
+
         }
     }
 }

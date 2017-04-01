@@ -1,7 +1,7 @@
 <template>
     <div class="full">
         <div class="center">
-            <read-status class="read-status" v-show="readStatusVisible"></read-status>
+            <read-status class="read-status" v-show="readStatusVisible" @go="goTo(book)"></read-status>
             <div class="books-with-title">
                 <div class="title">
                     <p>全部书目</p>
@@ -15,10 +15,16 @@
                     </el-input>
                 </div>
                 <div class="books clearfix">
-                    <lib-book v-for="book in bookList" class="lib-book clearfix" :bookInfo="book" :key="book"></lib-book>
+                    <lib-book v-for="book in bookList" class="lib-book clearfix"
+                              :bookInfo="book" :key="book" @go="goTo(book)"
+                    ></lib-book>
                 </div>
             </div>
         </div>
+
+        <el-dialog title="书本信息" v-model="dialogBookVisible" @close="closeBookDialog">
+            <book-detail :inputName="showBook" :inputAuthor="showAuthor"></book-detail>
+        </el-dialog>
     </div>
 </template>
 
@@ -26,41 +32,46 @@
 <script>
     import ReadStatus from './ReadStatus.vue'
     import LibBook from './LibBook.vue'
+    import BookDetail from './BookDetail.vue'
 
     export default {
         components: {
             'read-status': ReadStatus,
-            'lib-book': LibBook
+            'lib-book': LibBook,
+            'book-detail': BookDetail
         },
 
         data: function() {
             return{
                 bookList: [{
-                    name: "《他改变了中国》",
-                    author: "狗狗",
-                    cover: "/src/assets/covers/cover2.jpg",
+                    name: "卡拉马佐夫兄弟",
+                    author: "狗",
+                    cover: "/src/assets/covers/cover2.jpg"
                 }, {
-                    name: "《Hotstrip》",
+                    name: "Hotstrip",
                     author: "D. Fense Dragon",
-                    cover: "/src/assets/covers/cover1.png",
+                    cover: "/src/assets/covers/cover1.png"
                 }, {
-                    name: "《他改变了中国》",
+                    name: "他改变了中国",
                     author: "狗狗",
-                    cover: "/src/assets/covers/cover2.jpg",
+                    cover: "/src/assets/covers/cover2.jpg"
                 }, {
-                    name: "《Hotstrip》",
+                    name: "Hotstrip",
                     author: "D. Fense Dragon",
-                    cover: "/src/assets/covers/cover1.png",
+                    cover: "/src/assets/covers/cover1.png"
                 }, {
-                    name: "《他改变了中国》",
+                    name: "他改变了中国",
                     author: "狗狗",
-                    cover: "/src/assets/covers/cover2.jpg",
+                    cover: "/src/assets/covers/cover2.jpg"
                 }, {
-                    name: "《Hotstrip》",
+                    name: "Hotstrip",
                     author: "D. Fense Dragon",
-                    cover: "/src/assets/covers/cover1.png",
+                    cover: "/src/assets/covers/cover1.png"
                 }],
-                searchContent: ''
+                searchContent: '',
+                dialogBookVisible: false,
+                showBook: '',
+                showAuthor: ''
             }
         },
 
@@ -73,6 +84,15 @@
         methods: {
             search() {
                 // doSomething
+            },
+            goTo(book) {
+                this.showBook = book.name
+                this.showAuthor = book.author
+                window.history.pushState(book.author + book.name, book.name, '/book/' + book.author + '/' + book.name)
+                this.dialogBookVisible = true
+            },
+            closeBookDialog() {
+                this.$router.push('/dashboard')
             }
         }
     }

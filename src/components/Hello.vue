@@ -19,8 +19,6 @@
 </template>
 
 <script>
-
-    import BookList from './BookList.vue'
     import Login from './Login.vue'
     import FrontpageBook from './FrontpageBook.vue'
 
@@ -45,7 +43,6 @@
             }
         },
         components: {
-            'book-list': BookList,
             'login': Login,
             'book-cover': FrontpageBook
         },

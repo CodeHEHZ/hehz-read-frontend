@@ -29,7 +29,7 @@
 
         methods: {
             goToDetail: function() {
-                this.$router.push('/book/' + this.name)
+                this.$emit('go')
             }
        },
 
