@@ -93,4 +93,19 @@
         color: #000;
     }
 
+    @media(max-width: 600px) {
+        .read-status-full {
+            width: 90%;
+        }
+
+        .table {
+            width: 100%;
+            margin: 0;
+        }
+
+        .read-book-pie {
+            display: none;
+        }
+    }
+
 </style>

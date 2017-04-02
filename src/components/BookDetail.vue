@@ -139,4 +139,16 @@
         align-items: flex-end;
         justify-content: flex-end;
     }
+
+    @media (max-width: 600px) {
+        .cover {
+            width: 50%;
+            height: 15rem;
+            margin: 0;
+        }
+
+        .book-name {
+            font-size: 1.5rem;
+        }
+    }
 </style>

@@ -159,8 +159,8 @@
         opacity: 0;
     }
 
-    @media(max-width: 420px) {
-        .el-message-box {
+    @media(max-width: 600px) {
+        .el-message-box, .el-dialog--small {
             width: 95%;
         }
     }

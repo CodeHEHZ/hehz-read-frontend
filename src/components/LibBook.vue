@@ -81,4 +81,10 @@
         clear: both
     }
 
+    @media (max-width: 600px) {
+        .book-cover {
+            height: 8rem;
+        }
+    }
+
 </style>

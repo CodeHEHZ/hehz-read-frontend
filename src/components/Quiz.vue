@@ -1,5 +1,8 @@
 <template>
-    <div class="center" v-loading.fullscreen.lock="fullscreenLoading">
+    <div class="center"
+         v-loading.fullscreen.lock="fullscreenLoading"
+         element-loading-text="正在提交答卷"
+    >
         <div class="router-view">
             <transition :name="transition" mode="out-in">
                 <router-view :key="questionNumber" class="transition"></router-view>

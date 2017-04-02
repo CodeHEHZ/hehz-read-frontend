@@ -125,7 +125,6 @@
         flex-direction: column;
         flex-grow: 1;
         padding: 1rem;
-        /*overflow: auto;*/
     }
 
     .title {
@@ -158,5 +157,19 @@
     .lib-book {
         width: 12rem;
         margin: .6rem .3rem;
+    }
+
+    @media(max-width: 600px) {
+        .center {
+            flex-direction: column;
+        }
+
+        .lib-book {
+            width: 90%;
+        }
+
+        .books-with-title {
+            padding: 0 1rem;
+        }
     }
 </style>
