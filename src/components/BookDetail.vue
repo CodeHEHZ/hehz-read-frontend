@@ -39,7 +39,7 @@
         computed: {
             book() {
                 return this.$store.state.bookList.filter(bookItem => {
-                    return bookItem.name == this.name && bookItem.author == this.author
+                    return bookItem.name === this.name && bookItem.author === this.author
                 })[0]
             },
             cover() {

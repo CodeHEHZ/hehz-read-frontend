@@ -54,6 +54,7 @@
 <style scoped>
     .content {
         width: 30rem;
+        min-height: 15rem;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -61,7 +62,7 @@
 
     @media(max-width: 768px) {
         .content {
-            width: 100%;
+            width: 80%;
             margin: 1rem;
         }
     }

@@ -48,7 +48,7 @@
         },
         methods: {
             updateBackground() {
-                if (window.innerWidth >= 600) {
+//                if (window.innerWidth >= 600) {
                     if (this.bookLoadingCount < 3) {
                         let emptyBook = []
 
@@ -64,7 +64,7 @@
                         if (emptyBook.length > 0) {
                             for (let i = 0; i < (2 - this.bookLoadingCount); i++) {
                                 let index = Math.floor(Math.random() * emptyBook.length)
-                                if (index == emptyBook.length) {
+                                if (index === emptyBook.length) {
                                     index = emptyBook.length - 1
                                 }
                                 if (this.occupiedBook.includes(0)) {
@@ -72,7 +72,7 @@
                                         lock = 1
                                     while (lock) {
                                         temp = Math.floor(Math.random() * this.bookList.length)
-                                        if (this.occupiedBook[temp] == 0) {
+                                        if (this.occupiedBook[temp] === 0) {
                                             this.$set(this.bookCoverList, emptyBook[index], this.bookList[temp])
                                             this.bookLoadingCount++
                                             this.occupiedBook[temp] = 1
@@ -88,7 +88,7 @@
                             }
                         }
                     }
-                }
+//                }
                 setTimeout(this.updateBackground, 500)
             }
         },

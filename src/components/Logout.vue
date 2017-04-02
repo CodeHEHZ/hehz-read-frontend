@@ -1,4 +1,9 @@
-<template></template>
+<template>
+    <div
+        v-loading.fullscreen.lock="true"
+        element-loading-text="正在注销"
+    ></div>
+</template>
 
 <script>
     export default {

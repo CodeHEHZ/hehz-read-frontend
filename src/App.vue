@@ -8,8 +8,8 @@
                 </div>
                 <div class="menu-right">
                     <el-submenu index="">
-                        <template slot="title">{{ username }}</template>
-                        <el-menu-item index="/logout">注销</el-menu-item>
+                        <template slot="title">{{ username || '未登录' }}</template>
+                        <el-menu-item :index="username ? '/logout' : '/'">{{ username ? '注销' : '登录' }}</el-menu-item>
                     </el-submenu>
                 </div>
             </div>
@@ -31,7 +31,8 @@
     export default {
         data() {
             return {
-                true: true
+                true: true,
+                username: this.$cookie.get('username')
             }
         },
         computed: {
@@ -42,24 +43,30 @@
                 return active
             },
             showMenu() {
-                return this.$route.path != '/'
+                return this.$route.path !== '/'
             },
             showFooter() {
-                return this.$route.path != '/'
+                return this.$route.path !== '/'
             },
             marginTop() {
-                return this.$route.path == '/'
+                return this.$route.path === '/'
                     ? ''
                     : 'margin-top'
-            },
-            username() {
-                return this.$cookie.get('username')
             }
         },
 
         components: {
             quiz: Quiz,
             footers: Footer
+        },
+
+        mounted() {
+            let getUsername = () => {
+                this.username = this.$cookie.get('username')
+                setTimeout(getUsername, 250)
+            }
+
+            getUsername()
         }
     }
 </script>

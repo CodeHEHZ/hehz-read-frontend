@@ -82,7 +82,7 @@
                     this.$confirm(this.submitConfirmationText(), '确认提交', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
-                        type: this.unansweredQuestion().length == 0 ? 'success' : 'warning'
+                        type: this.unansweredQuestion().length === 0 ? 'success' : 'warning'
                     }).then(() => {
                         this.submitting = true
                         this.fullscreenLoading = true
@@ -106,7 +106,7 @@
                 setTimeout(() => { this.isLoading = false }, 400)
             },
             jumpTo(index) {
-                if (index != this.questionNumber) {
+                if (index !== this.questionNumber) {
                     this.isLoading = true;
                     this.transition = this.$route.params.id - 1 > index
                         ? 'last-question'
@@ -127,13 +127,13 @@
                 return unansweredList
             },
             submitConfirmationText() {
-                if (this.unansweredQuestion().length == 0)
+                if (this.unansweredQuestion().length === 0)
                     return '您已完成所有问题，确定提交？'
                 else
                     return "您还有第 " + this.unansweredQuestion().join(" 题、第 ") + " 题未完成，确定提交？"
             },
             progressButtonActive(index) {
-                return this.$route.params.id - 1 == index
+                return this.$route.params.id - 1 === index
                     ? 'progress-button-active'
                     : ''
             },

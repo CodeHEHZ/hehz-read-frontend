@@ -42,10 +42,10 @@
 
         methods: {
             login: function(event){
-                if (this.username.length == 0) {
+                if (this.username.length === 0) {
                     this.$refs.username.inputSelect();
                     this.$message.warning('请输入您的用户名')
-                } else if (this.password.length == 0) {
+                } else if (this.password.length === 0) {
                     this.$refs.password.inputSelect();
                     this.$message.warning('请输入您的密码')
                 } else {
@@ -79,6 +79,17 @@
                 this.$message.error('用户名或密码错误');
                 this.password = '';
             }
+        },
+
+        mounted() {
+            let checkLoginStatus = () => {
+                if (this.$cookie.get('username'))
+                    this.$router.push('/dashboard')
+                else
+                    setTimeout(checkLoginStatus, 250)
+            }
+
+            checkLoginStatus()
         }
     }
 </script>
