@@ -159,6 +159,10 @@
         opacity: 0;
     }
 
+    .geetest_holder.geetest_wind {
+        min-width: 0 !important;
+    }
+
     @media(max-width: 600px) {
         .el-message-box, .el-dialog--small {
             width: 95%;

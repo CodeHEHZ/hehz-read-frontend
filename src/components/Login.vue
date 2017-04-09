@@ -9,9 +9,12 @@
             <p>密码</p>
             <el-input ref="password" v-model="password" type="password" placeholder="*********" @keyup.enter.native="login"></el-input>
         </div>
+        <div id="captcha"></div>
         <div class="buttons">
             <el-button type="text">找回密码</el-button>
-            <el-button type="primary" @click="login" :disabled="logging">{{ logging ? '正在登录中' : '愉快地登录' }}</el-button>
+            <el-button type="primary" @click="login" :disabled="!verified || logging">
+                {{ verified ? (logging ? '正在登录中' : '愉快地登录') : '请先通过验证' }}
+            </el-button>
         </div>
         <div class="sponsors">
             <span>由</span>
@@ -36,7 +39,10 @@
                 password: '',
                 nameFocus: true,
                 passwordFocus: false,
-                logging: false
+                logging: false,
+                verified: false,
+                captcha: undefined,
+                captchaResult: {}
             }
         },
 
@@ -51,7 +57,10 @@
                 } else {
                     let postData = {
                         username: this.username,
-                        password: this.password
+                        password: this.password,
+                        captchaChallenge: this.captchaResult['geetest_challenge'],
+                        captchaValidate: this.captchaResult['geetest_validate'],
+                        captchaSecCode: this.captchaResult['geetest_seccode']
                     }
                     this.logging = true
                     this.$http.post(this.$store.state.api + 'user/login', postData, { credentials: true }).then(response => {
@@ -76,8 +85,9 @@
             },
 
             clear: function(){
-                this.$message.error('用户名或密码错误');
-                this.password = '';
+                this.captcha.reset()
+                this.$message.error('用户名或密码错误')
+                this.password = ''
             }
         },
 
@@ -90,6 +100,27 @@
             }
 
             checkLoginStatus()
+
+            this.$http.get(this.$store.state.api + 'captcha').then(response => {
+                if (response.status === 200) {
+                    initGeetest({
+                        lang: 'zh-cn',
+                        width: '100%',
+                        height: '2rem',
+                        gt: response.body.gt,
+                        challenge: response.body.challenge,
+                        offline: !response.body.success,
+                        new_captcha: true
+                    }, (captchaObj) => {
+                        this.captcha = captchaObj
+                        captchaObj.appendTo('#captcha')
+                        captchaObj.onSuccess(() => {
+                            this.verified = true
+                            this.captchaResult = captchaObj.getValidate()
+                        })
+                    })
+                }
+            })
         }
     }
 </script>
@@ -114,7 +145,7 @@
     .buttons {
         display: flex;
         justify-content: space-between;
-        margin-top: .3rem;
+        margin-top: .5rem;
     }
 
     .sponsors {
