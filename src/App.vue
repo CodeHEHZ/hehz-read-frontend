@@ -152,6 +152,21 @@
         align-items: center;
     }
 
+    .el-upload {
+        width: 100%;
+        height: 100%;
+    }
+
+    .el-upload-dragger {
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    .el-upload-dragger:hover {
+        border: none;
+    }
+
     .component-fade-enter-active, .component-fade-leave-active {
         transition: opacity .3s ease;
     }

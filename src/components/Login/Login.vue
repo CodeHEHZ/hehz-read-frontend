@@ -78,7 +78,7 @@
                     response => {
                         this.clear();
                         this.logging = false;
-                    })
+                    });
                 }
             },
 
@@ -136,7 +136,6 @@
         background-color: white;
         padding: 3rem 3rem 2rem 3rem;
         border-radius: .5rem;
-
     }
 
     .form {

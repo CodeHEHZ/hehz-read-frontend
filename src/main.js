@@ -19,12 +19,17 @@ import BookDetail from './components/Dashboard/BookDetail.vue';
 
 import Question from './components/Quiz/Question.vue';
 import Dashboard from './components/Dashboard/Dashboard.vue';
+
+import Admin from './components/Admin/Admin.vue';
+import Book from './components/Admin/Book/Book.vue';
+import EditBook from './components/Admin/Book/EditBook.vue';
+
 import storeInfo from './store';
 
 
 const routes = [
-    {path: '/', component: Hello},
-    {path: '/quiz/result', component: QuizResult},
+    { path: '/', component: Hello },
+    { path: '/quiz/result', component: QuizResult },
     {
         path: '/quiz', redirect: '/quiz/1', component: Quiz,
         children: [
@@ -34,11 +39,26 @@ const routes = [
             }
         ]
     },
-    {path: '/login', component: Login},
-    {path: '/logout', component: Logout},
-    {path: '/dashboard', component: Dashboard},
-    {path: '/book/:author/:name', component: BookDetail, name: 'BookDetail'},
-    {path: '*', redirect: '/'}
+    { path: '/login', component: Login },
+    { path: '/logout', component: Logout },
+    { path: '/dashboard', component: Dashboard },
+    { path: '/book/:author/:name', component: BookDetail, name: 'BookDetail' },
+    {
+        path: '/admin', component: Admin,
+        children: [
+            {
+                path: 'book', redirect: '/admin/book/new', component: Book,
+                children: [
+                    {
+                        path: 'new',
+                        component: EditBook
+                    }
+                ]
+            }
+        ]
+    },
+    // { path: '/admin/book/new', component: EditBook },
+    { path: '*', redirect: '/' }
 ];
 
 const router = new VueRouter({

@@ -37,7 +37,8 @@ let storeInfo = {
         answerCount: 0,
         questionNumber: 0,
         visited: [],
-        api: 'https://test.api.read.zehua.li/'
+        api: 'https://test.api.read.zehua.li/',
+        uploadUrl: 'https://sm.ms/api/upload'
     },
     mutations: {
         nextQuestion (state) {
