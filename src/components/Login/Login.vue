@@ -102,7 +102,7 @@
             };
 
             checkLoginStatus();
-
+            
             this.$http.get(this.$store.state.api + 'captcha').then(response => {
                 if (response.status === 200) {
                     initGeetest({
@@ -115,11 +115,13 @@
                         new_captcha: true
                     }, (captchaObj) => {
                         this.captcha = captchaObj;
-                        captchaObj.appendTo('#captcha');
-                        captchaObj.onSuccess(() => {
-                            this.verified = true;
-                            this.captchaResult = captchaObj.getValidate();
-                        })
+                        if (!this.$cookie.get('username')) {
+                            captchaObj.appendTo('#captcha');
+                            captchaObj.onSuccess(() => {
+                                this.verified = true;
+                                this.captchaResult = captchaObj.getValidate();
+                            });
+                        }
                     })
                 }
             });
