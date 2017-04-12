@@ -34,24 +34,24 @@
                 name: this.inputName || this.$route.params.name,
                 author: this.inputAuthor || this.$route.params.author,
                 opacity: 0
-            }
+            };
         },
         computed: {
             book() {
                 return this.$store.state.bookList.filter(bookItem => {
-                    return bookItem.name === this.name && bookItem.author === this.author
-                })[0]
+                    return bookItem.name === this.name && bookItem.author === this.author;
+                })[0];
             },
             cover() {
-                return this.book ? this.book.url : ''
+                return this.book ? this.book.url : '';
             },
             tags() {
-                return this.book ? this.book.tag : []
+                return this.book ? this.book.tag : [];
             }
         },
         methods: {
             test() {
-                this.$router.push('/quiz')
+                this.$router.push('/quiz');
             }
         },
 
@@ -59,15 +59,15 @@
             this.$store.dispatch('getBook', {
                 author: this.$route.params.author,
                 name: this.$route.params.name
-            })
+            });
         },
         watch: {
             inputName: function(val, oldVal) {
-                this.name = val
-                this.opacity = 0
+                this.name = val;
+                this.opacity = 0;
             },
             inputAuthor: function(val, oldVal) {
-                this.author = val
+                this.author = val;
             }
         },
         props: ['inputName', 'inputAuthor']

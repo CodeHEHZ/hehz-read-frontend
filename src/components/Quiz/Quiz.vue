@@ -39,7 +39,7 @@
 </template>
 
 <script>
-    import Question from './Question.vue'
+    import Question from './Question.vue';
 
     export default {
         data: function() {
@@ -55,44 +55,44 @@
         },
         computed: {
             isNextAvailable: function() {
-                return this.$store.state.questionNumber < this.$store.state.quiz.length - 1
+                return this.$store.state.questionNumber < this.$store.state.quiz.length - 1;
             },
             isLastAvailable: function() {
-                return this.$store.state.questionNumber > 0
+                return this.$store.state.questionNumber > 0;
             },
             progress: function() {
-                return (this.$store.state.questionNumber) / this.$store.state.quiz.length
+                return (this.$store.state.questionNumber) / this.$store.state.quiz.length;
             },
             questionNumber: function() {
-                return this.$store.state.questionNumber
+                return this.$store.state.questionNumber;
             },
             rightIcon: function() {
-                return this.isNextAvailable ? 'el-icon-arrow-right' : 'el-icon-check'
+                return this.isNextAvailable ? 'el-icon-arrow-right' : 'el-icon-check';
             },
             quiz: function() {
-                return this.$store.state.quiz
+                return this.$store.state.quiz;
             }
         },
         methods: {
             next() {
                 if (this.isNextAvailable) {
-                    this.isLoading = true
-                    this.transition = 'next-question'
-                    this.$store.commit('nextQuestion')
-                    this.$router.push('/quiz/' + (this.$store.state.questionNumber + 1))
-                    setTimeout(() => { this.isLoading = false }, 400)
+                    this.isLoading = true;
+                    this.transition = 'next-question';
+                    this.$store.commit('nextQuestion');
+                    this.$router.push('/quiz/' + (this.$store.state.questionNumber + 1));
+                    setTimeout(() => { this.isLoading = false }, 400);
                 } else {
                     this.$confirm(this.submitConfirmationText(), '确认提交', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
                         type: this.unansweredQuestion().length === 0 ? 'success' : 'warning'
                     }).then(() => {
-                        this.submitting = true
-                        this.fullscreenLoading = true
+                        this.submitting = true;
+                        this.fullscreenLoading = true;
                         setTimeout(() => {
-                            this.fullscreenLoading = false
-                            this.$router.push('/quiz/result')
-                        }, 1000)
+                            this.fullscreenLoading = false;
+                            this.$router.push('/quiz/result');
+                        }, 1000);
                     }).catch(() => {
                         this.$message({
                             type: 'info',
@@ -103,26 +103,26 @@
             },
             last() {
                 this.isLoading = true;
-                this.transition = 'last-question'
-                this.$store.commit('lastQuestion')
-                this.$router.push('/quiz/' + (this.$store.state.questionNumber + 1))
-                setTimeout(() => { this.isLoading = false }, 400)
+                this.transition = 'last-question';
+                this.$store.commit('lastQuestion');
+                this.$router.push('/quiz/' + (this.$store.state.questionNumber + 1));
+                setTimeout(() => { this.isLoading = false }, 400);
             },
             jumpTo(index) {
                 if (index !== this.questionNumber) {
                     this.isLoading = true;
                     this.transition = this.$route.params.id - 1 > index
                         ? 'last-question'
-                        : 'next-question'
-                    this.$store.commit('setQuestion', index)
-                    this.$router.push('/quiz/' + (this.$store.state.questionNumber + 1))
+                        : 'next-question';
+                    this.$store.commit('setQuestion', index);
+                    this.$router.push('/quiz/' + (this.$store.state.questionNumber + 1));
                     setTimeout(() => {
                         this.isLoading = false
                     }, 400)
                 }
             },
             unansweredQuestion() {
-                let unansweredList = []
+                let unansweredList = [];
                 for (let i = 0; i < this.$store.state.quiz.length; i++) {
                     if (!this.$store.state.answer[i])
                         unansweredList.push(i + 1)
@@ -131,7 +131,7 @@
             },
             submitConfirmationText() {
                 if (this.unansweredQuestion().length === 0)
-                    return '您已完成所有问题，确定提交？'
+                    return '您已完成所有问题，确定提交？';
                 else
                     return "您还有第 " + this.unansweredQuestion().join(" 题、第 ") + " 题未完成，确定提交？"
             },
@@ -144,14 +144,14 @@
                 if (this.$store.state.visited[index]) {
                     return this.$store.state.answer[index]
                         ? 'progress-button-selected'
-                        : 'progress-button-missed'
+                        : 'progress-button-missed';
                 } else
-                    return ''
+                    return '';
             }
         },
         mounted() {
             if (this.$route.params.id > this.quiz.length)
-                this.jumpTo(0)
+                this.jumpTo(0);
         }
     }
 </script>

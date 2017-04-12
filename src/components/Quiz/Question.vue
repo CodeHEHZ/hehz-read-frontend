@@ -10,12 +10,12 @@
 </template>
 
 <script>
-    import { mapState } from 'vuex'
-    let _ = require('lodash')
+    import { mapState } from 'vuex';
+    let _ = require('lodash');
 
     export default {
         data: function() {
-            this.$store.commit('setQuestion', this.$route.params.id - 1)
+            this.$store.commit('setQuestion', this.$route.params.id - 1);
 
             return {
                 radio: ''
@@ -24,8 +24,8 @@
         computed: _.defaultsDeep(
             {
                 question() {
-                    this.radio = this.$store.state.answer[this.questionNumber] || ''
-                    return this.questionNumber
+                    this.radio = this.$store.state.answer[this.questionNumber] || '';
+                    return this.questionNumber;
                 }
             },
             mapState([
@@ -36,17 +36,17 @@
         ),
         methods: {
             select() {
-                if (this.radio != '')
+                if (this.radio !== '')
                     this.$store.commit('select', {
                         number: this.questionNumber,
                         label: this.radio
-                    })
+                    });
             }
         },
         beforeRouteUpdate(to, from, next) {
-            this.$store.commit('visit', to.params.id - 1)
-            this.$store.commit('visit', from.params.id - 1)
-            next()
+            this.$store.commit('visit', to.params.id - 1);
+            this.$store.commit('visit', from.params.id - 1);
+            next();
         }
     }
 </script>

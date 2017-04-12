@@ -22,12 +22,12 @@ let quiz = [{
         { label: 'C', answer: '小机智' },
         { label: 'D', answer: '莫西干头' }
     ]
-}]
+}];
 
 let bookList = [
     { name: '卡拉马佐夫兄弟', url: 'https://evangelion.b0.upaiyun.com/read/covers/cover1.png', author: '狗', tag: ['发射', '湃'] },
     { name: '他改变了中国', url: 'https://evangelion.b0.upaiyun.com/read/covers/cover2.jpg', author: '狗狗', tag: ['他', '挞', '塔', '踏'] }
-]
+];
 
 let storeInfo = {
     state: {
@@ -42,23 +42,23 @@ let storeInfo = {
     mutations: {
         nextQuestion (state) {
             if (state.questionNumber < state.quiz.length - 1)
-                state.questionNumber++
+                state.questionNumber++;
         },
         lastQuestion (state) {
             if (state.questionNumber > 0)
-                state.questionNumber--
+                state.questionNumber--;
         },
         setQuestion (state, m) {
-            state.questionNumber = m
+            state.questionNumber = m;
         },
         select (state, m) {
             if (!state.answer[m.number])
-                state.answerCount++
-            state.answer[m.number] = m.label
+                state.answerCount++;
+            state.answer[m.number] = m.label;
         },
         visit (state, m) {
             if (m < state.quiz.length)
-                state.visited[m] = 1
+                state.visited[m] = 1;
         }
     },
     actions: {
@@ -66,6 +66,6 @@ let storeInfo = {
 
         }
     }
-}
+};
 
 export default storeInfo;

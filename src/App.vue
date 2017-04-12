@@ -25,8 +25,8 @@
 </template>
 
 <script>
-    import Quiz from './components/Quiz.vue'
-    import Footer from './components/Footer.vue'
+    import Quiz from './components/Quiz/Quiz.vue';
+    import Footer from './components/Footer.vue';
 
     export default {
         data() {
@@ -37,21 +37,21 @@
         },
         computed: {
             active() {
-                let active = this.$route.path
+                let active = this.$route.path;
                 if (active.includes('quiz'))
-                    active = '/quiz'
-                return active
+                    active = '/quiz';
+                return active;
             },
             showMenu() {
-                return this.$route.path !== '/'
+                return this.$route.path !== '/';
             },
             showFooter() {
-                return this.$route.path !== '/'
+                return this.$route.path !== '/';
             },
             marginTop() {
                 return this.$route.path === '/'
                     ? ''
-                    : 'margin-top'
+                    : 'margin-top';
             }
         },
 
@@ -62,11 +62,11 @@
 
         mounted() {
             let getUsername = () => {
-                this.username = this.$cookie.get('username')
-                setTimeout(getUsername, 250)
-            }
+                this.username = this.$cookie.get('username');
+                setTimeout(getUsername, 250);
+            };
 
-            getUsername()
+            getUsername();
         }
     }
 </script>
@@ -155,6 +155,7 @@
     .component-fade-enter-active, .component-fade-leave-active {
         transition: opacity .3s ease;
     }
+
     .component-fade-enter, .component-fade-leave-active {
         opacity: 0;
     }
@@ -163,7 +164,11 @@
         min-width: 0 !important;
     }
 
-    @media(max-width: 600px) {
+    .geetest_holder.geetest_wind .geetest_radar_btn, .geetest_holder.geetest_wind .geetest_success_btn {
+        border-radius: 4px !important;
+    }
+
+    @media (max-width: 600px) {
         .el-message-box, .el-dialog--small {
             width: 95%;
         }

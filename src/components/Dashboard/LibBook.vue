@@ -29,7 +29,7 @@
 
         methods: {
             goToDetail: function() {
-                this.$emit('go')
+                this.$emit('go');
             }
        },
 

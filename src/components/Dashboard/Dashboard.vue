@@ -77,7 +77,7 @@
 
         computed: {
             readStatusVisible : function() {
-                return this.$cookie.get('group')
+                return this.$cookie.get('group');
             }
         },
 
@@ -86,19 +86,19 @@
                 // doSomething
             },
             goTo(book) {
-                this.showBook = book.name
-                this.showAuthor = book.author
-                window.history.pushState(book.author + book.name, book.name, '/book/' + book.author + '/' + book.name)
-                this.dialogBookVisible = true
+                this.showBook = book.name;
+                this.showAuthor = book.author;
+                window.history.pushState(book.author + book.name, book.name, '/book/' + book.author + '/' + book.name);
+                this.dialogBookVisible = true;
             },
             closeBookDialog() {
-                this.$router.push('/dashboard')
+                this.$router.push('/dashboard');
             }
         },
 
         created() {
             if (!this.$cookie.get('username'))
-                this.$router.push('/')
+                this.$router.push('/');
         }
     }
 </script>

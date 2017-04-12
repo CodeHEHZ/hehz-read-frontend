@@ -32,7 +32,7 @@
         },
         methods: {
             goTo(name) {
-                console.log(name, 11)
+                console.log(name, 11);
             }
         }
     }

@@ -7,22 +7,22 @@
         </div>
         <div class="form">
             <p>密码</p>
-            <el-input ref="password" v-model="password" type="password" placeholder="*********" @keyup.enter.native="login"></el-input>
+            <el-input ref="password" v-model="password" type="password" placeholder="*********" @keyup.enter.native="!verified || login"></el-input>
         </div>
         <div id="captcha"></div>
         <div class="buttons">
             <el-button type="text">找回密码</el-button>
-            <el-button type="primary" @click="login" :disabled="!verified || logging">
+            <el-button type="primary" @click="login" :disabled="logging">
                 {{ verified ? (logging ? '正在登录中' : '愉快地登录') : '请先通过验证' }}
             </el-button>
         </div>
         <div class="sponsors">
             <span>由</span>
             <a class="sponsor" href="https://qingcloud.com/about/nonprofits" title="感谢青云免费提供云主机服务" target="_blank">
-                <img class="sponsor" src="../assets/qingcloud.jpg">
+                <img class="sponsor" src="../../assets/qingcloud.jpg">
             </a>
             <a class="sponsor" href="https://www.upyun.com/league" title="感谢又拍云提供云加速服务" target="_blank">
-                <img class="sponsor sponsor-upyun" src="../assets/upyun.png">
+                <img class="sponsor sponsor-upyun" src="../../assets/upyun.png">
             </a>
             <span>驱动</span>
         </div>
@@ -50,10 +50,12 @@
             login: function(event){
                 if (this.username.length === 0) {
                     this.$refs.username.inputSelect();
-                    this.$message.warning('请输入您的用户名')
+                    this.$message.warning('请输入您的用户名');
                 } else if (this.password.length === 0) {
                     this.$refs.password.inputSelect();
-                    this.$message.warning('请输入您的密码')
+                    this.$message.warning('请输入您的密码');
+                } else if (!this.verified) {
+                    this.$message.warning('请先点击按钮进行验证');
                 } else {
                     let postData = {
                         username: this.username,
@@ -61,21 +63,21 @@
                         captchaChallenge: this.captchaResult['geetest_challenge'],
                         captchaValidate: this.captchaResult['geetest_validate'],
                         captchaSecCode: this.captchaResult['geetest_seccode']
-                    }
-                    this.logging = true
+                    };
+                    this.logging = true;
                     this.$http.post(this.$store.state.api + 'user/login', postData, { credentials: true }).then(response => {
                         if (response.status === 200) {
-                            let user = JSON.parse(this.$cookie.get('user').slice(2, 1000))
-                            this.$cookie.set('username', user.username)
-                            this.$cookie.set('group', user.group)
+                            let user = JSON.parse(this.$cookie.get('user').slice(2, 1000));
+                            this.$cookie.set('username', user.username);
+                            this.$cookie.set('group', user.group);
                             setTimeout(() => {
-                                this.$router.push('/dashboard')
-                            }, 250)
+                                this.$router.push('/dashboard');
+                            }, 250);
                         }
                     },
                     response => {
-                        this.clear()
-                        this.logging = false
+                        this.clear();
+                        this.logging = false;
                     })
                 }
             },
@@ -85,21 +87,21 @@
             },
 
             clear: function(){
-                this.captcha.reset()
-                this.$message.error('用户名或密码错误')
-                this.password = ''
+                this.captcha.reset();
+                this.$message.error('用户名或密码错误');
+                this.password = '';
             }
         },
 
         mounted() {
             let checkLoginStatus = () => {
                 if (this.$cookie.get('username'))
-                    this.$router.push('/dashboard')
+                    this.$router.push('/dashboard');
                 else
-                    setTimeout(checkLoginStatus, 250)
-            }
+                    setTimeout(checkLoginStatus, 250);
+            };
 
-            checkLoginStatus()
+            checkLoginStatus();
 
             this.$http.get(this.$store.state.api + 'captcha').then(response => {
                 if (response.status === 200) {
@@ -112,15 +114,15 @@
                         offline: !response.body.success,
                         new_captcha: true
                     }, (captchaObj) => {
-                        this.captcha = captchaObj
-                        captchaObj.appendTo('#captcha')
+                        this.captcha = captchaObj;
+                        captchaObj.appendTo('#captcha');
                         captchaObj.onSuccess(() => {
-                            this.verified = true
-                            this.captchaResult = captchaObj.getValidate()
+                            this.verified = true;
+                            this.captchaResult = captchaObj.getValidate();
                         })
                     })
                 }
-            })
+            });
         }
     }
 </script>

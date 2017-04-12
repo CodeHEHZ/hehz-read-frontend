@@ -29,7 +29,7 @@
             }
         },
         mounted () {
-            this.renderChart(this.datacollection, this.options)
+            this.renderChart(this.datacollection, this.options);
         }
     })
 </script>

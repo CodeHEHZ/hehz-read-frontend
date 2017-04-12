@@ -22,8 +22,8 @@
 
         methods: {
             loaded() {
-                this.style.opacity = 0.3
-                this.$emit('loaded')
+                this.style.opacity = 0.3;
+                this.$emit('loaded');
             }
         }
     }
