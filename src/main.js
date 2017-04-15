@@ -57,7 +57,6 @@ const routes = [
             }
         ]
     },
-    // { path: '/admin/book/new', component: EditBook },
     { path: '*', redirect: '/' }
 ];
 

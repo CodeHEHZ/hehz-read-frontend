@@ -5,6 +5,7 @@
                 <div class="menu-left">
                     <el-menu-item index="/dashboard" class="menu-item">首页</el-menu-item>
                     <el-menu-item index="/quiz" class="menu-item">测试</el-menu-item>
+                    <el-menu-item index="/admin" class="menu-item">管理</el-menu-item>
                 </div>
                 <div class="menu-right">
                     <el-submenu index="">
@@ -40,6 +41,8 @@
                 let active = this.$route.path;
                 if (active.includes('quiz'))
                     active = '/quiz';
+                if (active.includes('admin'))
+                    active = '/admin';
                 return active;
             },
             showMenu() {

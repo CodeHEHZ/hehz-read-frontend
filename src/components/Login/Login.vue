@@ -102,7 +102,7 @@
             };
 
             checkLoginStatus();
-            
+
             this.$http.get(this.$store.state.api + 'captcha').then(response => {
                 if (response.status === 200) {
                     initGeetest({

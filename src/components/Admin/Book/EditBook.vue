@@ -86,11 +86,11 @@
                 this.uploading = false;
             },
             beforeCoverUpload(file) {
-                let isJPG = file.type === 'image/jpeg';
+                let isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
                 let isLt2M = file.size / 1024 / 1024 < 5;
 
                 if (!isJPG) {
-                    this.$message.error('上传头像图片只能是 JPG 格式!');
+                    this.$message.error('上传头像图片只能是 jpg 或 png 格式!');
                 }
                 if (!isLt2M) {
                     this.$message.error('上传头像图片大小不能超过 5MB!');
@@ -142,7 +142,7 @@
     .container {
         width: 100%;
         max-width: 30rem;
-        margin: 2rem .5rem;
+        margin: 1rem .5rem 2rem .5rem;
     }
 
     .form {
