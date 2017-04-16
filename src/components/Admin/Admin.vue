@@ -1,14 +1,16 @@
 <template>
     <div class="full">
-        <el-menu theme="dark" :default-active="active" class="el-menu-container submenu" mode="horizontal" :router="true">
-            <div class="menu-restrictor">
-                <el-menu-item index="/admin/book" class="menu-item submenu-item">书本</el-menu-item>
-                <el-menu-item index="/admin/user" class="menu-item submenu-item">用户</el-menu-item>
-            </div>
-        </el-menu>
-        <transition name="component-fade" mode="out-in">
-            <router-view id="router-view"></router-view>
-        </transition>
+        <div class="container">
+            <el-menu theme="dark" :default-active="active" class="el-menu-container submenu" mode="horizontal" :router="true">
+                <div class="menu-restrictor">
+                    <el-menu-item index="/admin/book" class="menu-item submenu-item">书本</el-menu-item>
+                    <el-menu-item index="/admin/user" class="menu-item submenu-item">用户</el-menu-item>
+                </div>
+            </el-menu>
+            <transition name="component-fade" mode="out-in">
+                <router-view id="router-view"></router-view>
+            </transition>
+        </div>
     </div>
 </template>
 
@@ -34,8 +36,11 @@
 <style scoped>
     .full {
         display: flex;
-        justify-content: center;
         flex-direction: column;
+        width: 100%;
+    }
+
+    .container {
         width: 100%;
         height: 100%;
     }
@@ -44,7 +49,7 @@
         height: 2rem;
         background-color: #f5ffff;
         z-index: 1;
-        top: 60px;
+        position: relative;
     }
 
     .menu-restrictor {
@@ -72,9 +77,5 @@
 
     .is-active:hover {
         border-bottom: .25rem solid #03a678;
-    }
-
-    #router-view {
-        margin-top: 2rem;
     }
 </style>

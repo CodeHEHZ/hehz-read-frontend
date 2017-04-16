@@ -34,7 +34,7 @@
             <el-upload
                     class="cover-uploader"
                     :action="$store.state.uploadUrl"
-                    name="smfile"
+                    name="file"
                     :drag="true"
                     :show-file-list="false"
                     :on-progress="handleCoverUploading"
@@ -82,7 +82,7 @@
             },
             handleCoverSuccess(res, file) {
                 this.image = URL.createObjectURL(file.raw);
-                this.imageUrl = res.data.url;
+                this.imageUrl = this.$store.state.static + res.key;
                 this.uploading = false;
             },
             beforeCoverUpload(file) {
@@ -121,6 +121,12 @@
 
                     this.$http.post(this.$store.state.api + 'book/new', postData, { credentials: true }).then(response => {
                         if (response.status === 201) {
+                            this.bookName = '';
+                            this.author = '';
+                            this.tags = [];
+                            this.imageUrl = null;
+                            this.image = null;
+                            this.switchFocus('bookName');
                             this.$message.success('创建成功');
                         }
                     },

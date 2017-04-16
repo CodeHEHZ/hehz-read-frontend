@@ -17,4 +17,9 @@
         height: 100%;
         width: 100%;
     }
+
+    #router-view {
+        padding-top: 1rem;
+        padding-bottom: 2rem;
+    }
 </style>
