@@ -7,6 +7,7 @@ import ElementUI from 'element-ui';
 import Vuex from 'vuex';
 import VueCookie from 'vue-cookie';
 import VueResource from 'vue-resource';
+import VueAnalytics from 'vue-analytics'
 import './assets/element.css';
 
 import App from './App.vue';
@@ -77,6 +78,10 @@ Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(VueCookie);
 Vue.use(VueResource);
+Vue.use(VueAnalytics, {
+    id: 'UA-97499394-1',
+    router
+});
 
 let store = new Vuex.Store(storeInfo);
 
