@@ -10,7 +10,11 @@
             </div>
             <div class="form">
                 <p>作者</p>
-                <el-input ref="author" v-model="author" placeholder="查尔斯·舒尔茨" @keyup.enter.native="switchFocus('tag')"></el-input>
+                <el-input ref="author" v-model="author" placeholder="查尔斯·舒尔茨" @keyup.enter.native="switchFocus('description')"></el-input>
+            </div>
+            <div class="form">
+                <p>简介</p>
+                <el-input ref="description" v-model="description" placeholder="查理·布朗，你又输了！" @keyup.enter.native="switchFocus('tag')"></el-input>
             </div>
             <div class="form">
                 <p>标签</p>
@@ -56,6 +60,7 @@
             return {
                 bookName: '',
                 author: '',
+                description: '',
                 tags: [],
                 tagToAdd: '',
                 image: null,
@@ -108,6 +113,9 @@
                 } else if (this.author === '') {
                     this.$message.error('请输入作者名');
                     this.switchFocus('author');
+                } else if (this.description === '') {
+                    this.$message.error('请输入简介');
+                    this.switchFocus('description');
                 } else if (!this.image) {
                     this.$message.error('请上传封面图');
                     this.switchFocus('image');
@@ -116,6 +124,7 @@
                         name: this.bookName,
                         author: this.author,
                         category: this.tags,
+                        description: this.description,
                         cover: this.imageUrl
                     };
 
@@ -123,6 +132,7 @@
                         if (response.status === 201) {
                             this.bookName = '';
                             this.author = '';
+                            this.description = '';
                             this.tags = [];
                             this.imageUrl = null;
                             this.image = null;

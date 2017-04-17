@@ -48,7 +48,6 @@
         },
         methods: {
             updateBackground() {
-                console.log(this.bookCoverList, this.bookList, this.$store.state.bookList.length)
 //                if (window.innerWidth >= 600) {
                 if (this.$store.state.bookList.length > 0) {
                     if (this.occupiedBook.length === 0) {
