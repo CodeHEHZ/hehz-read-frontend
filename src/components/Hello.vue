@@ -8,7 +8,6 @@
                     :ref="'book-' + index"
                     @loaded="bookLoadingCount > 0 ? bookLoadingCount-- : ''"
             >
-
             </book-cover>
 
         </div>
@@ -25,22 +24,23 @@
     export default {
         data: function() {
             let bookCoverList = [],
-                bookList = this.$store.state.bookList,
                 occupiedBook = [];
 
             bookCoverList = generateBook(bookCoverList, 10);
             setTimeout(this.updateBackground, 500);
 
-            for (let i = 0; i < bookList.length; i++) {
-                occupiedBook.push(0);
-            }
+
 
             return {
                 bookCoverList,
                 bookLoadingCount: 0,
-                bookList,
                 occupiedBook
             };
+        },
+        computed: {
+            bookList() {
+                return this.$store.state.bookList;
+            }
         },
         components: {
             'login': Login,
@@ -48,43 +48,51 @@
         },
         methods: {
             updateBackground() {
+                console.log(this.bookCoverList, this.bookList, this.$store.state.bookList.length)
 //                if (window.innerWidth >= 600) {
-                if (this.bookLoadingCount < 3) {
-                    let emptyBook = [];
-
-                    for (let i = 0; i < this.bookCoverList.length; i++) {
-                        let book = this.$refs["book-" + i][0]
-                            ? this.$refs["book-" + i][0].$el
-                            : null;
-                        if (book && isElementInViewport(book) && !(this.bookCoverList[i].name)) {
-                            emptyBook.push(i)
+                if (this.$store.state.bookList.length > 0) {
+                    if (this.occupiedBook.length === 0) {
+                        for (let i = 0; i < this.bookList.length; i++) {
+                            this.occupiedBook.push(0);
                         }
                     }
+                    if (this.bookLoadingCount < 3) {
+                        let emptyBook = [];
 
-                    if (emptyBook.length > 0) {
-                        for (let i = 0; i < (2 - this.bookLoadingCount); i++) {
-                            let index = Math.floor(Math.random() * emptyBook.length);
-                            if (index === emptyBook.length) {
-                                index = emptyBook.length - 1
+                        for (let i = 0; i < this.bookCoverList.length; i++) {
+                            let book = this.$refs["book-" + i][0]
+                                ? this.$refs["book-" + i][0].$el
+                                : null;
+                            if (book && isElementInViewport(book) && !(this.bookCoverList[i].name)) {
+                                emptyBook.push(i)
                             }
-                            if (this.occupiedBook.includes(0)) {
-                                let temp,
-                                    lock = 1;
-                                while (lock) {
-                                    temp = Math.floor(Math.random() * this.bookList.length);
-                                    if (this.occupiedBook[temp] === 0) {
-                                        this.$set(this.bookCoverList, emptyBook[index], this.bookList[temp]);
-                                        this.bookLoadingCount++;
-                                        this.occupiedBook[temp] = 1;
-                                        lock = 0;
-                                    }
+                        }
+
+                        if (emptyBook.length > 0) {
+                            for (let i = 0; i < (2 - this.bookLoadingCount); i++) {
+                                let index = Math.floor(Math.random() * emptyBook.length);
+                                if (index === emptyBook.length) {
+                                    index = emptyBook.length - 1
                                 }
-                            } else {
-                                if (emptyBook.length > 0)
-                                    this.$set(this.bookCoverList, emptyBook[index],
-                                        this.bookList[Math.floor(Math.random() * this.bookList.length)]);
+                                if (this.occupiedBook.includes(0)) {
+                                    let temp,
+                                        lock = 1;
+                                    while (lock) {
+                                        temp = Math.floor(Math.random() * this.bookList.length);
+                                        if (this.occupiedBook[temp] === 0) {
+                                            this.$set(this.bookCoverList, emptyBook[index], this.bookList[temp]);
+                                            this.bookLoadingCount++;
+                                            this.occupiedBook[temp] = 1;
+                                            lock = 0;
+                                        }
+                                    }
+                                } else {
+                                    if (emptyBook.length > 0)
+                                        this.$set(this.bookCoverList, emptyBook[index],
+                                            this.bookList[Math.floor(Math.random() * this.bookList.length)]);
+                                }
+                                emptyBook.splice(index, 1);
                             }
-                            emptyBook.splice(index, 1);
                         }
                     }
                 }

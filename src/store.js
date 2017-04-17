@@ -1,3 +1,11 @@
+import Vue from 'vue';
+import VueResource from 'vue-resource';
+
+Vue.use(VueResource);
+
+Vue.http.options.crossOrigin = true;
+Vue.http.options.credentials = true;
+
 let quiz = [{
     text: '《卡拉马佐夫兄弟》的作者是',
     answers: [
@@ -24,15 +32,10 @@ let quiz = [{
     ]
 }];
 
-let bookList = [
-    { name: '卡拉马佐夫兄弟', url: 'https://evangelion.b0.upaiyun.com/read/covers/cover1.png', author: '狗', tag: ['发射', '湃'] },
-    { name: '他改变了中国', url: 'https://evangelion.b0.upaiyun.com/read/covers/cover2.jpg', author: '狗狗', tag: ['他', '挞', '塔', '踏'] }
-];
-
 let storeInfo = {
     state: {
         quiz,
-        bookList,
+        bookList: [],
         answer: [],
         answerCount: 0,
         questionNumber: 0,
@@ -61,11 +64,17 @@ let storeInfo = {
         visit (state, m) {
             if (m < state.quiz.length)
                 state.visited[m] = 1;
+        },
+        setBookList (state, bookList) {
+            state.bookList = bookList;
         }
     },
     actions: {
-        getBook () {
-
+        getBookList ({ state, commit }) {
+            Vue.http.get(state.api + 'book/list')
+                .then(response => {
+                    commit('setBookList', response.body)
+                });
         }
     }
 };

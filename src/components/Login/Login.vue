@@ -67,7 +67,10 @@
                     this.logging = true;
                     this.$http.post(this.$store.state.api + 'user/login', postData, { credentials: true }).then(response => {
                         if (response.status === 200) {
-                            let user = JSON.parse(this.$cookie.get('user').slice(2, 1000));
+                            let user = {};
+                            if (this.$cookie.get('user')) {
+                                user = JSON.parse(this.$cookie.get('user').slice(2, 1000));
+                            }
                             this.$cookie.set('username', user.username);
                             this.$cookie.set('group', user.group);
                             setTimeout(() => {
@@ -102,6 +105,8 @@
             };
 
             checkLoginStatus();
+
+            this.$store.dispatch('getBookList')
 
             this.$http.get(this.$store.state.api + 'captcha').then(response => {
                 if (response.status === 200) {
