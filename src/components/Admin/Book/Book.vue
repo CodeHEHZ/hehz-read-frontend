@@ -15,11 +15,11 @@
                 </el-input>
             </div>
             <el-table
-                    :data="filteredBookList"
-                    border
-                    tooltip-effect="dark"
-                    class="container"
-                    @selection-change="handleSelectionChange">
+                :data="filteredBookList"
+                border
+                tooltip-effect="dark"
+                class="container"
+                @selection-change="handleSelectionChange">
                 <el-table-column
                         type="selection"
                         width="55">
@@ -126,6 +126,7 @@
         align-items: center;
         flex-direction: column;
         padding: 2rem .5rem 1rem .5rem;
+        display: -webkit-box;
     }
 
     .top {
