@@ -48,10 +48,16 @@ const routes = [
         path: '/admin', component: Admin,
         children: [
             {
-                path: 'book', redirect: '/admin/book/new', component: Book,
+                path: 'book', component: Book, name: 'BookAdmin',
                 children: [
                     {
                         path: 'new',
+                        name: 'CreateBook',
+                        component: EditBook
+                    },
+                    {
+                        path: 'edit/:author/:name',
+                        name: 'EditBook',
                         component: EditBook
                     }
                 ]

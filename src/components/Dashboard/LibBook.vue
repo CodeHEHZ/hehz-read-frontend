@@ -1,6 +1,6 @@
 <template>
     <el-card :body-style="{ padding: '0' }" class="book">
-        <img :src="cover" class="book-cover" @click="goToDetail" @load="style.opacity = 1" @style="style">
+        <img :src="cover" class="book-cover" @click="goToDetail" @load="visible()" :style="{ opacity }">
         <div style="padding: 14px;">
             <span>{{ name }}</span>
             <div class="bottom">
@@ -15,9 +15,7 @@
     export default{
         data: function() {
             return {
-                style: {
-                    opacity: 0,
-                }
+                opacity: 0
             }
         },
 
@@ -30,6 +28,9 @@
         methods: {
             goToDetail: function() {
                 this.$emit('go');
+            },
+            visible() {
+                this.opacity = 1;
             }
        },
 
@@ -69,6 +70,7 @@
         height: 15rem;
         object-fit: cover;
         background-color: #eef6f6;
+        transition: all .4s;
      }
 
     .clearfix:before,

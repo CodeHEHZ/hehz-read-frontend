@@ -17,7 +17,8 @@
                 <div class="books clearfix">
                     <lib-book v-for="book in bookList" class="lib-book clearfix"
                               :bookInfo="book" :key="book" @go="goTo(book)"
-                    ></lib-book>
+                    >
+                    </lib-book>
                 </div>
             </div>
         </div>
@@ -43,40 +44,16 @@
 
         data: function() {
             return{
-                bookList: [{
-                    name: "卡拉马佐夫兄弟",
-                    author: "狗",
-                    cover: "https://evangelion.b0.upaiyun.com/read/covers/cover1.png"
-                }, {
-                    name: "Hotstrip",
-                    author: "D. Fense Dragon",
-                    cover: "https://evangelion.b0.upaiyun.com/read/covers/cover1.png"
-                }, {
-                    name: "他改变了中国",
-                    author: "狗狗",
-                    cover: "https://evangelion.b0.upaiyun.com/read/covers/cover2.jpg"
-                }, {
-                    name: "Hotstrip",
-                    author: "D. Fense Dragon",
-                    cover: "https://evangelion.b0.upaiyun.com/read/covers/cover1.png"
-                }, {
-                    name: "他改变了中国",
-                    author: "狗狗",
-                    cover: "https://evangelion.b0.upaiyun.com/read/covers/cover2.jpg"
-                }, {
-                    name: "Hotstrip",
-                    author: "D. Fense Dragon",
-                    cover: "https://evangelion.b0.upaiyun.com/read/covers/cover1.png"
-                }],
                 searchContent: '',
                 dialogBookVisible: false,
                 showBook: '',
-                showAuthor: ''
+                showAuthor: '',
+                bookList: this.$store.state.bookList
             }
         },
 
         computed: {
-            readStatusVisible : function() {
+            readStatusVisible() {
                 return this.$cookie.get('group');
             }
         },
@@ -97,8 +74,18 @@
         },
 
         created() {
-            if (!this.$cookie.get('username'))
+            if (!this.$cookie.get('username')) {
                 this.$router.push('/');
+            }
+            if (this.$store.state.bookList.length === 0) {
+                this.$store.dispatch('getBookList').then();
+            }
+        },
+
+        watch: {
+            '$store.state.bookList': function(val) {
+                this.bookList = val;
+            }
         }
     }
 </script>

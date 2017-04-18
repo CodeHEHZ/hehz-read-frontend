@@ -2,9 +2,6 @@
     <div class="full">
         <div class="container">
             <div class="form">
-                <h2>创建书本</h2>
-            </div>
-            <div class="form">
                 <p>书名</p>
                 <el-input ref="bookName" v-model="bookName" placeholder="Peanuts" @keyup.enter.native="switchFocus('author')" :autofocus="true"></el-input>
             </div>
@@ -58,8 +55,8 @@
     export default {
         data: function() {
             return {
-                bookName: '',
-                author: '',
+                bookName: this.inputName || '',
+                author: this.inputAuthor || '',
                 description: '',
                 tags: [],
                 tagToAdd: '',
@@ -144,7 +141,22 @@
                         this.$message.error(response.body.message);
                     });
                 }
+            },
+            getBook() {
+                this.$store.dispatch('getBook', {
+                    author: this.$route.params.author,
+                    name: this.$route.params.name
+                }).then(book => {
+                    this.image = book.cover;
+                    this.bookName = book.name;
+                    this.author = book.author;
+                    this.tags = book.category || [];
+                    this.description = book.description;
+                });
             }
+        },
+        created() {
+            this.getBook();
         }
     };
 </script>
@@ -158,7 +170,7 @@
     .container {
         width: 100%;
         max-width: 30rem;
-        margin: 1rem .5rem 2rem .5rem;
+        margin: .5rem;
     }
 
     .form {

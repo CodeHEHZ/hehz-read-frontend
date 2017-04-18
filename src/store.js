@@ -71,10 +71,36 @@ let storeInfo = {
     },
     actions: {
         getBookList ({ state, commit }) {
-            Vue.http.get(state.api + 'book/list')
-                .then(response => {
-                    commit('setBookList', response.body)
+            return new Promise((resolve) => {
+                if (state.bookList.length === 0) {
+                    Vue.http.get(state.api + 'book/list')
+                        .then(response => {
+                            commit('setBookList', response.body);
+                            resolve(state.bookList);
+                        });
+                } else {
+                    resolve(state.bookList);
+                }
+            });
+        },
+        getBook ({ state, commit, dispatch }, bookInfo) {
+            return new Promise((resolve, reject) => {
+                dispatch('getBookList').then(() => {
+                    let book = state.bookList.filter(book => {
+                        return book.author === bookInfo.author && book.name === bookInfo.name;
+                    });
+                    if (book[0]) {
+                        resolve(book[0]);
+                    } else {
+                        Vue.http.get(state.api + 'book/' + bookInfo.author + '/' + bookInfo.name)
+                            .then(response => {
+                                resolve(response.body);
+                            }, err => {
+                                reject(err);
+                            });
+                    }
                 });
+            });
         }
     }
 };

@@ -1,13 +1,14 @@
 <template>
     <div class="full">
         <div class="cover-and-info">
-            <img class="cover" :src="cover" :style="{ opacity }" :load="opacity = 1">
+            <img class="cover" :src="book.cover" :style="{ opacity }" :load="opacity = 1">
             <div class="info-and-button">
                 <div class="info">
                     <p class="book-name">{{ name }}</p>
-                    <p>{{ author }} 著</p>
+                    <p class="author">{{ author }} 著</p>
+                    <p>{{ book.description }}</p>
                     <div class="tags">
-                        <el-tag type="success" class="tag" v-for="tag of tags" :key="tag">
+                        <el-tag type="success" class="tag" v-for="tag of book.tags" :key="tag">
                             {{ tag }}
                         </el-tag>
                     </div>
@@ -33,41 +34,45 @@
             return {
                 name: this.inputName || this.$route.params.name,
                 author: this.inputAuthor || this.$route.params.author,
-                opacity: 0
+                opacity: 0,
+                book: {}
             };
         },
         computed: {
-            book() {
-                return this.$store.state.bookList.filter(bookItem => {
-                    return bookItem.name === this.name && bookItem.author === this.author;
-                })[0];
-            },
-            cover() {
-                return this.book ? this.book.url : '';
-            },
-            tags() {
-                return this.book ? this.book.tag : [];
-            }
         },
         methods: {
             test() {
                 this.$router.push('/quiz');
+            },
+            getBook() {
+                this.$store.dispatch('getBook', {
+                    author: this.author,
+                    name: this.name
+                }).then((book) => {
+                    this.book = Object.assign({}, this.book, book);
+                }).catch(() => {
+                    this.$message.warning('您找的书不存在');
+                    this.$router.push('/dashboard');
+                });
             }
         },
 
         created() {
-            this.$store.dispatch('getBook', {
-                author: this.$route.params.author,
-                name: this.$route.params.name
-            });
+            this.getBook();
         },
+
+        beforeRouteUpdate (to, from, next) {
+            this.getBook();
+            next();
+        },
+
         watch: {
             inputName: function(val, oldVal) {
                 this.name = val;
+                this.author = this.inputAuthor;
                 this.opacity = 0;
-            },
-            inputAuthor: function(val, oldVal) {
-                this.author = val;
+                this.book = {};
+                this.getBook();
             }
         },
         props: ['inputName', 'inputAuthor']
@@ -114,6 +119,10 @@
         font-size: 2rem;
         font-weight: bold;
         margin: 1rem 0;
+    }
+
+    .author {
+        color: #03a678;
     }
 
     .tags {

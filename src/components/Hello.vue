@@ -27,9 +27,9 @@
                 occupiedBook = [];
 
             bookCoverList = generateBook(bookCoverList, 10);
-            setTimeout(this.updateBackground, 500);
-
-
+            this.$store.dispatch('getBookList').then(() => {
+                setTimeout(this.updateBackground, 500);
+            });
 
             return {
                 bookCoverList,
@@ -49,7 +49,6 @@
         methods: {
             updateBackground() {
 //                if (window.innerWidth >= 600) {
-                if (this.$store.state.bookList.length > 0) {
                     if (this.occupiedBook.length === 0) {
                         for (let i = 0; i < this.bookList.length; i++) {
                             this.occupiedBook.push(0);
@@ -94,7 +93,6 @@
                             }
                         }
                     }
-                }
 //                }
                 setTimeout(this.updateBackground, 500);
             }
