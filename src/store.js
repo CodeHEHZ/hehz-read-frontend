@@ -70,9 +70,9 @@ let storeInfo = {
         }
     },
     actions: {
-        getBookList ({ state, commit }) {
+        getBookList ({ state, commit }, forceRefresh) {
             return new Promise((resolve) => {
-                if (state.bookList.length === 0) {
+                if (state.bookList.length === 0 || forceRefresh) {
                     Vue.http.get(state.api + 'book/list')
                         .then(response => {
                             commit('setBookList', response.body);

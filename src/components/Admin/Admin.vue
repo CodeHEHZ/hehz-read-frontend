@@ -37,7 +37,7 @@
     .full {
         display: flex;
         flex-direction: column;
-        width: 100%;
+        width: inherit;
     }
 
     .container {

@@ -22,8 +22,10 @@ import Question from './components/Quiz/Question.vue';
 import Dashboard from './components/Dashboard/Dashboard.vue';
 
 import Admin from './components/Admin/Admin.vue';
-import Book from './components/Admin/Book/Book.vue';
+import BookAdmin from './components/Admin/Book/Book.vue';
 import EditBook from './components/Admin/Book/EditBook.vue';
+
+import UserAdmin from './components/Admin/User/User.vue';
 
 import storeInfo from './store';
 
@@ -48,7 +50,7 @@ const routes = [
         path: '/admin', component: Admin,
         children: [
             {
-                path: 'book', component: Book, name: 'BookAdmin',
+                path: 'book', component: BookAdmin, name: 'BookAdmin',
                 children: [
                     {
                         path: 'new',
@@ -61,6 +63,10 @@ const routes = [
                         component: EditBook
                     }
                 ]
+            },
+            {
+                path: 'user', component: UserAdmin, name: 'UserAdmin',
+                children: []
             }
         ]
     },

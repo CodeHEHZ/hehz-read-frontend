@@ -8,7 +8,7 @@
                     <p class="author">{{ author }} 著</p>
                     <p>{{ book.description }}</p>
                     <div class="tags">
-                        <el-tag type="success" class="tag" v-for="tag of book.tags" :key="tag">
+                        <el-tag type="success" class="tag" v-for="tag of book.category" :key="tag">
                             {{ tag }}
                         </el-tag>
                     </div>

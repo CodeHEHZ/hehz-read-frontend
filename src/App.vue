@@ -170,6 +170,10 @@
         border: none;
     }
 
+    .el-dialog {
+        margin-bottom: 2rem;
+    }
+
     .component-fade-enter-active, .component-fade-leave-active {
         transition: opacity .3s ease;
     }
@@ -189,6 +193,17 @@
     @media (max-width: 600px) {
         .el-message-box, .el-dialog--small {
             width: 95%;
+        }
+    }
+
+    @media (max-width: 400px) {
+        .menu-item {
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        .content, .books-with-title {
+            padding: 0 !important;
         }
     }
 </style>

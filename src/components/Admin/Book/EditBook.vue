@@ -21,12 +21,12 @@
                 <p></p>
                 <transition-group name="tags" tag="div" class="form tags">
                     <el-tag
-                            v-for="(tag, index) of tags"
-                            :key="tag"
-                            :closable="true"
-                            :close-transition="true"
-                            @close="removeTag(index)"
-                            class="tag"
+                        v-for="(tag, index) of tags"
+                        :key="tag"
+                        :closable="true"
+                        :close-transition="true"
+                        @close="removeTag(index)"
+                        class="tag"
                     >
                         {{ tag }}
                     </el-tag>
@@ -41,11 +41,11 @@
                     :on-progress="handleCoverUploading"
                     :on-success="handleCoverSuccess"
                     :before-upload="beforeCoverUpload">
-                <img v-if="image" :src="image" class="cover">
+                <img v-if="image" :src="image" class="cover" :style="'opacity: ' + imageLoaded" @load="imageLoaded = 1">
                 <i v-else class="el-icon-plus cover-uploader-icon"> {{ uploading ? '正在上传' : '上传封面' }}</i>
             </el-upload>
             <div class="submit">
-                <el-button @click="createBook">创建书本</el-button>
+                <el-button @click="createBook">{{ this.$route.name === 'CreateBook' ? '创建书本' : '提交编辑' }}</el-button>
             </div>
         </div>
     </div>
@@ -57,11 +57,13 @@
             return {
                 bookName: this.inputName || '',
                 author: this.inputAuthor || '',
+                id: '',
                 description: '',
                 tags: [],
                 tagToAdd: '',
                 image: null,
                 imageUrl: null,
+                imageLoaded: 0,
                 uploading: false
             }
         },
@@ -125,21 +127,35 @@
                         cover: this.imageUrl
                     };
 
-                    this.$http.post(this.$store.state.api + 'book/new', postData, { credentials: true }).then(response => {
-                        if (response.status === 201) {
-                            this.bookName = '';
-                            this.author = '';
-                            this.description = '';
-                            this.tags = [];
-                            this.imageUrl = null;
-                            this.image = null;
-                            this.switchFocus('bookName');
-                            this.$message.success('创建成功');
-                        }
-                    },
-                    response => {
-                        this.$message.error(response.body.message);
-                    });
+                    if (this.$route.name === 'CreateBook') {
+                        this.$http.post(this.$store.state.api + 'book/new', postData, {credentials: true}).then(response => {
+                            if (response.status === 201) {
+                                this.bookName = '';
+                                this.author = '';
+                                this.description = '';
+                                this.tags = [];
+                                this.imageUrl = null;
+                                this.image = null;
+                                this.switchFocus('bookName');
+                                this.$message.success('创建成功');
+                            }
+                        },
+                        response => {
+                            this.$message.error(response.body.message);
+                        });
+                    } else {
+                        postData.id = this.id;
+                        this.$http.put(this.$store.state.api + 'book/' + this.author + '/' +this.bookName,
+                            postData, {credentials: true}).then(response => {
+                            this.$store.dispatch('getBookList', true).then(() => {
+                                this.$message.success('修改成功');
+                                this.$router.push({ name: 'BookAdmin' });
+                            });
+                        },
+                        response => {
+                            this.$message.error(response.body ? response.body.message : '出现了未知的错误');
+                        });
+                    }
                 }
             },
             getBook() {
@@ -152,11 +168,14 @@
                     this.author = book.author;
                     this.tags = book.category || [];
                     this.description = book.description;
+                    this.id = book._id;
                 });
             }
         },
         created() {
-            this.getBook();
+            if (this.$route.name === 'EditBook') {
+                this.getBook();
+            }
         }
     };
 </script>
@@ -222,6 +241,7 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+        transition: all .3s;
     }
 
     .submit {

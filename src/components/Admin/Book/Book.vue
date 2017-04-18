@@ -1,13 +1,21 @@
 <template>
     <div class="full">
         <div class="full overall">
-            <div class="container">
-                <el-button type="primary" @click="goTo('CreateBook')">创建书本</el-button>
-                <el-button :disabled="selectedBook.length === 0">开放书本</el-button>
-                <el-button :disabled="selectedBook.length === 0">关闭书本</el-button>
+            <div class="container top">
+                <div class="buttons">
+                    <el-button type="primary" @click="goTo('CreateBook')">创建书本</el-button>
+                    <el-button :disabled="selectedBook.length === 0">关闭书本</el-button>
+                </div>
+                <el-input
+                    placeholder="输入书名或作者名"
+                    icon="search"
+                    v-model="search"
+                    class="search"
+                >
+                </el-input>
             </div>
             <el-table
-                    :data="bookList"
+                    :data="filteredBookList"
                     border
                     tooltip-effect="dark"
                     class="container"
@@ -27,7 +35,7 @@
                 <el-table-column
                         label="操作">
                     <template scope="scope">
-                        <el-button type="text" @click="goTo('')">
+                        <el-button type="text" @click="goTo('EditBook', scope.row)">
                             编辑
                         </el-button>
                     </template>
@@ -48,6 +56,7 @@
         data: function() {
             return {
                 bookList: this.$store.state.bookList,
+                search: '',
                 selectedBook: [],
                 dialogVisible: this.isRoot,
                 dialogTitle: '',
@@ -72,6 +81,15 @@
         },
 
         computed: {
+            filteredBookList() {
+                if (this.search === '') {
+                    return this.bookList;
+                } else {
+                    return this.bookList.filter(book => {
+                        return book.author.includes(this.search) || book.name.includes(this.search);
+                    });
+                }
+            },
             isRoot() {
                 return this.$route.name === 'BookAdmin';
             }
@@ -101,16 +119,19 @@
 <style scoped>
     .full {
         display: flex;
-        justify-content: center;
         height: 100%;
-        width: 100%;
     }
 
     .overall {
         align-items: center;
         flex-direction: column;
-        margin-top: 2rem;
-        margin-bottom: 1rem;
+        padding: 2rem .5rem 1rem .5rem;
+    }
+
+    .top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .container {
@@ -121,5 +142,14 @@
 
     .container:last-child {
         margin-bottom: 0;
+    }
+
+    .buttons {
+        display: flex;
+        margin-right: .5rem;
+    }
+
+    .search {
+        width: initial;
     }
 </style>
