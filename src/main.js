@@ -22,8 +22,12 @@ import Question from './components/Quiz/Question.vue';
 import Dashboard from './components/Dashboard/Dashboard.vue';
 
 import Admin from './components/Admin/Admin.vue';
+
 import BookAdmin from './components/Admin/Book/Book.vue';
 import EditBook from './components/Admin/Book/EditBook.vue';
+
+import QuizAdmin from './components/Admin/Quiz/Quiz.vue';
+import EditQuiz from './components/Admin/Quiz/EditQuiz.vue';
 
 import UserAdmin from './components/Admin/User/User.vue';
 
@@ -58,11 +62,17 @@ const routes = [
                         component: EditBook
                     },
                     {
-                        path: 'edit/:author/:name',
+                        path: ':author/:name',
                         name: 'EditBook',
                         component: EditBook
                     }
                 ]
+            },
+            {
+                path: 'quiz', component: QuizAdmin, name: 'QuizAdmin',
+            },
+            {
+                path: 'quiz/:author/:name', component: EditQuiz, name: 'EditQuiz'
             },
             {
                 path: 'user', component: UserAdmin, name: 'UserAdmin',
