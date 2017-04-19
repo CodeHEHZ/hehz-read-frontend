@@ -6,7 +6,7 @@
                 <div class="title">
                     <p>全部书目</p>
                     <el-input
-                        placeholder="搜索书名"
+                        placeholder="搜索书名或作者"
                         class="search"
                         icon="search"
                         size="small"
@@ -15,7 +15,7 @@
                     </el-input>
                 </div>
                 <div class="books clearfix">
-                    <lib-book v-for="book in bookList" class="lib-book clearfix"
+                    <lib-book v-for="book in filteredBookList" class="lib-book clearfix"
                               :bookInfo="book" :key="book" @go="goTo(book)"
                     >
                     </lib-book>
@@ -55,6 +55,15 @@
         computed: {
             readStatusVisible() {
                 return this.$cookie.get('group');
+            },
+            filteredBookList() {
+                if (this.searchContent === '') {
+                    return this.bookList;
+                } else {
+                    return this.bookList.filter(book => {
+                        return book.author.includes(this.searchContent) || book.name.includes(this.searchContent);
+                    });
+                }
             }
         },
 
