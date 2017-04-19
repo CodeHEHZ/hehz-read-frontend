@@ -224,6 +224,10 @@
         border-right: solid .2rem #fff;
     }
 
+    .vue-typer .custom.caret:before {
+        content: '　';
+    }
+
     span.left {
         display: flex !important;
         justify-content: flex-end;
