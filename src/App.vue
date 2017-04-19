@@ -203,6 +203,7 @@
         display: flex;
         justify-content: flex-end;
         align-items: flex-end;
+        visibility: hidden;
     }
 
     .vue-typer .custom.char {
@@ -212,8 +213,9 @@
         -webkit-text-stroke: .1rem #fff;
         line-height: 100%;
         text-align: end;
-        margin-top: .5rem;
+        margin-top: 1rem;
         font-family: SimHei, PingFang SC, Hiragino Sans GB, STHeiti;
+        visibility: visible;
     }
 
     .vue-typer .custom.caret {
@@ -222,6 +224,7 @@
         background-color: #03a678;
         margin-left: .5rem;
         border-right: solid .2rem #fff;
+        visibility: visible;
     }
 
     .vue-typer .custom.caret:before {

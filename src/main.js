@@ -7,29 +7,30 @@ import ElementUI from 'element-ui';
 import Vuex from 'vuex';
 import VueCookie from 'vue-cookie';
 import VueResource from 'vue-resource';
-import VueAnalytics from 'vue-analytics'
+import VueAnalytics from 'vue-analytics';
 import './assets/element.css';
 
 import App from './App.vue';
-import Hello from './components/Hello.vue';
-import Quiz from './components/Quiz/Quiz.vue';
-import QuizResult from './components/Quiz/QuizResult.vue';
-import Login from './components/Login/Login.vue';
 import Logout from './components/Login/Logout.vue';
-import BookDetail from './components/Dashboard/BookDetail.vue';
 
-import Question from './components/Quiz/Question.vue';
-import Dashboard from './components/Dashboard/Dashboard.vue';
+const Hello = r => require.ensure([], () => r(require('./components/Hello.vue')), 'group-hello');
 
-import Admin from './components/Admin/Admin.vue';
+const Dashboard = r => require.ensure([], () => r(require('./components/Dashboard/Dashboard.vue')), 'group-dashboard');
+const BookDetail = r => require.ensure([], () => r(require('./components/Dashboard/BookDetail.vue')), 'group-dashboard');
 
-import BookAdmin from './components/Admin/Book/Book.vue';
-import EditBook from './components/Admin/Book/EditBook.vue';
+const Quiz = r => require.ensure([], () => r(require('./components/Quiz/Quiz.vue')), 'group-quiz');
+const Question = r => require.ensure([], () => r(require('./components/Quiz/Question.vue')), 'group-quiz');
+const QuizResult = r => require.ensure([], () => r(require('./components/Quiz/QuizResult.vue')), 'group-quiz');
 
-import QuizAdmin from './components/Admin/Quiz/Quiz.vue';
-import EditQuiz from './components/Admin/Quiz/EditQuiz.vue';
+const Admin = r => require.ensure([], () => r(require('./components/Admin/Admin.vue')), 'group-admin');
 
-import UserAdmin from './components/Admin/User/User.vue';
+const BookAdmin = r => require.ensure([], () => r(require('./components/Admin/Book/Book.vue')), 'group-admin');
+const EditBook = r => require.ensure([], () => r(require('./components/Admin/Book/EditBook.vue')), 'group-admin');
+
+const QuizAdmin = r => require.ensure([], () => r(require('./components/Admin/Quiz/Quiz.vue')), 'group-admin');
+const EditQuiz = r => require.ensure([], () => r(require('./components/Admin/Quiz/EditQuiz.vue')), 'group-admin');
+
+const UserAdmin = r => require.ensure([], () => r(require('./components/Admin/User/User.vue')), 'group-admin');
 
 import storeInfo from './store';
 
@@ -46,7 +47,6 @@ const routes = [
             }
         ]
     },
-    { path: '/login', component: Login },
     { path: '/logout', component: Logout },
     { path: '/dashboard', component: Dashboard },
     { path: '/book/:author/:name', component: BookDetail, name: 'BookDetail' },

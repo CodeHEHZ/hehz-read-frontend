@@ -3,7 +3,7 @@
         <img :src="bookInfo.cover"
              class="book-cover"
              :style="style"
-             @load="loaded"/>
+             @load="loaded">
     </div>
 </template>
 
