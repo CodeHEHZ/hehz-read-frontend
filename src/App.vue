@@ -199,6 +199,37 @@
         border-radius: 4px !important;
     }
 
+    .vue-typer.typer {
+        display: flex;
+        justify-content: flex-end;
+        align-items: flex-end;
+    }
+
+    .vue-typer .custom.char {
+        font-size: 5rem;
+        font-weight: bold;
+        color: #03a678 !important;
+        -webkit-text-stroke: .1rem #fff;
+        line-height: 100%;
+        text-align: end;
+        margin-top: .5rem;
+        font-family: SimHei, PingFang SC, Hiragino Sans GB, STHeiti;
+    }
+
+    .vue-typer .custom.caret {
+        width: .5rem;
+        height: 5rem;
+        background-color: #03a678;
+        margin-left: .5rem;
+        border-right: solid .2rem #fff;
+    }
+
+    span.left {
+        display: flex !important;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+    }
+
     @media (max-width: 600px) {
         .el-message-box, .el-dialog--small {
             width: 95%;

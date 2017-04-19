@@ -12,6 +12,20 @@
 
         </div>
         <div class="frontlogin">
+            <typer
+                :text='slogans'
+                :repeat='Infinity'
+                :shuffle='true'
+                initial-action='typing'
+                :pre-type-delay='200'
+                :type-delay='200'
+                :pre-erase-delay='2000'
+                :erase-delay='70'
+                erase-style='backspace'
+                :erase-on-complete='false'
+                caret-animation='blink'
+                class="typer"
+            ></typer>
             <login class="login"></login>
         </div>
     </div>
@@ -20,6 +34,7 @@
 <script>
     import Login from './Login/Login.vue';
     import FrontpageBook from './Login/FrontpageBook.vue';
+    import { VueTyper } from 'vue-typer';
 
     export default {
         data: function() {
@@ -34,7 +49,16 @@
             return {
                 bookCoverList,
                 bookLoadingCount: 0,
-                occupiedBook
+                occupiedBook,
+                slogans: ["   多读书   好读书读好书",
+                    "书读百遍其义自现",
+                    "书是人类  进步的阶梯",
+                    "华二黄中      学生   百分百读50本书",
+                    "不动笔墨不读书",
+                    "      风声      雨声   读书声声声入耳",
+                    "      读书   玩味",
+                    "      读书   破万卷"
+                ]
             };
         },
         computed: {
@@ -44,7 +68,8 @@
         },
         components: {
             'login': Login,
-            'book-cover': FrontpageBook
+            'book-cover': FrontpageBook,
+            'typer': VueTyper
         },
         methods: {
             updateBackground() {
@@ -134,7 +159,7 @@
         width: 100%;
         height: 100%;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
         justify-content: center;
         position: fixed;
@@ -150,8 +175,16 @@
         visibility: visible
     }
 
-    @media (min-width: 4096px), (min-height: 2160px) {
+    .typer {
+        visibility: visible;
+        width: 22rem;
+        padding: 1rem;
+    }
 
+    @media (max-width: 920px) {
+        .typer {
+            display: none;
+        }
     }
 
 </style>
