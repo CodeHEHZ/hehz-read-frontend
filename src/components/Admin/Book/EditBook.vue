@@ -254,11 +254,6 @@
         min-width: 2rem;
     }
 
-    h2 {
-        margin: 0;
-        font-family: Arial, "Lucida Sans", "Lucida Sans Regular", "SimHei", "黑体", "STHeiti", "华文黑体", serif;
-    }
-
     .el-input {
         margin: .3rem 0 .3rem 1rem;
     }

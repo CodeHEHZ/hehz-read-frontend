@@ -21,22 +21,27 @@
                 class="container"
                 @selection-change="handleSelectionChange">
                 <el-table-column
-                        type="selection"
-                        width="55">
+                    type="selection"
+                    width="55">
                 </el-table-column>
                 <el-table-column
-                        prop="name"
-                        label="书名">
+                    prop="name"
+                    label="书名">
                 </el-table-column>
                 <el-table-column
-                        prop="author"
-                        label="作者">
+                    prop="author"
+                    label="作者">
                 </el-table-column>
                 <el-table-column
-                        label="操作">
+                    label="操作"
+                    width="120px"
+                >
                     <template scope="scope">
                         <el-button type="text" @click="goTo('EditBook', scope.row)">
                             编辑
+                        </el-button>
+                        <el-button type="text" @click="goTo('EditQuiz', scope.row)">
+                            题库
                         </el-button>
                     </template>
                 </el-table-column>
@@ -44,7 +49,7 @@
         </div>
 
         <el-dialog :title="dialogTitle" v-model="dialogVisible" @close="closeDialog">
-            <router-view id="router-view"></router-view>
+            <router-view></router-view>
         </el-dialog>
     </div>
 </template>
@@ -109,7 +114,7 @@
             '$store.state.bookList'(val) {
                 this.bookList = val;
             },
-            '$route.path'(val) {
+            '$route.path'() {
                 this.dialogVisible = !this.isRoot;
             }
         }

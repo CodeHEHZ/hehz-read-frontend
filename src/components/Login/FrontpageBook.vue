@@ -58,10 +58,25 @@
         animation-name: book-hover;
         animation-duration: .3s;
         filter: saturate(100%) !important;
-        /*float: left;*/
         z-index: 20;
         opacity: 1 !important;
     }
 
+    @media (min-height: 768px) {
+        .book-cover-container {
+            height: 25%;
+        }
+    }
 
+    @media (min-height: 1080px) {
+        .book-cover-container {
+            height: 20%;
+        }
+    }
+
+    @media (min-height: 2000px) {
+        .book-cover-container {
+            height: 10%;
+        }
+    }
 </style>
