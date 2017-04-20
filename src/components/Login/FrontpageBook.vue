@@ -1,5 +1,5 @@
 <template>
-    <div class="book-cover-container" :style="'background-color: rgba(176,212,184,' + containerOpacity + ')'">
+    <div class="book-cover-container" :style="'background-color: rgba(19,198,148,' + containerOpacity + ')'">
         <img :src="bookInfo.cover"
              class="book-cover"
              :style="style"
@@ -14,7 +14,7 @@
                 style: {
                     opacity: 0
                 },
-                containerOpacity: .7 + Math.random() * .4
+                containerOpacity: .65 + Math.random() * .35
             }
         },
 
@@ -22,7 +22,7 @@
 
         methods: {
             loaded() {
-                this.style.opacity = 0.3;
+                this.style.opacity = 0.6;
                 this.$emit('loaded');
             }
         }
@@ -39,7 +39,7 @@
         width: 150px;
         flex-grow: 1;
         align-items: center;
-        background-color: #c8e0cd;
+        background-color: #03a678;
     }
 
     .book-cover {

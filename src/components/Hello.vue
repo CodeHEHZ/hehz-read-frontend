@@ -17,10 +17,10 @@
                 :repeat='Infinity'
                 :shuffle='true'
                 initial-action='typing'
-                :pre-type-delay='200'
-                :type-delay='200'
+                :pre-type-delay='400'
+                :type-delay='100'
                 :pre-erase-delay='2000'
-                :erase-delay='70'
+                :erase-delay='50'
                 erase-style='backspace'
                 :erase-on-complete='false'
                 caret-animation='blink'
@@ -53,14 +53,14 @@
                 slogans: [
                     "　多读书　好读书　读好书",
                     "书读百遍其义自现",
-                    "书是人类　进步的阶梯",
-                    "华二黄中　百分百读五十本课外书",
+                    "书是人类　进步的　　阶梯",
+                    "华二黄中　百分百读五十本　课外书",
                     "不动笔墨不读书",
                     "　　风声　　雨声　读书声声声入耳",
                     "　　读书　　玩味",
                     "　　读书　破万卷",
                     "　　爱在华二黄中",
-                    "　你啊你　　　是自在如风的少年"
+                    "　你啊你　　　是自在如风　的少年"
                 ]
             };
         },
@@ -180,7 +180,7 @@
 
     .typer {
         visibility: visible;
-        width: 22rem;
+        width: 24rem;
         padding: 1rem;
     }
 

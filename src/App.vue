@@ -210,10 +210,10 @@
         font-size: 5rem;
         font-weight: bold;
         color: #03a678 !important;
-        -webkit-text-stroke: .1rem #fff;
         line-height: 100%;
         text-align: end;
-        margin-top: 1rem;
+        background-color: #fff;
+        padding: .25rem;
         font-family: SimHei, PingFang SC, Hiragino Sans GB, STHeiti;
         visibility: visible;
     }
@@ -223,11 +223,12 @@
         height: 5rem;
         background-color: #03a678;
         margin-left: .5rem;
+        margin-bottom: .25rem;
         border-right: solid .2rem #fff;
         visibility: visible;
     }
 
-    .vue-typer .custom.caret:before {
+    .vue-typer .custom.caret:after {
         content: '　';
     }
 
