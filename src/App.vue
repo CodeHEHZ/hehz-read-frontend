@@ -224,7 +224,7 @@
         background-color: #03a678;
         margin-left: .5rem;
         margin-bottom: .25rem;
-        border-right: solid .2rem #fff;
+        border-right: solid .35rem #fff;
         visibility: visible;
     }
 

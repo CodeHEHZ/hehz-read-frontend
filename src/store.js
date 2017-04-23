@@ -75,6 +75,10 @@ let storeInfo = {
                 if (state.bookList.length === 0 || forceRefresh) {
                     Vue.http.get(state.api + 'book/list')
                         .then(response => {
+                            let bookList = response.body;
+                            for (let i = 0; i < bookList.length; i++) {
+                                bookList[i].cover += '!web';
+                            }
                             commit('setBookList', response.body);
                             resolve(state.bookList);
                         });
@@ -83,7 +87,7 @@ let storeInfo = {
                 }
             });
         },
-        getBook ({ state, commit, dispatch }, bookInfo) {
+        getBook ({ state, dispatch }, bookInfo) {
             return new Promise((resolve, reject) => {
                 dispatch('getBookList').then(() => {
                     let book = state.bookList.filter(book => {

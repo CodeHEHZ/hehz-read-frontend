@@ -14,7 +14,7 @@
             </div>
             <div class="form" v-for="option of options">
                 <p>选项 {{ option.ref }}</p>
-                <el-input :ref="option.ref" v-model="option.text" :placeholder="option.placeholder"
+                <el-input :ref="option.label" v-model="option.text" :placeholder="option.placeholder"
                           @keyup.enter.native="switchFocus(option.next)"></el-input>
             </div>
             <el-radio-group v-model="correctAnswer" size="large" class="radio-group">
@@ -27,23 +27,24 @@
                 <el-button type="primary" @click="createQuestion">创建题目</el-button>
             </div>
 
-            <el-table :data="existingQuestions" class="existing-questions">
+            <el-table :data="existingQuestions" class="existing-questions" border>
                 <el-table-column type="expand">
                     <template scope="props">
                         <el-form label-position="left" class="table-expand">
-                            <el-form-item v-for="label of ['A', 'B', 'C', 'D']" :label="label" key="props.row.options[label]">
-                                <span>{{ props.row.options[label] }}</span>
+                            <el-form-item v-for="label of ['A', 'B', 'C', 'D']" :label="label" key="props.row.option[label]">
+                                <span>{{ props.row.option[label] }}</span>
                             </el-form-item>
                             <el-form-item label="正确答案">
-                                <span>{{ props.row.correctAnswer }}</span>
+                                <span>{{ props.row.answer }}</span>
                             </el-form-item>
                         </el-form>
                     </template>
                 </el-table-column>
                 <el-table-column
-                    label="操作"
+                    label="题号"
                     width="70px"
                     prop="index"
+                    align="center"
                 >
                 </el-table-column>
                 <el-table-column
@@ -54,6 +55,7 @@
                 <el-table-column
                     label="操作"
                     width="80px"
+                    align="center"
                 >
                     <template scope="scope">
                         <el-button type="text" @click="editQuestion(scope.row)">
@@ -69,46 +71,34 @@
 <script>
     export default {
         data: function() {
-            let defaultOptions = [{
-                ref: 'A',
-                text: '',
-                placeholder: '陀思妥耶夫斯基',
-                next: 'B'
-            }, {
-                ref: 'B',
-                text: '',
-                placeholder: '托尔斯泰斯基',
-                next: 'C'
-            }, {
-                ref: 'C',
-                text: '',
-                placeholder: '兔斯基',
-                next: 'D'
-            }, {
-                ref: 'D',
-                text: '',
-                placeholder: '老司机',
-                next: 'last'
-            }];
-
             return {
-                name: '嗷嗷',
+                author: this.$route.params.author,
+                name: this.$route.params.name,
                 question: '',
-                defaultOptions,
-                options: defaultOptions,
+                options: [{
+                    label: 'A',
+                    text: '',
+                    placeholder: '陀思妥耶夫斯基',
+                    next: 'B'
+                }, {
+                    label: 'B',
+                    text: '',
+                    placeholder: '托尔斯泰斯基',
+                    next: 'C'
+                }, {
+                    label: 'C',
+                    text: '',
+                    placeholder: '兔斯基',
+                    next: 'D'
+                }, {
+                    label: 'D',
+                    text: '',
+                    placeholder: '老司机',
+                    next: 'last'
+                }],
                 correctAnswer: null,
                 book: {},
-                existingQuestions: [{
-                    question: '啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊',
-                    options: {
-                        A: '啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊',
-                        B: '啊啊啊啊',
-                        C: '啊啊啊啊',
-                        D: '啊啊啊啊'
-                    },
-                    correctAnswer: 'A',
-                    index: 1
-                }]
+                existingQuestions: []
             }
         },
         methods: {
@@ -122,22 +112,84 @@
                     this.$message.error('请输入题目');
                     this.switchFocus('question');
                 } else {
+                    let temp = 0;
                     for (let option of this.options) {
                         if (option.text === '') {
                             this.$message.error('请输入选项');
-                            this.switchFocus(option.ref);
+                            this.switchFocus(option.label);
+                            temp = 1;
                             break;
                         }
                     }
 
-                    if (!this.correctAnswer) {
+                    if (!this.correctAnswer && !temp) {
+                        this.$message.error('请选择正确选项');
+                    } else {
 
+                        let option = {};
+                        for (let item of this.options) {
+                            option[item.label] = item.text;
+                        }
+
+                        let postData = {
+                            author: this.author,
+                            name: this.name,
+                            question: this.question,
+                            option,
+                            answer: this.correctAnswer
+                        };
+
+                        this.$http.post(this.$store.state.api + 'question/new', postData, { credentials: true }).then(
+                            () => {
+                                this.question = '';
+                                this.options = Object.assign({}, this.options, [{
+                                    label: 'A',
+                                    text: '',
+                                    placeholder: '陀思妥耶夫斯基',
+                                    next: 'B'
+                                }, {
+                                    label: 'B',
+                                    text: '',
+                                    placeholder: '托尔斯泰斯基',
+                                    next: 'C'
+                                }, {
+                                    label: 'C',
+                                    text: '',
+                                    placeholder: '兔斯基',
+                                    next: 'D'
+                                }, {
+                                    label: 'D',
+                                    text: '',
+                                    placeholder: '老司机',
+                                    next: 'last'
+                                }]);
+                                this.$message.success('创建成功');
+                                this.updateQuestionCollection()
+                            },
+                            response => {
+                                this.$message.error(response.body.message);
+                            }
+                        );
                     }
                 }
             },
             editQuestion(question) {
                 console.log(question);
+            },
+            updateQuestionCollection() {
+                this.$http.get(this.$store.state.api + 'book/' + this.$route.params.author + '/' + this.$route.params.name + '/question').then(
+                    response => {
+                        let existingQuestions = response.body.question;
+                        for (let i = 0; i < existingQuestions.length; i++) {
+                            existingQuestions[i].index = i + 1;
+                        }
+                        this.existingQuestions = existingQuestions;
+                    }
+                );
             }
+        },
+        mounted() {
+            this.updateQuestionCollection();
         }
     }
 </script>
