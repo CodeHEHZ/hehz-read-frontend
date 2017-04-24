@@ -3,7 +3,7 @@
         <div class="container">
             <div class="top">
                 <h2>《{{ $route.params.name }}》题库</h2>
-                <el-tag :type="open ? null : 'gray'">{{ open ? '已开放' : (open === false ? '未开放' : '查询中') }}</el-tag>
+                <el-tag v-show="open !== null" :type="open ? null : 'gray'">{{ open ? '已开放' : '未开放' }}</el-tag>
             </div>
             <div class="form">
                 <p>题目</p>
@@ -27,7 +27,7 @@
                 <el-radio label="D">选项 D</el-radio>
             </el-radio-group>
             <div class="submit-container">
-                <el-button @click="openBook">开放测试</el-button>
+                <el-button @click="() => { open ? closeBook() : openBook() }">{{ open ? '关闭测试' : '开放测试' }}</el-button>
                 <el-button type="primary" @click="createQuestion">创建题目</el-button>
             </div>
 
@@ -75,35 +75,32 @@
 <script>
     export default {
         data: function() {
-            let defaultOptions = [{
-                label: 'A',
-                text: '',
-                placeholder: '陀思妥耶夫斯基',
-                next: 'B'
-            }, {
-                label: 'B',
-                text: '',
-                placeholder: '托尔斯泰斯基',
-                next: 'C'
-            }, {
-                label: 'C',
-                text: '',
-                placeholder: '兔斯基',
-                next: 'D'
-            }, {
-                label: 'D',
-                text: '',
-                placeholder: '老司机',
-                next: 'last'
-            }];
-
             return {
                 author: this.$route.params.author,
                 name: this.$route.params.name,
                 open: null,
                 question: '',
-                defaultOptions,
-                options: defaultOptions,
+                options: [{
+                    label: 'A',
+                    text: '',
+                    placeholder: '陀思妥耶夫斯基',
+                    next: 'B'
+                }, {
+                    label: 'B',
+                    text: '',
+                    placeholder: '托尔斯泰斯基',
+                    next: 'C'
+                }, {
+                    label: 'C',
+                    text: '',
+                    placeholder: '兔斯基',
+                    next: 'D'
+                }, {
+                    label: 'D',
+                    text: '',
+                    placeholder: '老司机',
+                    next: 'last'
+                }],
                 correctAnswer: null,
                 book: {},
                 existingQuestions: []
@@ -196,6 +193,18 @@
                     { credentials: true }).then(
                     response => {
                         this.$message.success('开放成功');
+                        this.getBookOpenness();
+                    },
+                    response => {
+                        this.$message.error(response.body.message);
+                    }
+                );
+            },
+            closeBook() {
+                this.$http.get(this.$store.state.api + 'book/' + this.$route.params.author + '/' + this.$route.params.name + '/close',
+                    { credentials: true }).then(
+                    response => {
+                        this.$message.success('关闭成功');
                         this.getBookOpenness();
                     },
                     response => {

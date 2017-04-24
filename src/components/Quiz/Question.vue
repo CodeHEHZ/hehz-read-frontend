@@ -1,9 +1,9 @@
 <template>
     <div class="content">
-        <p>{{ (this.$store.state.questionNumber + 1) + '、' + (quiz[question] || {}).text }}</p>
+        <p>{{ quiz[question] ? ((this.$store.state.questionNumber + 1) + '、' + (quiz[question] || {}).question) : '' }}</p>
         <el-radio-group v-model="radio" @change="select">
-            <el-radio v-for="option in (quiz[question] || {}).answers" :label="option.label" :key="option">
-                {{ option.answer }}
+            <el-radio v-for="option in ['A', 'B', 'C', 'D']" :label="option" :key="option">
+                {{ (quiz[question] || { option: {} }).option[option] }}
             </el-radio>
         </el-radio-group>
     </div>
@@ -54,7 +54,7 @@
 <style scoped>
     .content {
         width: 30rem;
-        min-height: 15rem;
+        min-height: 20rem;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -67,6 +67,12 @@
         }
     }
 
+    @media(max-width: 320px) {
+        .content {
+            min-height: 0;
+        }
+    }
+
     .el-radio-group {
         display: flex;
         flex-direction: column;
@@ -75,4 +81,6 @@
     .el-radio {
         margin: .5rem;
     }
+
+
 </style>

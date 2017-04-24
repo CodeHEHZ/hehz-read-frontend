@@ -9,7 +9,9 @@
             </transition>
         </div>
 
-        <div class="buttons">
+        <span class="time" v-show="deadline">剩余时间： {{ time }}</span>
+
+        <div class="buttons"  v-show="quiz.length > 0">
             <div class="button-left">
                 <el-button type="primary" icon="arrow-left" @click="last" :disabled="isLoading || !isLastAvailable">
                     上一问
@@ -47,7 +49,10 @@
                 isLoading: false,
                 fullscreenLoading: false,
                 submitting: false,
-                transition: 'next-question'
+                transition: 'next-question',
+                quiz: [],
+                deadline: null,
+                time: ''
             }
         },
         components: {
@@ -69,9 +74,7 @@
             rightIcon: function() {
                 return this.isNextAvailable ? 'el-icon-arrow-right' : 'el-icon-check';
             },
-            quiz: function() {
-                return this.$store.state.quiz;
-            }
+
         },
         methods: {
             next() {
@@ -79,7 +82,12 @@
                     this.isLoading = true;
                     this.transition = 'next-question';
                     this.$store.commit('nextQuestion');
-                    this.$router.push('/quiz/' + (this.$store.state.questionNumber + 1));
+                    this.$router.push({
+                        name: 'question',
+                        params: {
+                            id: this.$store.state.questionNumber + 1
+                        }
+                    });
                     setTimeout(() => { this.isLoading = false }, 400);
                 } else {
                     this.$confirm(this.submitConfirmationText(), '确认提交', {
@@ -89,10 +97,20 @@
                     }).then(() => {
                         this.submitting = true;
                         this.fullscreenLoading = true;
-                        setTimeout(() => {
-                            this.fullscreenLoading = false;
-                            this.$router.push('/quiz/result');
-                        }, 1000);
+                        this.submitQuiz().then(
+                            response => {
+                                this.fullscreenLoading = false;
+                                this.$router.push('/quiz/result');
+                                this.$store.commit('cleanQuizInfo');
+                                console.log(response);
+                            },
+                            response => {
+                                this.fullscreenLoading = false;
+                                this.$message.error(response.body.message);
+                                this.$router.push('/dashboard');
+                                this.$store.commit('cleanQuizInfo');
+                            }
+                        );
                     }).catch(() => {
                         this.$message({
                             type: 'info',
@@ -105,7 +123,12 @@
                 this.isLoading = true;
                 this.transition = 'last-question';
                 this.$store.commit('lastQuestion');
-                this.$router.push('/quiz/' + (this.$store.state.questionNumber + 1));
+                this.$router.push({
+                    name: 'question',
+                    params: {
+                        id: this.$store.state.questionNumber + 1
+                    }
+                });
                 setTimeout(() => { this.isLoading = false }, 400);
             },
             jumpTo(index) {
@@ -115,7 +138,12 @@
                         ? 'last-question'
                         : 'next-question';
                     this.$store.commit('setQuestion', index);
-                    this.$router.push('/quiz/' + (this.$store.state.questionNumber + 1));
+                    this.$router.push({
+                        name: 'question',
+                        params: {
+                            id: this.$store.state.questionNumber + 1
+                        }
+                    });
                     setTimeout(() => {
                         this.isLoading = false
                     }, 400)
@@ -147,11 +175,58 @@
                         : 'progress-button-missed';
                 } else
                     return '';
+            },
+            timeLeft() {
+                if (!this.deadline) {
+                    this.time = null;
+                } else {
+                    let second = Math.floor((this.deadline - Date.now()) / 1000),
+                        minute = Math.floor(second / 60);
+                    second %= 60;
+                    this.time = minute + ' 分 ' + second + ' 秒';
+                }
+            },
+            submitQuiz() {
+                let postData = {
+                    quiz: this.$store.state.quizInfo.id,
+                    answer: this.$store.state.answer
+                };
+                return this.$http.post(this.$store.state.api + 'book/' + this.$route.params.author + '/' + this.$route.params.name + '/quiz',
+                    postData, { credentials: true });
             }
         },
-        mounted() {
-            if (this.$route.params.id > this.quiz.length)
-                this.jumpTo(0);
+        beforeMount() {
+            this.$store.dispatch('getQuiz', {
+                name: this.$route.params.name,
+                author: this.$route.params.author
+            }).then(
+                quiz => {
+                    this.quiz = quiz;
+                    if (this.$route.params.id > this.quiz.length)
+                        this.jumpTo(0);
+                    this.deadline = this.$store.state.quizInfo.deadline;
+                }
+            ).catch(
+                response => {
+                    this.$message.error(response.body.message);
+                    this.$router.push('/dashboard');
+                }
+            );
+
+            let updateTime = () => {
+                setTimeout(() => {
+                    this.timeLeft();
+                    if (this.$route.name === 'question' || this.$route.name === 'quiz')
+                        updateTime();
+                }, 500);
+            };
+
+            updateTime();
+        },
+        watch: {
+            '$store.state.quizInfo.deadline': function(val) {
+                this.deadline = val;
+            }
         }
     }
 </script>
@@ -164,6 +239,13 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+    }
+
+    .time {
+        position: absolute;
+        top: 0;
+        color: #03a678;
+        margin: .5rem;
     }
 
     .buttons {
@@ -192,6 +274,7 @@
         display: flex;
         flex-wrap: wrap;
         max-width: 23rem;
+        justify-content: center;
     }
 
     .progress-button {
@@ -241,7 +324,7 @@
     }
 
     .progress {
-        background-color: #4ecdc4;
+        background-color: #03a678;
         height: 100%;
         transition: width .4s;
     }

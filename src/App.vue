@@ -4,7 +4,6 @@
             <div class="menu-restrictor">
                 <div class="menu-left">
                     <el-menu-item index="/dashboard" class="menu-item">首页</el-menu-item>
-                    <el-menu-item index="/quiz" class="menu-item">测试</el-menu-item>
                     <el-menu-item index="/admin" class="menu-item">管理</el-menu-item>
                 </div>
                 <div class="menu-right">
@@ -39,20 +38,18 @@
         computed: {
             active() {
                 let active = this.$route.path;
-                if (active.includes('quiz'))
-                    active = '/quiz';
                 if (active.includes('admin'))
                     active = '/admin';
                 return active;
             },
             showMenu() {
-                return this.$route.path !== '/';
+                return this.$route.path !== '/' && this.$route.name !== 'question';
             },
             showFooter() {
                 return this.$route.path !== '/';
             },
             marginTop() {
-                return this.$route.path === '/'
+                return this.$route.path === '/' && this.$route.name !== 'question'
                     ? ''
                     : 'margin-top';
             }
@@ -189,6 +186,10 @@
     .el-form-item__label {
         padding: 0 .5rem 0 0;
         min-width: 1.5rem;
+    }
+
+    .el-tag {
+        transition: all .3s;
     }
 
     .geetest_holder.geetest_wind {

@@ -42,7 +42,13 @@
         },
         methods: {
             test() {
-                this.$router.push('/quiz');
+                this.$router.push({
+                    name: 'quiz',
+                    params: {
+                        name: this.name,
+                        author: this.author
+                    }
+                });
             },
             getBook() {
                 this.$store.dispatch('getBook', {

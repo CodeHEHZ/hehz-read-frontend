@@ -146,7 +146,7 @@
                     } else {
                         postData.id = this.id;
                         this.$http.put(this.$store.state.api + 'book/' + this.author + '/' +this.bookName,
-                            postData, {credentials: true}).then(response => {
+                            postData, { credentials: true }).then(response => {
                             this.$store.dispatch('getBookList', true).then(() => {
                                 this.$message.success('修改成功');
                                 this.$router.push({ name: 'BookAdmin' });

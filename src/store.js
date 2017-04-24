@@ -6,35 +6,10 @@ Vue.use(VueResource);
 Vue.http.options.crossOrigin = true;
 Vue.http.options.credentials = true;
 
-let quiz = [{
-    text: '《卡拉马佐夫兄弟》的作者是',
-    answers: [
-        { label: 'A', answer: '陀思妥耶夫斯基' },
-        { label: 'B', answer: '托尔斯泰斯基' },
-        { label: 'C', answer: '兔斯基' },
-        { label: 'D', answer: '老斯基' }
-    ]
-}, {
-    text: '《卡拉马佐夫兄弟》的主角是',
-    answers: [
-        { label: 'A', answer: '阿列克塞·费奥多罗维奇·卡拉马佐夫' },
-        { label: 'B', answer: '阿列克塞·费列罗·卡拉马佐夫' },
-        { label: 'C', answer: '爱茜茜里·费奥多罗维奇·卡拉马佐夫' },
-        { label: 'D', answer: '阿莫西林·莫西干头·卡拉马佐夫' }
-    ]
-}, {
-    text: '《卡拉马佐夫兄弟》中的斯乜尔加耶夫是',
-    answers: [
-        { label: 'A', answer: '笨蛋' },
-        { label: 'B', answer: '呆瓜' },
-        { label: 'C', answer: '小机智' },
-        { label: 'D', answer: '莫西干头' }
-    ]
-}];
-
 let storeInfo = {
     state: {
-        quiz,
+        quiz: [],
+        quizInfo: {},
         bookList: [],
         answer: [],
         answerCount: 0,
@@ -67,6 +42,14 @@ let storeInfo = {
         },
         setBookList (state, bookList) {
             state.bookList = bookList;
+        },
+        cleanQuizInfo (state) {
+            state.quizInfo = {};
+            state.quiz = [];
+            state.answer = [];
+            state.visited = [];
+            state.answerCount = 0;
+            state.questionNumber = 0;
         }
     },
     actions: {
@@ -87,7 +70,7 @@ let storeInfo = {
                 }
             });
         },
-        getBook ({ state, dispatch }, bookInfo, forceRefresh) {
+        getBook ({ state, dispatch }, bookInfo) {
             return new Promise((resolve, reject) => {
                 dispatch('getBookList', bookInfo.forceRefresh).then(() => {
                     let book = state.bookList.filter(book => {
@@ -104,6 +87,28 @@ let storeInfo = {
                             });
                     }
                 });
+            });
+        },
+        getQuiz ({ state }, bookInfo) {
+            return new Promise((resolve, reject) => {
+                if (state.quizInfo.name === bookInfo.name && state.quizInfo.author === bookInfo.author) {
+                    resolve(state.quiz);
+                } else {
+                    Vue.http.get(state.api + 'book/' + bookInfo.author + '/' + bookInfo.name + '/quiz',
+                        { credentials: true }).then(
+                        response => {
+                            state.quiz = response.body.quiz.question;
+                            state.quizInfo = bookInfo;
+                            state.quizInfo.id = response.body.quiz._id;
+                            state.quizInfo.deadline = response.body.deadline;
+                            resolve(state.quiz);
+                        })
+                    .catch(
+                        response => {
+                            reject(response);
+                        }
+                    )
+                }
             });
         }
     }

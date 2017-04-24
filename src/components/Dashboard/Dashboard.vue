@@ -57,13 +57,9 @@
                 return this.$cookie.get('group');
             },
             filteredBookList() {
-                if (this.searchContent === '') {
-                    return this.bookList;
-                } else {
-                    return this.bookList.filter(book => {
-                        return book.author.includes(this.searchContent) || book.name.includes(this.searchContent);
-                    });
-                }
+                return this.bookList.filter(book => {
+                    return book.open && (book.author.includes(this.searchContent) || book.name.includes(this.searchContent));
+                });
             }
         },
 

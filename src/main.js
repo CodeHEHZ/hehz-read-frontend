@@ -39,11 +39,12 @@ const routes = [
     { path: '/', component: Hello },
     { path: '/quiz/result', component: QuizResult },
     {
-        path: '/quiz', redirect: '/quiz/1', component: Quiz,
+        path: '/quiz/:author/:name', redirect: '/quiz/:author/:name/1', component: Quiz, name: 'quiz',
         children: [
             {
                 path: ':id',
-                component: Question
+                component: Question,
+                name: 'question'
             }
         ]
     },
