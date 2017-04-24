@@ -37,7 +37,7 @@ import storeInfo from './store';
 
 const routes = [
     { path: '/', component: Hello },
-    { path: '/quiz/result', component: QuizResult },
+    { path: '/quiz/:author/:name/result', component: QuizResult, name: 'quizResult' },
     {
         path: '/quiz/:author/:name', redirect: '/quiz/:author/:name/1', component: Quiz, name: 'quiz',
         children: [

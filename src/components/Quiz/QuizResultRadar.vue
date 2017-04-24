@@ -1,39 +1,30 @@
 <script>
-    import { Radar } from 'vue-chartjs'
+    import { Pie } from 'vue-chartjs'
 
-    export default Radar.extend({
+    export default Pie.extend({
+        props: ['score'],
         data: function() {
+
             return {
                 datacollection: {
-                    labels: ["创作背景", "故事背景", "小说情节", "小说内涵", "人物理解"],
+                    labels: ['得分', '失分'],
                     datasets: [{
-                        label: "平均分",
-                        backgroundColor: "rgba(179,181,198,0.2)",
-                        borderColor: "rgba(179,181,198,1)",
-                        pointBackgroundColor: "rgba(179,181,198,1)",
-                        pointBorderColor: "#fff",
-                        pointHoverBackgroundColor: "#fff",
-                        pointHoverBorderColor: "rgba(179,181,198,1)",
-                        data: [94, 99, 96, 97, 95]
-                    },{
-                        label: "你的得分",
-                        backgroundColor: "rgba(255,99,132,0.2)",
-                        borderColor: "rgba(255,99,132,1)",
-                        pointBackgroundColor: "rgba(255,99,132,1)",
-                        pointBorderColor: "#fff",
-                        pointHoverBackgroundColor: "#fff",
-                        pointHoverBorderColor: "rgba(255,99,132,1)",
-                        data: [91, 95, 100, 95, 90]
+                        data: (this.score || this.score === 0) ? [this.score, 100 - this.score] : [90, 10],
+                        backgroundColor: [
+                            '#2ECC71',
+                            '#86E2D5'
+                        ],
+                        hoverBackgroundColor: [
+                            '#2ECC71',
+                            '#86E2D5'
+                        ]
                     }]
                 },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    startAngle: 30,
-                    scale: {
-                        ticks: {
-                            beginAtZero: true
-                        }
+                    rotation: 30,
+                    animation: {
+                        animateRotate: true,
+                        animateScale: true
                     }
                 }
             }

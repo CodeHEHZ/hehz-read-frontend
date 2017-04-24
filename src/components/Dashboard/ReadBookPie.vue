@@ -1,24 +1,11 @@
 <script>
-    import { Pie } from 'vue-chartjs'
+    import { Pie, mixins } from 'vue-chartjs';
+    const { reactiveProp } = mixins;
 
     export default Pie.extend({
-        props: ['read', 'unread'],
+        mixins: [reactiveProp],
         data: function() {
             return {
-                datacollection: {
-                    labels: ['已读书目', '未读书目'],
-                    datasets: [{
-                        data: [this.read || 28, this.unread || 22],
-                        backgroundColor: [
-                            '#2ECC71',
-                            '#86E2D5'
-                        ],
-                        hoverBackgroundColor: [
-                            '#2ECC71',
-                            '#86E2D5'
-                        ]
-                    }]
-                },
                 options: {
                     rotation: 30,
                     animation: {
@@ -29,7 +16,7 @@
             }
         },
         mounted () {
-            this.renderChart(this.datacollection, this.options);
+            this.renderChart(this.chartData, this.options);
         }
     })
 </script>

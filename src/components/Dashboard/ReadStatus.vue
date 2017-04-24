@@ -1,6 +1,6 @@
 <template>
     <div class="read-status-full">
-        <read-book-pie class="read-book-pie"></read-book-pie>
+        <read-book-pie class="read-book-pie" :chart-data="datacollection"></read-book-pie>
         <div class="bookList table" v-if="passedBooks.length">
             <div class="bookListRow bookListHeader">
                 已通过测试书目
@@ -21,19 +21,57 @@
     export default {
         data() {
             return {
-                passedBooks: [{
-                    name: '江南皮革厂倒闭之谜',
-                    author: '狗狗'
-                }]
+                datacollection: {
+                    labels: ['已读书目', '未读书目'],
+                    datasets: [{
+                        data: [0, 1],
+                        backgroundColor: [
+                            '#2ECC71',
+                            '#86E2D5'
+                        ],
+                        hoverBackgroundColor: [
+                            '#2ECC71',
+                            '#86E2D5'
+                        ]
+                    }]
+                }
             }
         },
         components: {
             'read-book-pie': ReadBookPie
         },
-        methods: {
-            goTo(name) {
-                console.log(name, 11);
+        computed: {
+            passedBooks() {
+                return this.$store.state.bookList.filter(
+                    book => {
+                        for (let item of this.$store.state.readingStatus.filter(book => book.pass)) {
+                            if (book._id === item.id)
+                                return 1;
+                        }
+                        return 0;
+                    }
+                );
             }
+        },
+        methods: {
+            read() {
+                return this.$store.state.readingStatus.filter(book => book.pass).length;
+            },
+            unread() {
+                return this.$store.state.bookList.length - this.read();
+            }
+        },
+        mounted() {
+            this.$store.dispatch('getReadingStatus').then(
+                () => {
+                    this.$store.dispatch('getBookList').then(
+                        () => {
+                            this.$set(this.datacollection.datasets[0].data, '0', this.read() || 22);
+                            this.$set(this.datacollection.datasets[0].data, '1', this.unread() || 28);
+                        }
+                    );
+                }
+            );
         }
     }
 </script>

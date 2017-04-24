@@ -95,22 +95,7 @@
                         cancelButtonText: '取消',
                         type: this.unansweredQuestion().length === 0 ? 'success' : 'warning'
                     }).then(() => {
-                        this.submitting = true;
-                        this.fullscreenLoading = true;
-                        this.submitQuiz().then(
-                            response => {
-                                this.fullscreenLoading = false;
-                                this.$router.push('/quiz/result');
-                                this.$store.commit('cleanQuizInfo');
-                                console.log(response);
-                            },
-                            response => {
-                                this.fullscreenLoading = false;
-                                this.$message.error(response.body.message);
-                                this.$router.push('/dashboard');
-                                this.$store.commit('cleanQuizInfo');
-                            }
-                        );
+                        this.submitQuiz();
                     }).catch(() => {
                         this.$message({
                             type: 'info',
@@ -184,15 +169,55 @@
                         minute = Math.floor(second / 60);
                     second %= 60;
                     this.time = minute + ' 分 ' + second + ' 秒';
+                    if (this.deadline - Date.now() < 0) {
+                        this.submitQuiz();
+                    }
                 }
             },
             submitQuiz() {
-                let postData = {
-                    quiz: this.$store.state.quizInfo.id,
-                    answer: this.$store.state.answer
-                };
-                return this.$http.post(this.$store.state.api + 'book/' + this.$route.params.author + '/' + this.$route.params.name + '/quiz',
-                    postData, { credentials: true });
+                this.submitting = true;
+                this.fullscreenLoading = true;
+                if (this.$store.state.quizInfo.id) {
+                    let postData = {
+                        quiz: this.$store.state.quizInfo.id,
+                        answer: this.$store.state.answer
+                    };
+                    this.$http.post(this.$store.state.api + 'book/' + this.$route.params.author + '/' + this.$route.params.name + '/quiz',
+                        postData, { credentials: true }).then(
+                        response => {
+                            this.$store.dispatch('getReadingStatus', true).then(
+                                () => {
+                                    this.submitting = false;
+                                    this.fullscreenLoading = false;
+                                    this.$router.push({
+                                        name: 'quizResult',
+                                        params: {
+                                            author: this.$route.params.author,
+                                            name: this.$route.params.name
+                                        }
+                                    });
+                                    this.$store.commit('cleanQuizInfo');
+                                    this.$store.commit('setTempScore', response.body.score);
+                                }
+                            ).catch(
+                                response => {
+                                    this.submitting = false;
+                                    this.fullscreenLoading = false;
+                                    this.$message.error(response.body.message);
+                                    this.$store.commit('cleanQuizInfo');
+                                    this.$store.commit('setScore', response.body.score);
+                                }
+                            );
+                        },
+                        response => {
+                            this.submitting = false;
+                            this.fullscreenLoading = false;
+                            this.$message.error(response.body.message);
+                            this.$router.push('/dashboard');
+                            this.$store.commit('cleanQuizInfo');
+                        }
+                    );
+                }
             }
         },
         beforeMount() {
@@ -246,6 +271,7 @@
         top: 0;
         color: #03a678;
         margin: .5rem;
+        min-width: 10rem;
     }
 
     .buttons {

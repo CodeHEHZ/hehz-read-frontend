@@ -85,6 +85,7 @@
             if (this.$store.state.bookList.length === 0) {
                 this.$store.dispatch('getBookList').then();
             }
+            this.$store.dispatch('getReadingStatus', true);
         },
 
         watch: {

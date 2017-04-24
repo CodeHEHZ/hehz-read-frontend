@@ -1,7 +1,8 @@
 <template>
     <el-card :body-style="{ padding: '0' }" class="book">
         <img :src="cover" class="book-cover" @click="goToDetail" @load="visible()" :style="{ opacity }">
-        <div style="padding: 14px;">
+        <div class="book-container" @click="goToDetail">
+            <el-tag :type="status === '已通过' ? 'success' : ''" v-show="status" class="tag">{{ status }}</el-tag>
             <span>{{ name }}</span>
             <div class="bottom">
                 <span class="author">{{ author }}</span>
@@ -15,7 +16,8 @@
     export default{
         data: function() {
             return {
-                opacity: 0
+                opacity: 0,
+                status: null
             }
         },
 
@@ -32,7 +34,15 @@
             visible() {
                 this.opacity = 1;
             }
-       },
+        },
+
+        mounted() {
+            this.$store.dispatch('getSingleBookStatus', this.bookInfo).then(
+                status => {
+                    this.status = status;
+                }
+            );
+        },
 
         props: ['bookInfo'] //format: {name, author, imgUrl, ref}
 
@@ -44,6 +54,10 @@
 <style scoped>
     .book {
         cursor: pointer;
+    }
+
+    .tag {
+        margin-right: .25rem;
     }
 
     .author {
@@ -71,7 +85,11 @@
         object-fit: cover;
         background-color: #eef6f6;
         transition: all .4s;
-     }
+    }
+
+    .book-container {
+        padding: 1rem;
+    }
 
     .clearfix:before,
     .clearfix:after {
@@ -81,6 +99,10 @@
 
     .clearfix:after {
         clear: both
+    }
+
+    span {
+        line-height: 24px;
     }
 
     @media (max-width: 600px) {

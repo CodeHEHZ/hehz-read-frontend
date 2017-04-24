@@ -14,10 +14,12 @@
                     </div>
                 </div>
                 <div class="button-container">
-                    <el-button type="primary" icon="search"
-                               class="test-button" @click="test"
+                    <el-button type="primary"
+                               :icon="status === '已通过' ? 'check' : 'search'"
+                               class="test-button"
+                               @click="() => { status !== '已通过' ? test() : 1 }"
                     >
-                        开始测试
+                        {{ status === '已通过' ? '已通过测试' : '开始测试' }}
                     </el-button>
                 </div>
             </div>
@@ -35,6 +37,7 @@
                 name: this.inputName || this.$route.params.name,
                 author: this.inputAuthor || this.$route.params.author,
                 opacity: 0,
+                status: null,
                 book: {}
             };
         },
@@ -60,11 +63,22 @@
                     this.$message.warning('您找的书不存在');
                     this.$router.push('/dashboard');
                 });
+            },
+            updateStatus() {
+                this.$store.dispatch('getSingleBookStatus', {
+                    author: this.author,
+                    name: this.name
+                }).then(
+                    status => {
+                        this.status = status;
+                    }
+                );
             }
         },
 
         created() {
             this.getBook();
+            this.updateStatus();
         },
 
         beforeRouteUpdate (to, from, next) {
@@ -77,8 +91,10 @@
                 this.name = val;
                 this.author = this.inputAuthor;
                 this.opacity = 0;
+                this.status = null;
                 this.book = {};
                 this.getBook();
+                this.updateStatus();
             }
         },
         props: ['inputName', 'inputAuthor']

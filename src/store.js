@@ -1,7 +1,9 @@
 import Vue from 'vue';
 import VueResource from 'vue-resource';
+import VueCookie from 'vue-cookie';
 
 Vue.use(VueResource);
+Vue.use(VueCookie);
 
 Vue.http.options.crossOrigin = true;
 Vue.http.options.credentials = true;
@@ -15,6 +17,7 @@ let storeInfo = {
         answerCount: 0,
         questionNumber: 0,
         visited: [],
+        readingStatus: [],
         api: 'https://api.read.hehlzx.cn/',
         static: 'https://static.read.hehlzx.cn/',
         uploadUrl: 'https://api.read.hehlzx.cn/upload'
@@ -50,6 +53,10 @@ let storeInfo = {
             state.visited = [];
             state.answerCount = 0;
             state.questionNumber = 0;
+            console.log(state.quizInfo)
+        },
+        setTempScore (state, m) {
+            state.tempScore = m;
         }
     },
     actions: {
@@ -102,13 +109,47 @@ let storeInfo = {
                             state.quizInfo.id = response.body.quiz._id;
                             state.quizInfo.deadline = response.body.deadline;
                             resolve(state.quiz);
-                        })
-                    .catch(
+                        }
+                    ).catch(
+                        response => {
+                            reject(response);
+                        }
+                    );
+                }
+            });
+        },
+        getReadingStatus ({ state }, forceRefresh) {
+            return new Promise((resolve, reject) => {
+                if (state.readingStatus && !forceRefresh) {
+                    resolve(state.readingStatus);
+                } else {
+                    Vue.http.get(state.api + 'user/' + ('admin') + '/status').then(
+                        response => {
+                            state.readingStatus = response.body.status;
+                            resolve(state.readingStatus);
+                        },
                         response => {
                             reject(response);
                         }
                     )
                 }
+            });
+        },
+        getSingleBookStatus ({ state, dispatch }, bookInfo) {
+            return new Promise((resolve, reject) => {
+                dispatch('getBook', {
+                    author: bookInfo.author,
+                    name: bookInfo.name
+                }).then(
+                    book => {
+                        let temp = state.readingStatus.filter(status => status.id === book._id);
+                        if (temp.length > 0) {
+                            resolve(temp[0].cooldown ? '不可考试' : (temp[0].pass ? '已通过' : '未通过'));
+                        } else {
+                            resolve('未通过');
+                        }
+                    }
+                );
             });
         }
     }

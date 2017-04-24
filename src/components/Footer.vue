@@ -22,6 +22,7 @@
         align-items: center;
         width: 100%;
         z-index: 3;
+        visibility: hidden;
     }
 
     .split {
@@ -44,6 +45,7 @@
         align-items: center;
         text-decoration: none;
         color: grey !important;
+        visibility: visible;
     }
 
     p {
