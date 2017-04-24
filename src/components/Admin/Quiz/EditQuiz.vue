@@ -1,7 +1,10 @@
 <template>
     <div class="full">
         <div class="container">
-            <h2>《{{ $route.params.name }}》题库</h2>
+            <div class="top">
+                <h2>《{{ $route.params.name }}》题库</h2>
+                <el-tag :type="open ? null : 'gray'">{{ open ? '已开放' : (open === false ? '未开放' : '查询中') }}</el-tag>
+            </div>
             <div class="form">
                 <p>题目</p>
                 <el-input
@@ -24,6 +27,7 @@
                 <el-radio label="D">选项 D</el-radio>
             </el-radio-group>
             <div class="submit-container">
+                <el-button @click="openBook">开放测试</el-button>
                 <el-button type="primary" @click="createQuestion">创建题目</el-button>
             </div>
 
@@ -71,31 +75,35 @@
 <script>
     export default {
         data: function() {
+            let defaultOptions = [{
+                label: 'A',
+                text: '',
+                placeholder: '陀思妥耶夫斯基',
+                next: 'B'
+            }, {
+                label: 'B',
+                text: '',
+                placeholder: '托尔斯泰斯基',
+                next: 'C'
+            }, {
+                label: 'C',
+                text: '',
+                placeholder: '兔斯基',
+                next: 'D'
+            }, {
+                label: 'D',
+                text: '',
+                placeholder: '老司机',
+                next: 'last'
+            }];
+
             return {
                 author: this.$route.params.author,
                 name: this.$route.params.name,
+                open: null,
                 question: '',
-                options: [{
-                    label: 'A',
-                    text: '',
-                    placeholder: '陀思妥耶夫斯基',
-                    next: 'B'
-                }, {
-                    label: 'B',
-                    text: '',
-                    placeholder: '托尔斯泰斯基',
-                    next: 'C'
-                }, {
-                    label: 'C',
-                    text: '',
-                    placeholder: '兔斯基',
-                    next: 'D'
-                }, {
-                    label: 'D',
-                    text: '',
-                    placeholder: '老司机',
-                    next: 'last'
-                }],
+                defaultOptions,
+                options: defaultOptions,
                 correctAnswer: null,
                 book: {},
                 existingQuestions: []
@@ -142,27 +150,11 @@
                         this.$http.post(this.$store.state.api + 'question/new', postData, { credentials: true }).then(
                             () => {
                                 this.question = '';
-                                this.options = Object.assign({}, this.options, [{
-                                    label: 'A',
-                                    text: '',
-                                    placeholder: '陀思妥耶夫斯基',
-                                    next: 'B'
-                                }, {
-                                    label: 'B',
-                                    text: '',
-                                    placeholder: '托尔斯泰斯基',
-                                    next: 'C'
-                                }, {
-                                    label: 'C',
-                                    text: '',
-                                    placeholder: '兔斯基',
-                                    next: 'D'
-                                }, {
-                                    label: 'D',
-                                    text: '',
-                                    placeholder: '老司机',
-                                    next: 'last'
-                                }]);
+                                for (let i = 0; i < 4; i++) {
+                                    this.$set(this.options[i], 'text', '');
+                                }
+                                this.correctAnswer = null;
+                                this.switchFocus('question');
                                 this.$message.success('创建成功');
                                 this.updateQuestionCollection()
                             },
@@ -177,7 +169,8 @@
                 console.log(question);
             },
             updateQuestionCollection() {
-                this.$http.get(this.$store.state.api + 'book/' + this.$route.params.author + '/' + this.$route.params.name + '/question').then(
+                this.$http.get(this.$store.state.api + 'book/' + this.$route.params.author + '/' + this.$route.params.name + '/question',
+                    { credentials: true }).then(
                     response => {
                         let existingQuestions = response.body.question;
                         for (let i = 0; i < existingQuestions.length; i++) {
@@ -186,10 +179,34 @@
                         this.existingQuestions = existingQuestions;
                     }
                 );
+            },
+            getBookOpenness() {
+                this.$store.dispatch('getBook', {
+                    author: this.$route.params.author,
+                    name: this.$route.params.name,
+                    forceRefresh: true
+                }).then(
+                    book => {
+                        this.open = book.open;
+                    }
+                );
+            },
+            openBook() {
+                this.$http.get(this.$store.state.api + 'book/' + this.$route.params.author + '/' + this.$route.params.name + '/open',
+                    { credentials: true }).then(
+                    response => {
+                        this.$message.success('开放成功');
+                        this.getBookOpenness();
+                    },
+                    response => {
+                        this.$message.error(response.body.message);
+                    }
+                );
             }
         },
         mounted() {
             this.updateQuestionCollection();
+            this.getBookOpenness();
         }
     }
 </script>
@@ -207,6 +224,12 @@
         width: 100%;
         max-width: 40rem;
         margin: .5rem;
+    }
+
+    .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
     }
 
     .form {
@@ -256,7 +279,6 @@
     }
 
     h2 {
-        margin: 0 0 1rem 0;
         font-family: Arial, "Lucida Sans", "Lucida Sans Regular", "SimHei", "黑体", "STHeiti", "华文黑体", serif;
     }
 </style>

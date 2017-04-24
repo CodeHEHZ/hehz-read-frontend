@@ -87,9 +87,9 @@ let storeInfo = {
                 }
             });
         },
-        getBook ({ state, dispatch }, bookInfo) {
+        getBook ({ state, dispatch }, bookInfo, forceRefresh) {
             return new Promise((resolve, reject) => {
-                dispatch('getBookList').then(() => {
+                dispatch('getBookList', bookInfo.forceRefresh).then(() => {
                     let book = state.bookList.filter(book => {
                         return book.author === bookInfo.author && book.name === bookInfo.name;
                     });
