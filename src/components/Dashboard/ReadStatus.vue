@@ -1,6 +1,6 @@
 <template>
     <div class="read-status-full">
-        <read-book-pie class="read-book-pie" :chart-data="datacollection"></read-book-pie>
+        <read-book-pie class="read-book-pie" :chart-data="dataCollection" :updated="dataCollectionUpdated"></read-book-pie>
         <div class="bookList table" v-if="passedBooks.length">
             <div class="bookListRow bookListHeader">
                 已通过测试书目
@@ -21,7 +21,7 @@
     export default {
         data() {
             return {
-                datacollection: {
+                dataCollection: {
                     labels: ['已读书目', '未读书目'],
                     datasets: [{
                         data: [0, 1],
@@ -34,7 +34,8 @@
                             '#86E2D5'
                         ]
                     }]
-                }
+                },
+                dataCollectionUpdated: false
             }
         },
         components: {
@@ -66,8 +67,9 @@
                 () => {
                     this.$store.dispatch('getBookList').then(
                         () => {
-                            this.$set(this.datacollection.datasets[0].data, '0', this.read() || 22);
-                            this.$set(this.datacollection.datasets[0].data, '1', this.unread() || 28);
+                            this.$set(this.dataCollection.datasets[0].data, '0', this.read() || 22);
+                            this.$set(this.dataCollection.datasets[0].data, '1', this.unread() || 28);
+                            this.dataCollectionUpdated = true;
                         }
                     );
                 }

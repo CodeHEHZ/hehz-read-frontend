@@ -120,9 +120,11 @@ let storeInfo = {
         },
         getReadingStatus ({ state }, forceRefresh) {
             return new Promise((resolve, reject) => {
-                if (state.readingStatus && !forceRefresh) {
+                if (state.readingStatus.length > 0 && !forceRefresh) {
                     resolve(state.readingStatus);
                 } else {
+
+                    // 这里记得改
                     Vue.http.get(state.api + 'user/' + ('admin') + '/status').then(
                         response => {
                             state.readingStatus = response.body.status;
@@ -151,6 +153,29 @@ let storeInfo = {
                     }
                 );
             });
+        },
+        getScore ({ state, dispatch }, bookInfo) {
+            return new Promise((resolve, reject) => {
+                dispatch('getBook', {
+                    author: bookInfo.author,
+                    name: bookInfo.name
+                }).then(
+                    book => {
+                        dispatch('getReadingStatus').then(
+                            status => {
+                                let temp = status.filter(status => status.id === book._id);
+                                if (temp.length > 0) {
+                                    resolve(temp[0].score);
+                                } else {
+                                    reject('未参加测试');
+                                }
+                            }
+                        ).catch(
+                            response => reject(response)
+                        );
+                    }
+                );
+            })
         }
     }
 };

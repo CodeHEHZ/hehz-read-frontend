@@ -1,25 +1,12 @@
 <script>
-    import { Pie } from 'vue-chartjs'
+    import { Pie, mixins } from 'vue-chartjs';
+    const { reactiveProp } = mixins;
 
     export default Pie.extend({
-        props: ['score'],
+        mixins: [reactiveProp],
+        props: ['scoreUpdated'],
         data: function() {
-
             return {
-                datacollection: {
-                    labels: ['得分', '失分'],
-                    datasets: [{
-                        data: (this.score || this.score === 0) ? [this.score, 100 - this.score] : [90, 10],
-                        backgroundColor: [
-                            '#2ECC71',
-                            '#86E2D5'
-                        ],
-                        hoverBackgroundColor: [
-                            '#2ECC71',
-                            '#86E2D5'
-                        ]
-                    }]
-                },
                 options: {
                     rotation: 30,
                     animation: {
@@ -30,7 +17,12 @@
             }
         },
         mounted () {
-            this.renderChart(this.datacollection, this.options);
+            this.renderChart(this.chartData, this.options);
+        },
+        watch: {
+            'updated': function() {
+                this._chart.update();
+            }
         }
     })
 </script>

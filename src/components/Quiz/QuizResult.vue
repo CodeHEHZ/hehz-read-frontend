@@ -2,7 +2,7 @@
     <div class="full">
         <div class="result">
             <p>{{ score >= 90 ? '恭喜' : '很遗憾' }}，你的得分为 {{ score }} 分，{{ score >= 90 ? '' : '未能' }}通过《{{ $route.params.name }}》的测试。</p>
-            <result-radar :score="score"></result-radar>
+            <result-radar :chart-data="dataCollection" :updated="scoreUpdated"></result-radar>
         </div>
     </div>
 </template>
@@ -13,16 +13,42 @@
     export default {
         data: function() {
             return {
-                score: this.$store.state.tempScore,
-                pass: false
+                score: null,
+                pass: false,
+                scoreUpdated: false,
+                dataCollection: {
+                    labels: ['得分', '失分'],
+                        datasets: [{
+                        data: [0, 1],
+                        backgroundColor: [
+                            '#2ECC71',
+                            '#86E2D5'
+                        ],
+                        hoverBackgroundColor: [
+                            '#2ECC71',
+                            '#86E2D5'
+                        ]
+                    }]
+                }
             }
         },
         created() {
-            this.$store.commit('setTempScore', null);
-            if (!this.score && this.score !== 0) {
-                this.$router.push('/dashboard');
-                this.$message.error('未找到该书的测试成绩');
-            }
+            this.$store.dispatch('getScore', {
+                author: this.$route.params.author,
+                name: this.$route.params.name
+            }).then(
+                score => {
+                    this.score = score;
+                    this.$set(this.dataCollection.datasets[0].data, '0', score);
+                    this.$set(this.dataCollection.datasets[0].data, '1', 100 - score);
+                    this.scoreUpdated = true;
+                }
+            ).catch(
+                () => {
+                    this.$message.error('未找到该书成绩');
+                    this.$router.push('/dashboard');
+                }
+            )
         },
         components: {
             'result-radar': QuizResultRadar

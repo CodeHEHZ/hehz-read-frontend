@@ -4,6 +4,7 @@
 
     export default Pie.extend({
         mixins: [reactiveProp],
+        props: ['updated'],
         data: function() {
             return {
                 options: {
@@ -17,6 +18,11 @@
         },
         mounted () {
             this.renderChart(this.chartData, this.options);
+        },
+        watch: {
+            'updated': function() {
+                this._chart.update();
+            }
         }
     })
 </script>
