@@ -141,6 +141,7 @@
 
     a, span, p {
         line-height: 125%;
+        text-align: justify;
     }
 
     .el-button {
@@ -190,6 +191,10 @@
 
     .el-tag {
         transition: all .3s;
+    }
+
+    .el-message-box, .el-dialog--small {
+        width: inherit;
     }
 
     .geetest_holder.geetest_wind {

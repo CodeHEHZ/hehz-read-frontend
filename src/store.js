@@ -144,17 +144,23 @@ let storeInfo = {
                     name: bookInfo.name
                 }).then(
                     book => {
-                        let temp = state.readingStatus.filter(status => status.id === book._id);
-                        if (temp.length > 0) {
-                            resolve(temp[0].cooldown ? '不可考试' : (temp[0].pass ? '已通过' : '未通过'));
-                        } else {
-                            resolve('未通过');
-                        }
+                        dispatch('getReadingStatus').then(
+                            status => {
+                                let temp = status.filter(status => status.id === book._id);
+                                if (temp.length > 0) {
+                                    resolve(temp[0].cooldown ? '不可考试' : (temp[0].pass ? '已通过' : '未通过'));
+                                } else {
+                                    resolve('未通过');
+                                }
+                            }
+                        ).catch(
+                            response => reject(response)
+                        );
                     }
                 );
             });
         },
-        getScore ({ state, dispatch }, bookInfo) {
+        getScore ({ dispatch }, bookInfo) {
             return new Promise((resolve, reject) => {
                 dispatch('getBook', {
                     author: bookInfo.author,
@@ -174,7 +180,9 @@ let storeInfo = {
                             response => reject(response)
                         );
                     }
-                );
+                ).catch(
+                    response => reject(response)
+                )
             })
         }
     }

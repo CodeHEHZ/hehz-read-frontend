@@ -48,7 +48,7 @@
                     this.$message.error('未找到该书成绩');
                     this.$router.push('/dashboard');
                 }
-            )
+            );
         },
         components: {
             'result-radar': QuizResultRadar

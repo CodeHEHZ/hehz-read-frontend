@@ -12,14 +12,16 @@
                             {{ tag }}
                         </el-tag>
                     </div>
+                    <el-tag type="danger" class="wrap" v-if="status === '不可考试'">同本书两次测试需间隔 48 小时</el-tag>
                 </div>
                 <div class="button-container">
                     <el-button type="primary"
-                               :icon="status === '已通过' ? 'check' : 'search'"
+                               :icon="status === '已通过' ? 'check' : (status === '不可考试' ? 'close' : 'search')"
                                class="test-button"
-                               @click="() => { status !== '已通过' ? test() : 1 }"
+                               :disabled="status === '不可考试'"
+                               @click="() => { status !== '已通过' ? ( status === '不可考试' ? 0 : test()) : result() }"
                     >
-                        {{ status === '已通过' ? '已通过测试' : '开始测试' }}
+                        {{ status === '已通过' ? '已通过' : (status === '不可考试' ? status : '开始测试') }}
                     </el-button>
                 </div>
             </div>
@@ -47,6 +49,15 @@
             test() {
                 this.$router.push({
                     name: 'quiz',
+                    params: {
+                        name: this.name,
+                        author: this.author
+                    }
+                });
+            },
+            result() {
+                this.$router.push({
+                    name: 'quizResult',
                     params: {
                         name: this.name,
                         author: this.author
@@ -118,7 +129,6 @@
         object-fit: contain;
         margin: 0 0 1rem 0;
         transition: all .3s;
-        background-color: #eef6f6;
     }
 
     .cover-and-info {
@@ -164,6 +174,12 @@
         color: #fff;
     }
 
+    .wrap {
+        white-space: normal;
+        height: inherit;
+        margin-bottom: .5rem;
+    }
+
     .button-container {
         display: flex;
         flex: 1;
@@ -176,6 +192,10 @@
             width: 50%;
             height: 15rem;
             margin: 0;
+        }
+
+        .cover-and-info {
+            align-items: center;
         }
 
         .book-name {

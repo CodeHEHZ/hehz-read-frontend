@@ -3,12 +3,17 @@
         <read-book-pie class="read-book-pie" :chart-data="dataCollection" :updated="dataCollectionUpdated"></read-book-pie>
         <div class="bookList table" v-if="passedBooks.length">
             <div class="bookListRow bookListHeader">
-                已通过测试书目
+                <span>已通过测试书目</span>
+                <div @click="() => { showPassedBooks = !showPassedBooks }">
+                    <el-tag v-show="passedBooks"> {{!passedBooks || passedBooks.length }} </el-tag>
+                    <i :class="showPassedBooks ? 'el-icon-caret-top' : 'el-icon-caret-bottom'"></i>
+                </div>
             </div>
-            <router-link v-for="book of passedBooks" :key="book"
+            <router-link v-for="(book, index) of passedBooks" :key="book" v-show="showPassedBooks"
                 :to="{ name: 'BookDetail', params: { author: book.author, name: book.name } }">
                 <div class="book bookListRow">
-                    <span class="link">{{ book.name }}</span>
+                    <span>{{ book.name }}</span>
+                    <el-tag type="gray" v-if="book.score">{{ book.score + ' 分' }}</el-tag>
                 </div>
             </router-link>
         </div>
@@ -35,7 +40,8 @@
                         ]
                     }]
                 },
-                dataCollectionUpdated: false
+                dataCollectionUpdated: false,
+                showPassedBooks: true
             }
         },
         components: {
@@ -43,7 +49,7 @@
         },
         computed: {
             passedBooks() {
-                return this.$store.state.bookList.filter(
+                let books = this.$store.state.bookList.filter(
                     book => {
                         for (let item of this.$store.state.readingStatus.filter(book => book.pass)) {
                             if (book._id === item.id)
@@ -52,6 +58,17 @@
                         return 0;
                     }
                 );
+                for (let i = 0; i < books.length; i++) {
+                    this.$store.dispatch('getScore', {
+                        author: books[i].author,
+                        name: books[i].name
+                    }).then(
+                        score => {
+                            books[i].score = score;
+                        }
+                    );
+                }
+                return books;
             }
         },
         methods: {
@@ -60,6 +77,9 @@
             },
             unread() {
                 return this.$store.state.bookList.length - this.read();
+            },
+            getScore(author, name) {
+
             }
         },
         mounted() {
@@ -107,12 +127,13 @@
     .bookListRow {
         display: flex;
         align-items: center;
-        padding: 0 1rem;
+        padding: .25rem 1rem;
         border-bottom: 1px solid rgb(223, 236, 233);
         vertical-align: center;
-        height: 2.5rem;
+        min-height: 2.5rem;
         transition: all .2s;
         text-decoration: none;
+        justify-content: space-between;
     }
 
     .bookListRow:last-child {
@@ -126,11 +147,18 @@
     .bookListHeader {
         background-color: rgb(238, 246, 246);
         font-weight: bold;
+        display: flex;
+        justify-content: space-between;
     }
 
     a {
         text-decoration: none !important;
         color: #000;
+    }
+
+    i {
+        color: rgb(131, 165, 160);
+        margin-left: .5rem;
     }
 
     @media(max-width: 600px) {

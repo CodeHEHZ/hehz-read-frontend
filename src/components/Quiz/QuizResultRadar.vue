@@ -4,7 +4,7 @@
 
     export default Pie.extend({
         mixins: [reactiveProp],
-        props: ['scoreUpdated'],
+        props: ['updated'],
         data: function() {
             return {
                 options: {
@@ -16,12 +16,17 @@
                 }
             }
         },
+        methods: {
+            update() {
+                this._chart.update();
+            }
+        },
         mounted () {
             this.renderChart(this.chartData, this.options);
         },
         watch: {
             'updated': function() {
-                this._chart.update();
+                this.update();
             }
         }
     })
