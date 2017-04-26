@@ -1,6 +1,7 @@
 import 'core-js/es6/promise';
 import 'core-js/fn/string/includes';
 import 'core-js/modules/es7.array.includes';
+import 'core-js/modules/es6.number.is-integer';
 
 import Vue from 'vue';
 import VueRouter from 'vue-router';
@@ -19,9 +20,9 @@ const Hello = r => require.ensure([], () => r(require('./components/Hello.vue'))
 const Dashboard = r => require.ensure([], () => r(require('./components/Dashboard/Dashboard.vue')), 'group-dashboard');
 const BookDetail = r => require.ensure([], () => r(require('./components/Dashboard/BookDetail.vue')), 'group-dashboard');
 
-const Quiz = r => require.ensure([], () => r(require('./components/Quiz/Quiz.vue')), 'group-quiz');
-const Question = r => require.ensure([], () => r(require('./components/Quiz/Question.vue')), 'group-quiz');
-const QuizResult = r => require.ensure([], () => r(require('./components/Quiz/QuizResult.vue')), 'group-quiz');
+const Quiz = r => require.ensure([], () => r(require('./components/Quiz/Quiz.vue')), 'group-dashboard');
+const Question = r => require.ensure([], () => r(require('./components/Quiz/Question.vue')), 'group-dashboard');
+const QuizResult = r => require.ensure([], () => r(require('./components/Quiz/QuizResult.vue')), 'group-dashboard');
 
 const Admin = r => require.ensure([], () => r(require('./components/Admin/Admin.vue')), 'group-admin');
 
