@@ -19,7 +19,7 @@
         <div class="sponsors">
             <span>由</span>
             <a class="sponsor" href="https://qingcloud.com/about/nonprofits" title="感谢青云免费提供云主机服务" target="_blank">
-                <img class="sponsor" src="../../assets/qingcloud.jpg">
+                <img class="sponsor sponsor-qingcloud" src="../../assets/qingcloud.jpg">
             </a>
             <a class="sponsor" href="https://www.upyun.com/league" title="感谢又拍云提供云加速服务" target="_blank">
                 <img class="sponsor sponsor-upyun" src="../../assets/upyun.png">
@@ -168,7 +168,6 @@
     .sponsor {
         height: 100%;
         margin-top: .1rem;
-        width: auto;
     }
 
     span {
@@ -176,8 +175,13 @@
         font-size: .8rem;
     }
 
+    .sponsor-qingcloud {
+        width: 8rem;
+    }
+
     .sponsor-upyun {
         margin-top: 0;
+        width: 4rem;
     }
 
     .copyright {
