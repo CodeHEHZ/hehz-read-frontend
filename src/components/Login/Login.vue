@@ -168,6 +168,7 @@
     .sponsor {
         height: 100%;
         margin-top: .1rem;
+        width: auto;
     }
 
     span {

@@ -79,7 +79,9 @@
     body {
         margin: 0;
         height: 100%;
-        font-family: Georgia, 'Times New Roman', Times, "Microsoft YaHei", "微软雅黑", "SimHei", "黑体", "STXihei", "华文细黑", serif;
+        font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', Arial, sans-serif;
+        line-height: 1.6;
+        -webkit-font-smoothing: subpixel-antialiased;
     }
 
     #app {
@@ -213,13 +215,13 @@
     }
 
     .vue-typer .custom.char {
-        font-size: 5rem;
+        font-size: 80px;
         font-weight: bold;
         color: #03a678 !important;
-        line-height: 100%;
-        text-align: end;
+        line-height: 88px;
+        text-align: center;
         background-color: #fff;
-        padding: .25rem;
+        padding: 4px;
         font-family: SimHei, PingFang SC, Hiragino Sans GB, STHeiti;
         visibility: visible;
         width: 88px;
@@ -227,11 +229,12 @@
     }
 
     .vue-typer .custom.caret {
-        width: .5rem;
         height: 5rem;
-        background-color: #03a678;
+        width: 0;
+        background-color: transparent;
         margin-left: .5rem;
         margin-bottom: .25rem;
+        border-left: solid .5rem #03a678;
         border-right: solid .35rem #fff;
         visibility: visible;
     }
