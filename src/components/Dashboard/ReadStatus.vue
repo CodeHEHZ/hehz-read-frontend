@@ -1,6 +1,10 @@
 <template>
     <div class="read-status-full">
-        <read-book-pie class="read-book-pie" :chart-data="dataCollection" :updated="dataCollectionUpdated"></read-book-pie>
+        <el-progress type="circle"
+                     :percentage="Math.round((passedBooks.length / $store.state.bookList.length) * 100)"
+                     :stroke-width="10"
+        >
+        </el-progress>
         <div class="bookList table" v-if="passedBooks.length">
             <div class="bookListRow bookListHeader">
                 <span>已通过测试书目</span>
@@ -21,8 +25,6 @@
 </template>
 
 <script>
-    import ReadBookPie from './ReadBookPie.vue'
-
     export default {
         data() {
             return {
@@ -45,9 +47,6 @@
                 dataCollectionUpdated: false,
                 showPassedBooks: true
             }
-        },
-        components: {
-            'read-book-pie': ReadBookPie
         },
         computed: {
             passedBooks() {
@@ -111,11 +110,6 @@
         flex-direction: column;
         width: 15rem;
         padding: 1rem;
-    }
-
-    .read-book-pie {
-        width: 100%;
-        height: 250px;
     }
 
     .table {

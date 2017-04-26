@@ -192,6 +192,20 @@
         margin-bottom: 2rem;
     }
 
+    .el-progress--circle {
+        display: flex;
+        justify-content: center;
+    }
+
+    .el-progress-circle {
+        width: 80% !important;
+        height: auto !important;
+    }
+
+    .el-progress__text {
+        font-size: 2rem !important;
+    }
+
     .component-fade-enter-active, .component-fade-leave-active {
         transition: opacity .3s ease;
     }
