@@ -180,7 +180,7 @@
 
     .typer {
         visibility: visible;
-        width: 24rem;
+        width: 410px;
         padding: 1rem;
     }
 

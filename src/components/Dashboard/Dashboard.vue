@@ -1,7 +1,7 @@
 <template>
     <div class="full">
         <div class="center">
-            <read-status class="read-status" v-show="readStatusVisible" @go="goTo(book)"></read-status>
+            <read-status class="read-status" v-show="readStatusVisible" @go="goTo($store.state.tempBook)"></read-status>
             <div class="books-with-title">
                 <div class="title">
                     <p>全部书目</p>

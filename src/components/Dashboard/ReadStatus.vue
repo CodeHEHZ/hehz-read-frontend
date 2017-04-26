@@ -4,18 +4,18 @@
         <div class="bookList table" v-if="passedBooks.length">
             <div class="bookListRow bookListHeader">
                 <span>已通过测试书目</span>
-                <div @click="() => { showPassedBooks = !showPassedBooks }">
+                <div @click="() => { showPassedBooks = !showPassedBooks }" class="toggle-button">
                     <el-tag v-show="passedBooks"> {{!passedBooks || passedBooks.length }} </el-tag>
                     <i :class="showPassedBooks ? 'el-icon-caret-top' : 'el-icon-caret-bottom'"></i>
                 </div>
             </div>
-            <router-link v-for="(book, index) of passedBooks" :key="book" v-show="showPassedBooks"
-                :to="{ name: 'BookDetail', params: { author: book.author, name: book.name } }">
+            <div v-for="(book, index) of passedBooks" :key="book" v-show="showPassedBooks"
+                @click="goTo(book)">
                 <div class="book bookListRow">
                     <span>{{ book.name }}</span>
                     <el-tag type="gray" v-if="book.score">{{ book.score + ' 分' }}</el-tag>
                 </div>
-            </router-link>
+            </div>
         </div>
     </div>
 </template>
@@ -78,8 +78,9 @@
             unread() {
                 return this.$store.state.bookList.length - this.read();
             },
-            getScore(author, name) {
-
+            goTo(book) {
+                this.$store.commit('setTempBook', book);
+                this.$emit('go');
             }
         },
         mounted() {
@@ -134,6 +135,7 @@
         transition: all .2s;
         text-decoration: none;
         justify-content: space-between;
+        cursor: pointer;
     }
 
     .bookListRow:last-child {
@@ -149,6 +151,10 @@
         font-weight: bold;
         display: flex;
         justify-content: space-between;
+    }
+
+    .toggle-button {
+        cursor: pointer;
     }
 
     a {

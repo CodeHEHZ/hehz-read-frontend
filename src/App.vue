@@ -194,7 +194,7 @@
     }
 
     .el-message-box, .el-dialog--small {
-        width: inherit;
+        min-width: 50%;
     }
 
     .geetest_holder.geetest_wind {
@@ -222,6 +222,8 @@
         padding: .25rem;
         font-family: SimHei, PingFang SC, Hiragino Sans GB, STHeiti;
         visibility: visible;
+        width: 88px;
+        height: 88px;
     }
 
     .vue-typer .custom.caret {

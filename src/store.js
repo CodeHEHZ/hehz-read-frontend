@@ -18,6 +18,7 @@ let storeInfo = {
         questionNumber: 0,
         visited: [],
         readingStatus: [],
+        tempBook: {},
         api: 'https://api.read.hehlzx.cn/',
         static: 'https://static.read.hehlzx.cn/',
         uploadUrl: 'https://api.read.hehlzx.cn/upload'
@@ -57,6 +58,9 @@ let storeInfo = {
         },
         setTempScore (state, m) {
             state.tempScore = m;
+        },
+        setTempBook (state, m) {
+            state.tempBook = m;
         }
     },
     actions: {
