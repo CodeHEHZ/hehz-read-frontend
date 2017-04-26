@@ -2,6 +2,7 @@ import 'core-js/es6/promise';
 import 'core-js/fn/string/includes';
 import 'core-js/modules/es7.array.includes';
 import 'core-js/modules/es6.number.is-integer';
+import 'core-js/modules/es6.symbol';
 
 import Vue from 'vue';
 import VueRouter from 'vue-router';
