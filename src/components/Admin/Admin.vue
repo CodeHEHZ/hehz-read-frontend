@@ -1,7 +1,7 @@
 <template>
     <div class="full">
         <div class="container">
-            <el-menu theme="dark" :default-active="active" class="el-menu-container submenu" mode="horizontal" :router="true">
+            <el-menu theme="light" :default-active="active" class="menu-container submenu" mode="horizontal" :router="true">
                 <div class="menu-restrictor">
                     <el-menu-item index="/admin/book" class="menu-item submenu-item">书本</el-menu-item>
                     <el-menu-item index="/admin/quiz" class="menu-item submenu-item">题库</el-menu-item>
@@ -48,7 +48,6 @@
 
     .submenu {
         height: 2rem;
-        background-color: #f5ffff;
         z-index: 1;
         position: relative;
     }
@@ -61,11 +60,6 @@
         height: 2rem;
         line-height: 2rem;
         padding: 0 1rem;
-        color: rgb(72, 106, 101);
-    }
-
-    .submenu-item:hover {
-        background-color: #A2DED0 !important;
     }
 
     .submenu-item:first-child {

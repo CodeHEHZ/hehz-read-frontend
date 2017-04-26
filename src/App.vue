@@ -1,6 +1,7 @@
 <template>
     <div id="app">
-        <el-menu :default-active="active" class="el-menu-container" mode="horizontal" :router="true" v-show="showMenu">
+        <el-menu :default-active="active" class="menu-container super-menu" mode="horizontal" :theme="navBarTheme"
+                 :router="true" v-show="showMenu">
             <div class="menu-restrictor">
                 <div class="menu-left">
                     <el-menu-item index="/dashboard" class="menu-item">首页</el-menu-item>
@@ -52,6 +53,11 @@
                 return this.$route.path === '/' && this.$route.name !== 'question'
                     ? ''
                     : 'margin-top';
+            },
+            navBarTheme() {
+                return this.$route.path.includes('admin')
+                    ? 'dark'
+                    : 'light'
             }
         },
 
@@ -90,7 +96,7 @@
         flex-direction: column;
     }
 
-    .el-menu-container {
+    .menu-container {
         position: fixed;
         top: 0;
         left: 0;
@@ -144,6 +150,18 @@
     a, span, p {
         line-height: 125%;
         text-align: justify;
+    }
+
+    p.el-loading-text {
+        text-align: center;
+    }
+
+    .el-menu {
+        transition: all .25s;
+    }
+
+    .super-menu.el-menu--dark .is-active {
+        color: #ffffff;
     }
 
     .el-button {

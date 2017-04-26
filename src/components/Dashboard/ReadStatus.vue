@@ -27,14 +27,16 @@
         data() {
             return {
                 dataCollection: {
-                    labels: ['已读书目', '未读书目'],
+                    labels: ['已读书目', '未过关书目', '未测书目'],
                     datasets: [{
-                        data: [0, 1],
+                        data: [0, 0, 1],
                         backgroundColor: [
+                            '#019875',
                             '#2ECC71',
                             '#86E2D5'
                         ],
                         hoverBackgroundColor: [
+                            '#019875',
                             '#2ECC71',
                             '#86E2D5'
                         ]
@@ -75,8 +77,11 @@
             read() {
                 return this.$store.state.readingStatus.filter(book => book.pass).length;
             },
+            failed() {
+                return this.$store.state.readingStatus.length - this.read();
+            },
             unread() {
-                return this.$store.state.bookList.length - this.read();
+                return this.$store.state.bookList.length - this.read() - this.failed;
             },
             goTo(book) {
                 this.$store.commit('setTempBook', book);
@@ -88,8 +93,9 @@
                 () => {
                     this.$store.dispatch('getBookList').then(
                         () => {
-                            this.$set(this.dataCollection.datasets[0].data, '0', this.read() || 22);
-                            this.$set(this.dataCollection.datasets[0].data, '1', this.unread() || 28);
+                            this.$set(this.dataCollection.datasets[0].data, '0', this.read() || 0);
+                            this.$set(this.dataCollection.datasets[0].data, '1', this.failed() || 0);
+                            this.$set(this.dataCollection.datasets[0].data, '2', this.unread() || 50);
                             this.dataCollectionUpdated = true;
                         }
                     );
