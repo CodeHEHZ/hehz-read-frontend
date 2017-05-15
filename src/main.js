@@ -34,12 +34,22 @@ const QuizAdmin = r => require.ensure([], () => r(require('./components/Admin/Qu
 const EditQuiz = r => require.ensure([], () => r(require('./components/Admin/Quiz/EditQuiz.vue')), 'group-admin');
 
 const UserAdmin = r => require.ensure([], () => r(require('./components/Admin/User/User.vue')), 'group-admin');
+const EditUser = r => require.ensure([], () => r(require('./components/Admin/User/EditUser.vue')), 'group-admin');
 
 import storeInfo from './store';
 
+Vue.use(VueCookie);
 
 const routes = [
-    { path: '/', component: Hello },
+    { path: '/', component: Hello,
+        beforeEnter: (to, from, next) => {
+            if (Vue.cookie.get('username')) {
+                next('/dashboard');
+            } else {
+                next();
+            }
+        }
+    },
     { path: '/quiz/:author/:name/result', component: QuizResult, name: 'quizResult' },
     {
         path: '/quiz/:author/:name', redirect: '/quiz/:author/:name/1', component: Quiz, name: 'quiz',
@@ -80,7 +90,13 @@ const routes = [
             },
             {
                 path: 'user', component: UserAdmin, name: 'UserAdmin',
-                children: []
+                children: [
+                    {
+                        path: ':username',
+                        name: 'EditUser',
+                        component: EditUser
+                    }
+                ]
             }
         ]
     },
@@ -102,7 +118,6 @@ const router = new VueRouter({
 Vue.use(ElementUI);
 Vue.use(VueRouter);
 Vue.use(Vuex);
-Vue.use(VueCookie);
 Vue.use(VueResource);
 Vue.use(VueAnalytics, {
     id: 'UA-97499394-1',

@@ -19,6 +19,7 @@ let storeInfo = {
         visited: [],
         readingStatus: [],
         tempBook: {},
+        userList: [],
         api: 'https://api.read.hehlzx.cn/',
         static: 'https://static.read.hehlzx.cn/',
         uploadUrl: 'https://api.read.hehlzx.cn/upload'
@@ -54,13 +55,15 @@ let storeInfo = {
             state.visited = [];
             state.answerCount = 0;
             state.questionNumber = 0;
-            console.log(state.quizInfo)
         },
         setTempScore (state, m) {
             state.tempScore = m;
         },
         setTempBook (state, m) {
             state.tempBook = m;
+        },
+        setUserList (state, m) {
+            state.userList = m;
         }
     },
     actions: {
@@ -186,8 +189,20 @@ let storeInfo = {
                     }
                 ).catch(
                     response => reject(response)
-                )
-            })
+                );
+            });
+        },
+        getUserList ({ state, commit }) {
+            return new Promise((resolve, reject) => {
+                Vue.http.get(state.api + 'user/list', { credentials: true }).then(
+                    response => {
+                        commit('setUserList', response.body.userList);
+                        resolve(response.body.userList);
+                    }
+                ).catch(
+                    response => reject(response)
+                );
+            });
         }
     }
 };
