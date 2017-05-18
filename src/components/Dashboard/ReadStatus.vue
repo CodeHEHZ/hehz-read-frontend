@@ -1,7 +1,7 @@
 <template>
     <div class="read-status-full">
         <el-progress type="circle"
-                     :percentage="Math.round((passedBooks.length / $store.state.bookList.length) * 100)"
+                     :percentage="Math.round(((passedBooks.length / $store.state.bookList.length) || 0) * 100)"
                      :stroke-width="10"
         >
         </el-progress>
