@@ -92,6 +92,11 @@ const routes = [
                 path: 'user', component: UserAdmin, name: 'UserAdmin',
                 children: [
                     {
+                        path: 'new',
+                        name: 'CreateUser',
+                        component: EditUser
+                    },
+                    {
                         path: ':username',
                         name: 'EditUser',
                         component: EditUser

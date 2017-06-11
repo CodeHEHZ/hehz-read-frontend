@@ -1,125 +1,149 @@
 <template>
     <div class="full">
-        <div class="container">
-            <div class="form">
-                <p>书名</p>
-                <el-input ref="bookName" v-model="bookName" placeholder="Peanuts" @keyup.enter.native="switchFocus('author')" :autofocus="true"></el-input>
-            </div>
-            <div class="form">
-                <p>作者</p>
-                <el-input ref="author" v-model="author" placeholder="查尔斯·舒尔茨" @keyup.enter.native="switchFocus('description')"></el-input>
-            </div>
-            <div class="form">
-                <p>简介</p>
-                <el-input ref="description" v-model="description" placeholder="查理·布朗，你又输了！" @keyup.enter.native="switchFocus('tag')"></el-input>
-            </div>
-            <div class="form">
-                <p>标签</p>
-                <el-input ref="tag" v-model="tagToAdd" placeholder="按下回车以添加标签" @keyup.enter.native="addTag"></el-input>
-            </div>
-            <div class="form" v-show="tags.length > 0">
-                <p></p>
-                <transition-group name="tags" tag="div" class="form tags">
-                    <el-tag
-                        v-for="(tag, index) of tags"
-                        :key="tag"
-                        :closable="true"
-                        :close-transition="true"
-                        @close="removeTag(index)"
-                        class="tag"
-                    >
-                        {{ tag }}
-                    </el-tag>
-                </transition-group>
-            </div>
-            <div class="submit">
-                <el-button @click="createBook">{{ this.$route.name === 'CreateUser' ? '创建用户' : '提交修改' }}</el-button>
-            </div>
-        </div>
+        <el-form :model="form" :rules="rules" ref="form" label-width="100px" class="form">
+            <el-form-item label="用户名" prop="username">
+                <el-input v-model="form.username"
+                          auto-complete="off"
+                          placeholder="用户登录所用的 ID，如 hehz20190123"
+                ></el-input>
+            </el-form-item>
+            <el-form-item label="用户组" prop="uid">
+                <el-select v-model="form.group" placeholder="请选择所属用户组">
+                    <el-option v-for="group of groupList" :label="group.label" :value="group.value"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="姓名" prop="uid">
+                <el-input v-model.number="form.name"
+                          placeholder="用户的真实姓名"
+                ></el-input>
+            </el-form-item>
+            <el-form-item label="学号" prop="uid">
+                <el-input v-model.number="form.uid"
+                          placeholder="校园卡上显示的学号"
+                ></el-input>
+            </el-form-item>
+            <el-form-item label="学校">
+                <el-select v-model="form.school" placeholder="请选择所属学校">
+                    <el-option v-for="school of schoolList" :label="school" :value="school"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="设置密码" prop="password">
+                <el-input type="password"
+                          v-model="form.password"
+                          auto-complete="off"
+                          placeholder="用户的初始密码"
+                ></el-input>
+            </el-form-item>
+            <el-form-item label="确认密码" prop="checkPassword">
+                <el-input type="password"
+                          v-model="form.checkPassword"
+                          auto-complete="off"
+                          placeholder="再次输入密码以确认无误"
+                ></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="submitForm('form')">提交</el-button>
+                <el-button @click="resetForm('form')">重置</el-button>
+            </el-form-item>
+        </el-form>
     </div>
 </template>
 
 <script>
     export default {
         data: function() {
+            let checkEmpty = (rule, value, callback) => {
+                if (!value) {
+                    callback(new Error('不能为空'));
+                } else {
+                    callback();
+                }
+            };
+
+            let checkNumber = (rule, value, callback) => {
+                if (!value) {
+                    return callback(new Error('不能为空'));
+                }
+
+                if (!Number.isInteger(value)) {
+                    callback(new Error('请输入数字值'));
+                } else {
+                    callback();
+                }
+            };
+
+            let validatePassword = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入密码'));
+                } else {
+                    if (this.form.checkPassword !== '') {
+                        this.$refs.form.validateField('checkPassword');
+                    }
+                    callback();
+                }
+            };
+
+            let validatePassword2 = (rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请再次输入密码'));
+                } else if (value !== this.form.password) {
+                    callback(new Error('两次输入密码不一致!'));
+                } else {
+                    callback();
+                }
+            };
             return {
-                bookName: this.inputName || '',
-                author: this.inputAuthor || '',
-                id: '',
-                description: '',
-                tags: [],
-                tagToAdd: ''
-            }
+                form: {
+                    username: '',
+                    group: 'student',
+                    name: '',
+                    uid: '',
+                    school: '华二黄中',
+                    password: '',
+                    checkPassword: ''
+                },
+                rules: {
+                    username: [
+                        { validator: checkEmpty, trigger: 'blur' }
+                    ],
+                    name: [
+                        { validator: checkEmpty, trigger: 'blur' }
+                    ],
+                    password: [
+                        { validator: validatePassword, trigger: 'blur' }
+                    ],
+                    checkPassword: [
+                        { validator: validatePassword2, trigger: 'blur' }
+                    ],
+                    uid: [
+                        { validator: checkNumber, trigger: 'blur' }
+                    ]
+                },
+                groupList: [
+                    { label: '学生', value: 'student' },
+                    { label: '教师', value: 'teacher' },
+                    { label: '管理猿', value: 'manager' },
+                    { label: '超级管理猿', value: 'admin' }
+                ],
+                schoolList: ['华二黄中', '华师大二附中']
+            };
         },
         methods: {
             switchFocus(ref) {
                 this.$refs[ref] ? this.$refs[ref].inputSelect() : 0;
             },
-            removeTag(index) {
-                this.tags.splice(index, 1);
-            },
-            addTag() {
-                if (this.tagToAdd !== '' && this.tags.indexOf(this.tagToAdd) < 0)
-                    this.tags.push(this.tagToAdd);
-                else if (this.tags.indexOf(this.tagToAdd) > -1)
-                    this.$message('此标签已存在');
-                this.tagToAdd = '';
-            },
-            createBook() {
-                if (this.bookName === '') {
-                    this.$message.error('请输入书名');
-                    this.switchFocus('bookName');
-                } else if (this.author === '') {
-                    this.$message.error('请输入作者名');
-                    this.switchFocus('author');
-                } else if (this.description === '') {
-                    this.$message.error('请输入简介');
-                    this.switchFocus('description');
-                } else {
-                    let postData = {
-                        name: this.bookName,
-                        author: this.author,
-                        category: this.tags,
-                        description: this.description,
-                        cover: this.imageUrl
-                    };
-
-                    if (this.$route.name === 'CreateBook') {
-                        this.$http.post(this.$store.state.api + 'book/new', postData, {credentials: true}).then(response => {
-                                if (response.status === 201) {
-                                    this.bookName = '';
-                                    this.author = '';
-                                    this.description = '';
-                                    this.tags = [];
-                                    this.switchFocus('bookName');
-                                    this.$message.success('创建成功');
-                                }
-                            },
-                            response => {
-                                this.$message.error(response.body.message);
-                            });
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        alert('submit!');
                     } else {
-                        postData.id = this.id;
-                        this.$http.put(this.$store.state.api + 'book/' + this.author + '/' +this.bookName,
-                            postData, { credentials: true }).then(response => {
-                                this.$store.dispatch('getBookList', true).then(() => {
-                                    this.$message.success('修改成功');
-                                    this.$router.push({ name: 'BookAdmin' });
-                                });
-                            },
-                            response => {
-                                this.$message.error(response.body ? response.body.message : '出现了未知的错误');
-                            });
+                        console.log('error submit!!');
+                        return false;
                     }
-                }
+                });
             },
-            getUser() {
-
-            }
-        },
-        created() {
-            if (this.$route.name === 'EditBook') {
-                this.getBook();
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
             }
         }
     };
@@ -131,52 +155,8 @@
         justify-content: center;
     }
 
-    .container {
-        width: 100%;
-        max-width: 30rem;
-        margin: .5rem;
-    }
-
     .form {
-        display: flex;
-        align-items: center;
-    }
-
-    .tags {
-        margin: 0 0 .3rem 1rem;
-        flex-wrap: wrap;
-    }
-
-    .tags-move {
-        transition: transform 1s;
-    }
-
-    .tag {
-        margin-right: .25rem;
-        margin-bottom: .25rem;
-        transition: all .3s;
-        display: inline-block;
-    }
-
-    .submit {
-        display: flex;
         width: 100%;
-        justify-content: flex-end;
-    }
-
-    p {
-        min-width: 2rem;
-    }
-
-    .el-input {
-        margin: .3rem 0 .3rem 1rem;
-    }
-
-    .tags-enter, .tags-leave-active {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    .tags-leave-active {
-        position: absolute;
+        padding: 1rem;
     }
 </style>
