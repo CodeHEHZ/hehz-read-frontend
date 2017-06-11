@@ -10,8 +10,7 @@
                         class="search"
                         icon="search"
                         size="small"
-                        v-model="searchContent"
-                        :on-icon-click="search">
+                        v-model="searchContent">
                     </el-input>
                 </div>
                 <div class="books clearfix">
@@ -64,9 +63,6 @@
         },
 
         methods: {
-            search() {
-                // doSomething
-            },
             goTo(book) {
                 this.showBook = book.name;
                 this.showAuthor = book.author;
