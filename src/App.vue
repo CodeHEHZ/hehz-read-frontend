@@ -214,13 +214,9 @@
         opacity: 0;
     }
 
-    .el-form-item__content, .el-form-item__label {
-        line-height: 1.5rem;
-    }
-
-    .el-form-item__label {
-        padding: 0 .5rem 0 0;
-        min-width: 1.5rem;
+    .el-dialog__headerbtn, .el-pagination__rightwrapper {
+        border: none;
+        background-color: white;
     }
 
     .el-tag {

@@ -116,6 +116,7 @@
             },
             '$route.path'() {
                 this.dialogVisible = !this.isRoot;
+                this.dialogTitle = this.routes[this.$route.name];
             }
         }
     }
