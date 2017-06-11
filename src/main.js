@@ -135,7 +135,11 @@ const cookie = Vue.cookie;
 
 let http = {
     root: '/root',
-    headers: {}
+    headers: {},
+    options: {
+        crossOrigin: true,
+        credentials: true
+    }
 };
 
 new Vue({

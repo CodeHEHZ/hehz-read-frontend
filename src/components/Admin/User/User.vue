@@ -94,7 +94,7 @@
                 this.$router.push('/admin/user');
             },
             getTag(user) {
-                return user.tag.length === 0 ? ['没有标签', 12321321,43214321,432143214321, '没有标签', 12321321,43214321,432143214321] : user.tag;
+                return user.tag.length === 0 ? ['没有标签'] : user.tag;
             }
         },
 
