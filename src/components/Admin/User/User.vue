@@ -7,7 +7,7 @@
                     <el-button type="warning" :disabled="selectedUser.length === 0">停用用户</el-button>
                 </div>
                 <el-input
-                    placeholder="输入用户名或标签名"
+                    placeholder="查找用户"
                     icon="search"
                     v-model="search"
                     class="search"
@@ -104,7 +104,11 @@
                     return this.userList;
                 } else {
                     return this.userList.filter(user => {
-                        return user.username.includes(this.search) || user.tag.includes(this.search);
+                        return user.username.includes(this.search)
+                            || user.name.includes(this.search)
+                            || user.tag.includes(this.search)
+                            || user.school.includes(this.search)
+                            || user.group.includes(this.search);
                     });
                 }
             },
