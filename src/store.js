@@ -62,6 +62,17 @@ let storeInfo = {
         setTempBook (state, m) {
             state.tempBook = m;
         },
+        setUser (state, user) {
+            for (let i = 0; i < state.userList.length; i++) {
+                if (state.userList[i].username === user.username) {
+                    state.userList[i] = user;
+                    break;
+                }
+                if (i === state.userList.length) {
+                    state.userList.push(user);
+                }
+            }
+        },
         setUserList (state, m) {
             state.userList = m;
         }
@@ -192,9 +203,26 @@ let storeInfo = {
                 );
             });
         },
+        getUser ({ state, commit }, username) {
+            return new Promise((resolve, reject) => {
+                let existingUser = state.userList.filter(user => user.username === username);
+                if (existingUser.length > 0) {
+                    resolve(existingUser[0]);
+                } else {
+                    Vue.http.get(state.api + 'user/' + username).then(
+                        response => {
+                            commit('setUser', response.body);
+                            resolve(response.body);
+                        }
+                    ).catch(
+                        response => reject(response)
+                    );
+                }
+            });
+        },
         getUserList ({ state, commit }) {
             return new Promise((resolve, reject) => {
-                Vue.http.get(state.api + 'user/list', { credentials: true }).then(
+                Vue.http.get(state.api + 'user/list').then(
                     response => {
                         commit('setUserList', response.body.userList);
                         resolve(response.body.userList);

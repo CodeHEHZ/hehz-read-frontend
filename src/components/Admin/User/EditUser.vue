@@ -10,7 +10,11 @@
             </el-form-item>
             <el-form-item label="用户组" prop="group">
                 <el-select v-model="form.group" placeholder="请选择所属用户组">
-                    <el-option v-for="group of groupList" :label="group.label" :value="group.value"></el-option>
+                    <el-option v-for="group of groupList"
+                               :label="group.label"
+                               :value="group.value"
+                               :key="group.label"
+                    ></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="姓名" prop="name">
@@ -29,7 +33,11 @@
             </el-form-item>
             <el-form-item label="学校" prop="school">
                 <el-select v-model="form.school" placeholder="请选择所属学校">
-                    <el-option v-for="school of schoolList" :label="school" :value="school"></el-option>
+                    <el-option v-for="school of schoolList"
+                               :label="school"
+                               :value="school"
+                               :key="school"
+                    ></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="设置密码" prop="password">
@@ -144,20 +152,24 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.$http.post(this.$store.state.api + 'user/register', {
+                        let data = {
                             username: this.form.username,
                             name: this.form.name,
                             school: this.form.school,
                             uid: this.form.uid,
                             group: this.form.group,
                             password: this.form.password
-                        }).then(
+                        };
+                        (this.$route.name === 'CreateUser'
+                            ? this.$http.post(this.$store.state.api + 'user/register', data)
+                            : this.$http.put(this.$store.state.api + 'user/' + this.form.username, data)).then(
                             response => {
                                 this.$message.success('创建成功!');
-                                this.$router.push({ name: 'UserAdmin' });
+                                this.$store.dispatch('getUserList').then(
+                                    () => this.$router.push({ name: 'UserAdmin' })
+                                );
                             },
                             error => {
-                                console.log(error);
                                 this.$message.error(error.body.message);
                             }
                         );
@@ -166,6 +178,19 @@
             },
             resetForm(formName) {
                 this.$refs[formName].resetFields();
+            }
+        },
+        created() {
+            if (this.$route.name === 'EditUser') {
+                this.$store.dispatch('getUser', this.$route.params.username).then(
+                    user => {
+                        this.form.username = user.username;
+                        this.form.name = user.name;
+                        this.form.school = user.school;
+                        this.form.group = user.group;
+                        this.form.uid = user.uid;
+                    }
+                )
             }
         }
     };

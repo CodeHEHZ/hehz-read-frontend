@@ -25,7 +25,7 @@
                     width="55">
                 </el-table-column>
                 <el-table-column
-                    prop="username"
+                    prop="name"
                     label="用户名"
                     width="120px"
                 >
