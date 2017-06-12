@@ -82,15 +82,16 @@
                     return callback(new Error('不能为空'));
                 }
 
-                if (!Number.isInteger(value)) {
-                    callback(new Error('请输入数字值'));
-                } else {
-                    callback();
+                if (!new RegExp('^[0-9]+$').test(value)) {
+                    return callback(new Error('请输入数字值'));
                 }
+                callback();
             };
 
             let validatePassword = (rule, value, callback) => {
-                if (value === '') {
+                if (this.$route.name === 'EditUser') {
+                    callback();
+                } else if (value === '') {
                     callback(new Error('请输入密码'));
                 } else {
                     if (this.form.checkPassword !== '') {
@@ -101,7 +102,9 @@
             };
 
             let validatePassword2 = (rule, value, callback) => {
-                if (value === '') {
+                if (this.$route.name === 'EditUser' && this.form.password === '') {
+                    callback();
+                } else if (value === '') {
                     callback(new Error('请再次输入密码'));
                 } else if (value !== this.form.password) {
                     callback(new Error('两次输入密码不一致!'));
@@ -142,7 +145,8 @@
                     { label: '管理猿', value: 'manager' },
                     { label: '超级管理猿', value: 'admin' }
                 ],
-                schoolList: ['华二黄中', '华师大二附中']
+                schoolList: ['华二黄中', '华师大二附中'],
+                origUser: {}
             };
         },
         methods: {
@@ -162,33 +166,83 @@
                         };
                         (this.$route.name === 'CreateUser'
                             ? this.$http.post(this.$store.state.api + 'user/register', data)
-                            : this.$http.put(this.$store.state.api + 'user/' + this.form.username, data)).then(
+                            : this.$http.put(this.$store.state.api + 'user/' + this.origUser.username, data))
+                            .then(
+                                response => {
+                                    if (this.$route.name === 'EditUser') {
+                                        this.changeGroup();
+                                    } else {
+                                        this.succeed();
+                                    }
+                                },
+                                error => {
+                                    this.$message.error(error.body.message);
+                                }
+                            );
+                    }
+                });
+            },
+            changeGroup() {
+                if (this.form.group !== this.origUser.group) {
+                    this.$http.put(this.$store.state.api + 'user/' + this.origUser.username + '/group', {
+                        group: this.form.group
+                    })
+                        .then(
                             response => {
-                                this.$message.success('创建成功!');
-                                this.$store.dispatch('getUserList').then(
-                                    () => this.$router.push({ name: 'UserAdmin' })
-                                );
+                                this.changePassword();
                             },
                             error => {
                                 this.$message.error(error.body.message);
                             }
                         );
-                    }
-                });
+                } else {
+                    this.changePassword();
+                }
+            },
+            changePassword() {
+                if (this.form.password !== '') {
+                    this.$http.put(this.$store.state.api + 'user/' + this.origUser.username + '/password', {
+                        password: this.form.password
+                    })
+                        .then(
+                            response => {
+                                this.succeed();
+                            },
+                            error => {
+                                this.$message.error(error.body.message);
+                            }
+                        );
+                } else {
+                    this.succeed();
+                }
+            },
+
+            succeed() {
+                this.$message.success(this.$route.name === 'EditUser'
+                    ? '修改成功！'
+                    : '创建成功！');
+                this.$store.dispatch('getUserList').then(
+                    () => this.$router.push({ name: 'UserAdmin' })
+                );
             },
             resetForm(formName) {
-                this.$refs[formName].resetFields();
+                if (this.$route.name === 'EditUser') {
+                    this.form.username = this.origUser.username;
+                    this.form.name = this.origUser.name;
+                    this.form.school = this.origUser.school;
+                    this.form.group = this.origUser.group;
+                    this.form.uid = this.origUser.uid;
+                } else {
+                    this.$refs[formName].resetFields();
+                }
             }
         },
         created() {
             if (this.$route.name === 'EditUser') {
                 this.$store.dispatch('getUser', this.$route.params.username).then(
                     user => {
-                        this.form.username = user.username;
-                        this.form.name = user.name;
-                        this.form.school = user.school;
-                        this.form.group = user.group;
-                        this.form.uid = user.uid;
+                        this.origUser = user;
+                        this.resetForm('form');
                     }
                 )
             }
