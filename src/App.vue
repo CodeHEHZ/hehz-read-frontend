@@ -9,8 +9,8 @@
                 </div>
                 <div class="menu-right">
                     <el-submenu index="">
-                        <template slot="title">{{ username || '未登录' }}</template>
-                        <el-menu-item :index="username ? '/logout' : '/'">{{ username ? '注销' : '登录' }}</el-menu-item>
+                        <template slot="title">{{ name || '未登录' }}</template>
+                        <el-menu-item :index="name ? '/logout' : '/'">{{ name ? '注销' : '登录' }}</el-menu-item>
                     </el-submenu>
                 </div>
             </div>
@@ -33,7 +33,7 @@
         data() {
             return {
                 true: true,
-                username: this.$cookie.get('username')
+                name: this.$cookie.get('name')
             }
         },
         computed: {
@@ -67,12 +67,12 @@
         },
 
         mounted() {
-            let getUsername = () => {
-                this.username = this.$cookie.get('username');
-                setTimeout(getUsername, 250);
+            let getName = () => {
+                this.name = this.$cookie.get('name');
+                setTimeout(getName, 250);
             };
 
-            getUsername();
+            getName();
         }
     }
 </script>
@@ -85,7 +85,7 @@
     body {
         margin: 0;
         height: 100%;
-        font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', Arial, sans-serif;
+        font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
         line-height: 1.6;
         -webkit-font-smoothing: subpixel-antialiased;
     }

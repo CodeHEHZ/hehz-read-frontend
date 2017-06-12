@@ -65,14 +65,16 @@
                         captchaSecCode: this.captchaResult['geetest_seccode']
                     };
                     this.logging = true;
-                    this.$http.post(this.$store.state.api + 'user/login', postData, { credentials: true }).then(response => {
+                    this.$http.post(this.$store.state.api + 'user/login', postData).then(response => {
                         if (response.status === 200) {
                             let user = {};
                             if (this.$cookie.get('user')) {
                                 user = JSON.parse(this.$cookie.get('user').slice(2, 1000));
                             }
-                            this.$cookie.set('username', user.username);
-                            this.$cookie.set('group', user.group);
+                            this.$cookie.set('user', response.body.user);
+                            this.$cookie.set('username', response.body.username);
+                            this.$cookie.set('name', response.body.name);
+                            this.$cookie.set('group', response.body.group);
                             setTimeout(() => {
                                 this.$router.push('/dashboard');
                             }, 250);
