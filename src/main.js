@@ -36,6 +36,8 @@ const EditQuiz = r => require.ensure([], () => r(require('./components/Admin/Qui
 const UserAdmin = r => require.ensure([], () => r(require('./components/Admin/User/User.vue')), 'group-admin');
 const EditUser = r => require.ensure([], () => r(require('./components/Admin/User/EditUser.vue')), 'group-admin');
 
+const ImportAdmin = r => require.ensure([], () => r(require('./components/Admin/Import/Import.vue')), 'group-admin');
+
 import storeInfo from './store';
 
 Vue.use(VueCookie);
@@ -141,6 +143,9 @@ const routes = [
                         component: EditUser
                     }
                 ]
+            },
+            {
+                path: 'import', component: ImportAdmin, name: 'ImportAdmin'
             }
         ]
     },

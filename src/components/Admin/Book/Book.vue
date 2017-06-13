@@ -7,7 +7,7 @@
                     <el-button :disabled="selectedBook.length === 0">关闭书本</el-button>
                 </div>
                 <el-input
-                    placeholder="输入书名或作者名"
+                    placeholder="输入关键字搜索"
                     icon="search"
                     v-model="search"
                     class="search"
@@ -91,7 +91,9 @@
                     return this.bookList;
                 } else {
                     return this.bookList.filter(book => {
-                        return book.author.includes(this.search) || book.name.includes(this.search);
+                        return book.author.includes(this.search)
+                            || book.name.includes(this.search)
+                            || book.category.includes(this.search);
                     });
                 }
             },
