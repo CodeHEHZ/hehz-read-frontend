@@ -4,7 +4,8 @@
             <div class="container top">
                 <div class="buttons">
                     <el-button type="primary" @click="goTo('CreateUser')">创建用户</el-button>
-                    <el-button type="warning" :disabled="selectedUser.length === 0">停用用户</el-button>
+                    <el-button type="success" @click="banUser('unban')" :disabled="selectedUser.length === 0">解禁用户</el-button>
+                    <el-button type="warning" @click="banUser('ban')" :disabled="selectedUser.length === 0">停用用户</el-button>
                 </div>
                 <el-input
                     placeholder="查找用户"
@@ -22,7 +23,8 @@
                 @selection-change="handleSelectionChange">
                 <el-table-column
                     type="selection"
-                    width="55">
+                    width="55"
+                >
                 </el-table-column>
                 <el-table-column
                     prop="name"
@@ -34,6 +36,7 @@
                     prop="tag"
                     label="标签">
                     <template scope="scope">
+                        <el-tag v-if="scope.row.status === 'banned'" type="danger">已停用</el-tag>
                         <el-tag v-for="tag of getTag(scope.row)" :key="tag">
                             {{ tag }}
                         </el-tag>
@@ -95,6 +98,27 @@
             },
             getTag(user) {
                 return user.tag.length === 0 ? ['没有标签'] : user.tag;
+            },
+            banUser(action) {
+                let users = [];
+                for (let user of this.selectedUser) {
+                    users.push(user.username);
+                }
+                this.$http.post(this.$store.state.api + 'user/' + action, { username: users })
+                    .then(
+                        () => {
+                            this.$store.dispatch('getUserList')
+                                .then(
+                                    () => this.$message.success('操作成功')
+                                )
+                                .catch(
+                                    error => this.$message.error(error.body.message)
+                                )
+                        }
+                    )
+                    .catch(
+                        error => this.$message.error(error.body.message)
+                    )
             }
         },
 
