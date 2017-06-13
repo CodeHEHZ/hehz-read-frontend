@@ -77,9 +77,7 @@
                                     this.$cookie.set('username', response.body.username);
                                     this.$cookie.set('name', response.body.name);
                                     this.$cookie.set('group', response.body.group);
-                                    setTimeout(() => {
-                                        this.$router.push('/dashboard');
-                                    }, 250);
+                                    this.$router.push(this.$route.query.redirect || '/dashboard');
                                 }
                             },
                             response => {
@@ -104,7 +102,7 @@
         mounted() {
             let checkLoginStatus = () => {
                 if (this.$cookie.get('username'))
-                    this.$router.push('/dashboard');
+                    this.$router.push(this.$route.query.redirect || '/dashboard');
                 else
                     setTimeout(checkLoginStatus, 250);
             };
@@ -135,6 +133,10 @@
                     })
                 }
             });
+
+            if (this.$route.query.redirect) {
+                this.$message('请先登录，登录后将自动跳转')
+            }
         }
     }
 </script>

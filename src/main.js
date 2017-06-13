@@ -40,6 +40,19 @@ import storeInfo from './store';
 
 Vue.use(VueCookie);
 
+const ensureLoggedIn = (to, from, next) => {
+    if (!Vue.cookie.get('username')) {
+        next({
+            path: '/',
+            query: { redirect: to.fullPath }
+        });
+    } else if (Vue.cookie.get('group') !== 'admin' && Vue.cookie.get('group') !== 'manager') {
+        next('/dashboard');
+    } else {
+        next();
+    }
+};
+
 const routes = [
     { path: '/', component: Hello,
         beforeEnter: (to, from, next) => {
@@ -50,9 +63,15 @@ const routes = [
             }
         }
     },
-    { path: '/quiz/:author/:name/result', component: QuizResult, name: 'quizResult' },
+    {
+        path: '/quiz/:author/:name/result',
+        component: QuizResult,
+        name: 'quizResult',
+        beforeEnter: ensureLoggedIn
+    },
     {
         path: '/quiz/:author/:name', redirect: '/quiz/:author/:name/1', component: Quiz, name: 'quiz',
+        beforeEnter: ensureLoggedIn,
         children: [
             {
                 path: ':id',
@@ -62,10 +81,17 @@ const routes = [
         ]
     },
     { path: '/logout', component: Logout },
-    { path: '/dashboard', component: Dashboard },
-    { path: '/book/:author/:name', component: BookDetail, name: 'BookDetail' },
+    {
+        path: '/dashboard', component: Dashboard,
+        beforeEnter: ensureLoggedIn
+    },
+    {
+        path: '/book/:author/:name', component: BookDetail, name: 'BookDetail',
+        beforeEnter: ensureLoggedIn
+    },
     {
         path: '/admin', component: Admin,
+        beforeEnter: ensureLoggedIn,
         children: [
             {
                 path: 'book', component: BookAdmin, name: 'BookAdmin',
@@ -115,7 +141,7 @@ const router = new VueRouter({
         if (savedPosition) {
             return savedPosition
         } else {
-            return {x: 0, y: 0}
+            return { x: 0, y: 0 }
         }
     }
 });

@@ -5,7 +5,7 @@
             <div class="menu-restrictor">
                 <div class="menu-left">
                     <el-menu-item index="/dashboard" class="menu-item">首页</el-menu-item>
-                    <el-menu-item index="/admin" class="menu-item">管理</el-menu-item>
+                    <el-menu-item v-if="" index="/admin" class="menu-item">管理</el-menu-item>
                 </div>
                 <div class="menu-right">
                     <el-submenu index="">
@@ -45,6 +45,9 @@
             },
             showMenu() {
                 return this.$route.path !== '/' && this.$route.name !== 'question';
+            },
+            showAdmin() {
+                return this.$cookie.get('group') === 'admin' || this.$cookie.get('group') === 'manager';
             },
             showFooter() {
                 return this.$route.path !== '/';
@@ -214,7 +217,7 @@
         opacity: 0;
     }
 
-    .el-dialog__headerbtn, .el-pagination__rightwrapper {
+    .el-dialog__headerbtn, .el-pagination__rightwrapper, .el-message-box__headerbtn {
         border: none;
         background-color: white;
     }
