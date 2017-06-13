@@ -157,6 +157,11 @@
         align-items: center;
     }
 
+    #captcha {
+        height: 42px;
+        cursor: pointer;
+    }
+
     .buttons {
         display: flex;
         justify-content: space-between;

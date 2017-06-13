@@ -5,7 +5,7 @@
             <div class="menu-restrictor">
                 <div class="menu-left">
                     <el-menu-item index="/dashboard" class="menu-item">首页</el-menu-item>
-                    <el-menu-item v-if="" index="/admin" class="menu-item">管理</el-menu-item>
+                    <el-menu-item v-if="showAdmin" index="/admin" class="menu-item">管理</el-menu-item>
                 </div>
                 <div class="menu-right">
                     <el-submenu index="">
@@ -33,7 +33,10 @@
         data() {
             return {
                 true: true,
-                name: this.$cookie.get('name')
+                name: this.$cookie.get('name'),
+                showAdmin: this.$cookie.get('group') === 'admin'
+                    || this.$cookie.get('group') === 'manager'
+                    || this.$cookie.get('group') === 'teacher'
             }
         },
         computed: {
@@ -45,9 +48,6 @@
             },
             showMenu() {
                 return this.$route.path !== '/' && this.$route.name !== 'question';
-            },
-            showAdmin() {
-                return this.$cookie.get('group') === 'admin' || this.$cookie.get('group') === 'manager';
             },
             showFooter() {
                 return this.$route.path !== '/';
@@ -72,6 +72,9 @@
         mounted() {
             let getName = () => {
                 this.name = this.$cookie.get('name');
+                this.showAdmin = this.$cookie.get('group') === 'admin'
+                    || this.$cookie.get('group') === 'manager'
+                    || this.$cookie.get('group') === 'teacher';
                 setTimeout(getName, 250);
             };
 

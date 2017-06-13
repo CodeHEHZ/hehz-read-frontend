@@ -46,7 +46,20 @@ const ensureLoggedIn = (to, from, next) => {
             path: '/',
             query: { redirect: to.fullPath }
         });
-    } else if (Vue.cookie.get('group') !== 'admin' && Vue.cookie.get('group') !== 'manager') {
+    } else {
+        next();
+    }
+};
+
+const ensureManager = (to, from, next) => {
+    if (!Vue.cookie.get('username')) {
+        next({
+            path: '/',
+            query: { redirect: to.fullPath }
+        });
+    } else if (Vue.cookie.get('group') !== 'admin'
+        && Vue.cookie.get('group') !== 'manager'
+        && Vue.cookie.get('group') !== 'teacher') {
         next('/dashboard');
     } else {
         next();
@@ -91,7 +104,7 @@ const routes = [
     },
     {
         path: '/admin', component: Admin,
-        beforeEnter: ensureLoggedIn,
+        beforeEnter: ensureManager,
         children: [
             {
                 path: 'book', component: BookAdmin, name: 'BookAdmin',
