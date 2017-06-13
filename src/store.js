@@ -82,14 +82,16 @@ let storeInfo = {
             return new Promise((resolve) => {
                 if (state.bookList.length === 0 || forceRefresh) {
                     Vue.http.get(state.api + 'book/list')
-                        .then(response => {
-                            let bookList = response.body;
-                            for (let i = 0; i < bookList.length; i++) {
-                                bookList[i].cover += '!web';
+                        .then(
+                            response => {
+                                let bookList = response.body;
+                                for (let i = 0; i < bookList.length; i++) {
+                                    bookList[i].cover += '!web';
+                                }
+                                commit('setBookList', response.body);
+                                resolve(state.bookList);
                             }
-                            commit('setBookList', response.body);
-                            resolve(state.bookList);
-                        });
+                        );
                 } else {
                     resolve(state.bookList);
                 }
@@ -105,11 +107,14 @@ let storeInfo = {
                         resolve(book[0]);
                     } else {
                         Vue.http.get(state.api + 'book/' + bookInfo.author + '/' + bookInfo.name)
-                            .then(response => {
-                                resolve(response.body);
-                            }, err => {
-                                reject(err);
-                            });
+                            .then(
+                                response => {
+                                    resolve(response.body);
+                                },
+                                err => {
+                                    reject(err);
+                                }
+                            );
                     }
                 });
             });
@@ -120,19 +125,21 @@ let storeInfo = {
                     resolve(state.quiz);
                 } else {
                     Vue.http.get(state.api + 'book/' + bookInfo.author + '/' + bookInfo.name + '/quiz',
-                        { credentials: true }).then(
-                        response => {
-                            state.quiz = response.body.quiz.question;
-                            state.quizInfo = bookInfo;
-                            state.quizInfo.id = response.body.quiz._id;
-                            state.quizInfo.deadline = response.body.deadline;
-                            resolve(state.quiz);
-                        }
-                    ).catch(
-                        response => {
-                            reject(response);
-                        }
-                    );
+                        { credentials: true })
+                        .then(
+                            response => {
+                                state.quiz = response.body.quiz.question;
+                                state.quizInfo = bookInfo;
+                                state.quizInfo.id = response.body.quiz._id;
+                                state.quizInfo.deadline = response.body.deadline;
+                                resolve(state.quiz);
+                            }
+                        )
+                        .catch(
+                            response => {
+                                reject(response);
+                            }
+                        );
                 }
             });
         },
@@ -143,15 +150,16 @@ let storeInfo = {
                 } else {
 
                     // 这里记得改
-                    Vue.http.get(state.api + 'user/' + ('admin') + '/status').then(
-                        response => {
-                            state.readingStatus = response.body.status;
-                            resolve(state.readingStatus);
-                        },
-                        response => {
-                            reject(response);
-                        }
-                    )
+                    Vue.http.get(state.api + 'user/' + ('admin') + '/status')
+                        .then(
+                            response => {
+                                state.readingStatus = response.body.status;
+                                resolve(state.readingStatus);
+                            },
+                            response => {
+                                reject(response);
+                            }
+                        )
                 }
             });
         },
@@ -162,18 +170,20 @@ let storeInfo = {
                     name: bookInfo.name
                 }).then(
                     book => {
-                        dispatch('getReadingStatus').then(
-                            status => {
-                                let temp = status.filter(status => status.id === book._id);
-                                if (temp.length > 0) {
-                                    resolve(temp[0].cooldown ? '不可考试' : (temp[0].pass ? '已通过' : '未通过'));
-                                } else {
-                                    resolve('未通过');
+                        dispatch('getReadingStatus')
+                            .then(
+                                status => {
+                                    let temp = status.filter(status => status.id === book._id);
+                                    if (temp.length > 0) {
+                                        resolve(temp[0].cooldown ? '不可考试' : (temp[0].pass ? '已通过' : '未通过'));
+                                    } else {
+                                        resolve('未通过');
+                                    }
                                 }
-                            }
-                        ).catch(
-                            response => reject(response)
-                        );
+                            )
+                            .catch(
+                                response => reject(response)
+                            );
                     }
                 );
             });
@@ -185,18 +195,20 @@ let storeInfo = {
                     name: bookInfo.name
                 }).then(
                     book => {
-                        dispatch('getReadingStatus').then(
-                            status => {
-                                let temp = status.filter(status => status.id === book._id);
-                                if (temp.length > 0) {
-                                    resolve(temp[0].score);
-                                } else {
-                                    reject('未参加测试');
+                        dispatch('getReadingStatus')
+                            .then(
+                                status => {
+                                    let temp = status.filter(status => status.id === book._id);
+                                    if (temp.length > 0) {
+                                        resolve(temp[0].score);
+                                    } else {
+                                        reject('未参加测试');
+                                    }
                                 }
-                            }
-                        ).catch(
-                            response => reject(response)
-                        );
+                            )
+                            .catch(
+                                response => reject(response)
+                            );
                     }
                 ).catch(
                     response => reject(response)
@@ -209,27 +221,31 @@ let storeInfo = {
                 if (existingUser.length > 0) {
                     resolve(existingUser[0]);
                 } else {
-                    Vue.http.get(state.api + 'user/' + username).then(
-                        response => {
-                            commit('setUser', response.body);
-                            resolve(response.body);
-                        }
-                    ).catch(
-                        response => reject(response)
-                    );
+                    Vue.http.get(state.api + 'user/' + username)
+                        .then(
+                            response => {
+                                commit('setUser', response.body);
+                                resolve(response.body);
+                            }
+                        )
+                        .catch(
+                            response => reject(response)
+                        );
                 }
             });
         },
         getUserList ({ state, commit }) {
             return new Promise((resolve, reject) => {
-                Vue.http.get(state.api + 'user/list').then(
-                    response => {
-                        commit('setUserList', response.body.userList);
-                        resolve(response.body.userList);
-                    }
-                ).catch(
-                    response => reject(response)
-                );
+                Vue.http.get(state.api + 'user/list')
+                    .then(
+                        response => {
+                            commit('setUserList', response.body.userList);
+                            resolve(response.body.userList);
+                        }
+                    )
+                    .catch(
+                        response => reject(response)
+                    );
             });
         }
     }
