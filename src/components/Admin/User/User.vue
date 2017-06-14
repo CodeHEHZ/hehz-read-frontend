@@ -29,15 +29,18 @@
                 <el-table-column
                     prop="name"
                     label="用户名"
-                    width="120px"
+                    width="130px"
                 >
+                    <template scope="scope">
+                        <el-tag v-if="scope.row.status === 'banned'" type="danger">停用</el-tag>
+                        {{ scope.row.name }}
+                    </template>
                 </el-table-column>
                 <el-table-column
                     prop="tag"
                     label="标签">
                     <template scope="scope">
-                        <el-tag v-if="scope.row.status === 'banned'" type="danger">已停用</el-tag>
-                        <el-tag v-for="tag of getTag(scope.row)" :key="tag">
+                        <el-tag v-for="tag of getTag(scope.row)" :key="tag" type="primary">
                             {{ tag }}
                         </el-tag>
                     </template>

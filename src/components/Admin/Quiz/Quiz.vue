@@ -18,6 +18,12 @@
                 <el-table-column
                     prop="name"
                     label="书名">
+                    <template scope="scope">
+                        <el-tag v-if="scope.row.open" type="primary">
+                            {{ "已开放" }}
+                        </el-tag>
+                        {{ scope.row.name }}
+                    </template>
                 </el-table-column>
                 <el-table-column
                     prop="author"
