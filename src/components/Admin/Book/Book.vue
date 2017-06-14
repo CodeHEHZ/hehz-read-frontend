@@ -4,7 +4,7 @@
             <div class="container top">
                 <div class="buttons">
                     <el-button type="primary" @click="goTo('CreateBook')">创建书本</el-button>
-                    <el-button :disabled="selectedBook.length === 0">关闭书本</el-button>
+                    <el-button @click="closeBook()" :disabled="selectedBook.length === 0">关闭书本</el-button>
                 </div>
                 <el-input
                     placeholder="输入关键字搜索"
@@ -27,6 +27,12 @@
                 <el-table-column
                     prop="name"
                     label="书名">
+                    <template scope="scope">
+                        <el-tag v-if="scope.row.open" type="primary">
+                            {{ "已开放" }}
+                        </el-tag>
+                        {{ scope.row.name }}
+                    </template>
                 </el-table-column>
                 <el-table-column
                     prop="author"
@@ -79,6 +85,30 @@
             goTo(route, params) {
                 this.$router.push({ name: route, params });
                 this.dialogTitle = this.routes[this.$route.name];
+            },
+            closeBook() {
+                let count = this.selectedBook.length;
+
+                for (let book of this.selectedBook) {
+                    this.$http.get(this.$store.state.api + 'book/' + book.author + '/' + book.name + '/close')
+                        .then(
+                            () => {
+                                count--;
+                                if (count === 0) {
+                                    this.$store.dispatch('getBookList', true)
+                                        .then(
+                                            () => this.$message.success('关闭成功！')
+                                        )
+                                        .catch(
+                                            error => this.$message.error(error.body.message)
+                                        );
+                                }
+                            }
+                        )
+                        .catch(
+                            error => this.$message.error(error.body.message)
+                        );
+                }
             },
             closeDialog() {
                 this.$router.push('/admin/book');
