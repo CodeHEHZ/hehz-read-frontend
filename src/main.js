@@ -25,7 +25,7 @@ const Quiz = r => require.ensure([], () => r(require('./components/Quiz/Quiz.vue
 const Question = r => require.ensure([], () => r(require('./components/Quiz/Question.vue')), 'group-dashboard');
 const QuizResult = r => require.ensure([], () => r(require('./components/Quiz/QuizResult.vue')), 'group-dashboard');
 
-const Admin = r => require.ensure([], () => r(require('./components/Admin/Admin.vue')), 'group-admin');
+const Admin = r => require.ensure([], () => r(require('./components/Admin/Admin.vue')), 'group-basic-admin');
 
 const BookAdmin = r => require.ensure([], () => r(require('./components/Admin/Book/Book.vue')), 'group-admin');
 const EditBook = r => require.ensure([], () => r(require('./components/Admin/Book/EditBook.vue')), 'group-admin');
@@ -37,6 +37,8 @@ const UserAdmin = r => require.ensure([], () => r(require('./components/Admin/Us
 const EditUser = r => require.ensure([], () => r(require('./components/Admin/User/EditUser.vue')), 'group-admin');
 
 const ImportAdmin = r => require.ensure([], () => r(require('./components/Admin/Import/Import.vue')), 'group-admin');
+
+const AccountAdmin = r => require.ensure([], () => r(require('./components/Admin/Account/Account.vue')), 'group-basic-admin');
 
 import storeInfo from './store';
 
@@ -69,7 +71,7 @@ const ensureManager = (to, from, next) => {
 };
 
 const routes = [
-    { path: '/', component: Hello,
+    { path: '/', component: Hello, name: 'Hello',
         beforeEnter: (to, from, next) => {
             if (Vue.cookie.get('username')) {
                 next('/dashboard');
@@ -81,21 +83,23 @@ const routes = [
     {
         path: '/quiz/:author/:name/result',
         component: QuizResult,
-        name: 'quizResult',
+        name: 'QuizResult',
         beforeEnter: ensureLoggedIn
     },
     {
-        path: '/quiz/:author/:name', redirect: '/quiz/:author/:name/1', component: Quiz, name: 'quiz',
+        path: '/quiz/:author/:name', redirect: '/quiz/:author/:name/1', component: Quiz, name: 'Quiz',
         beforeEnter: ensureLoggedIn,
         children: [
             {
                 path: ':id',
                 component: Question,
-                name: 'question'
+                name: 'Question'
             }
         ]
     },
-    { path: '/logout', component: Logout },
+    {
+        path: '/logout', component: Logout, name: 'Logout'
+    },
     {
         path: '/dashboard', component: Dashboard,
         beforeEnter: ensureLoggedIn
@@ -146,6 +150,9 @@ const routes = [
             },
             {
                 path: 'import', component: ImportAdmin, name: 'ImportAdmin'
+            },
+            {
+                path: 'account', component: AccountAdmin, name: 'AccountAdmin'
             }
         ]
     },
