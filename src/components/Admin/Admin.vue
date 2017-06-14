@@ -7,7 +7,6 @@
                     <el-menu-item index="/admin/quiz" class="menu-item submenu-item">题库</el-menu-item>
                     <el-menu-item index="/admin/user" class="menu-item submenu-item">用户</el-menu-item>
                     <el-menu-item index="/admin/import" class="menu-item submenu-item">批量导入数据</el-menu-item>
-                    <el-menu-item index="/admin/account" class="menu-item submenu-item">我的账号</el-menu-item>
                 </div>
             </el-menu>
             <transition name="component-fade" mode="out-in">

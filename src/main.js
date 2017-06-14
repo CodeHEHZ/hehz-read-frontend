@@ -25,7 +25,7 @@ const Quiz = r => require.ensure([], () => r(require('./components/Quiz/Quiz.vue
 const Question = r => require.ensure([], () => r(require('./components/Quiz/Question.vue')), 'group-dashboard');
 const QuizResult = r => require.ensure([], () => r(require('./components/Quiz/QuizResult.vue')), 'group-dashboard');
 
-const Admin = r => require.ensure([], () => r(require('./components/Admin/Admin.vue')), 'group-basic-admin');
+const Admin = r => require.ensure([], () => r(require('./components/Admin/Admin.vue')), 'group-admin');
 
 const BookAdmin = r => require.ensure([], () => r(require('./components/Admin/Book/Book.vue')), 'group-admin');
 const EditBook = r => require.ensure([], () => r(require('./components/Admin/Book/EditBook.vue')), 'group-admin');
@@ -38,7 +38,7 @@ const EditUser = r => require.ensure([], () => r(require('./components/Admin/Use
 
 const ImportAdmin = r => require.ensure([], () => r(require('./components/Admin/Import/Import.vue')), 'group-admin');
 
-const AccountAdmin = r => require.ensure([], () => r(require('./components/Admin/Account/Account.vue')), 'group-basic-admin');
+const Account = r => require.ensure([], () => r(require('./components/Account/Account.vue')), 'group-dashboard');
 
 import storeInfo from './store';
 
@@ -109,6 +109,10 @@ const routes = [
         beforeEnter: ensureLoggedIn
     },
     {
+        path: '/account', component: Account, name: 'Account',
+        beforeEnter: ensureLoggedIn
+    },
+    {
         path: '/admin', component: Admin,
         beforeEnter: ensureManager,
         children: [
@@ -150,9 +154,6 @@ const routes = [
             },
             {
                 path: 'import', component: ImportAdmin, name: 'ImportAdmin'
-            },
-            {
-                path: 'account', component: AccountAdmin, name: 'AccountAdmin'
             }
         ]
     },

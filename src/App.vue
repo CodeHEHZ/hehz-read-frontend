@@ -5,6 +5,7 @@
             <div class="menu-restrictor">
                 <div class="menu-left">
                     <el-menu-item index="/dashboard" class="menu-item">首页</el-menu-item>
+                    <el-menu-item index="/account" class="menu-item">账号</el-menu-item>
                     <el-menu-item v-if="showAdmin" index="/admin" class="menu-item">管理</el-menu-item>
                 </div>
                 <div class="menu-right">
