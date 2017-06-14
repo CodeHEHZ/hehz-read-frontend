@@ -48,7 +48,7 @@
         methods: {
             test() {
                 this.$router.push({
-                    name: 'quiz',
+                    name: 'Quiz',
                     params: {
                         name: this.name,
                         author: this.author
@@ -57,7 +57,7 @@
             },
             result() {
                 this.$router.push({
-                    name: 'quizResult',
+                    name: 'QuizResult',
                     params: {
                         name: this.name,
                         author: this.author

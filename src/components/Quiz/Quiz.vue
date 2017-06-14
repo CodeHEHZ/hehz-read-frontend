@@ -83,7 +83,7 @@
                     this.transition = 'next-question';
                     this.$store.commit('nextQuestion');
                     this.$router.push({
-                        name: 'question',
+                        name: 'Question',
                         params: {
                             id: this.$store.state.questionNumber + 1
                         }
@@ -109,7 +109,7 @@
                 this.transition = 'last-question';
                 this.$store.commit('lastQuestion');
                 this.$router.push({
-                    name: 'question',
+                    name: 'Question',
                     params: {
                         id: this.$store.state.questionNumber + 1
                     }
@@ -124,7 +124,7 @@
                         : 'next-question';
                     this.$store.commit('setQuestion', index);
                     this.$router.push({
-                        name: 'question',
+                        name: 'Question',
                         params: {
                             id: this.$store.state.questionNumber + 1
                         }
@@ -190,7 +190,7 @@
                                     this.submitting = false;
                                     this.fullscreenLoading = false;
                                     this.$router.push({
-                                        name: 'quizResult',
+                                        name: 'QuizResult',
                                         params: {
                                             author: this.$route.params.author,
                                             name: this.$route.params.name
@@ -241,7 +241,7 @@
             let updateTime = () => {
                 setTimeout(() => {
                     this.timeLeft();
-                    if (this.$route.name === 'question' || this.$route.name === 'quiz')
+                    if (this.$route.name === 'Question' || this.$route.name === 'Quiz')
                         updateTime();
                 }, 500);
             };
