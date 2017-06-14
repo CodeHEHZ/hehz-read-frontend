@@ -9,7 +9,7 @@
             <div class="bookListRow bookListHeader">
                 <span>已通过测试书目</span>
                 <div @click="() => { showPassedBooks = !showPassedBooks }" class="toggle-button">
-                    <el-tag v-show="passedBooks"> {{!passedBooks || passedBooks.length }} </el-tag>
+                    <el-tag v-show="passedBooks" class="count-tag"> {{!passedBooks || passedBooks.length }} </el-tag>
                     <i :class="showPassedBooks ? 'el-icon-caret-top' : 'el-icon-caret-bottom'"></i>
                 </div>
             </div>
@@ -115,6 +115,13 @@
     .table {
         width: 15rem;
         margin: .65rem 0;
+    }
+
+    .count-tag {
+        width: 24px;
+        height: 24px;
+        text-align: center;
+        border-radius: 12px;
     }
 
     .bookList {

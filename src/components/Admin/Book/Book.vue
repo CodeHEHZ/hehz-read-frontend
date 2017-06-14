@@ -97,7 +97,10 @@
                                 if (count === 0) {
                                     this.$store.dispatch('getBookList', true)
                                         .then(
-                                            () => this.$message.success('关闭成功！')
+                                            () => {
+                                                this.selectedBook = [];
+                                                this.$message.success('关闭成功！');
+                                            }
                                         )
                                         .catch(
                                             error => this.$message.error(error.body.message)

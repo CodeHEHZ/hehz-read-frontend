@@ -11,7 +11,7 @@
         </div>
         <div id="captcha"></div>
         <div class="buttons">
-            <el-button type="text">找回密码</el-button>
+            <el-button type="text" @click="$message('请联系信息组陈雷小朋友重置密码')">找回密码</el-button>
             <el-button type="primary" @click="login" :disabled="logging">
                 {{ verified ? (logging ? '正在登录中' : '愉快地登录') : '请先通过验证' }}
             </el-button>

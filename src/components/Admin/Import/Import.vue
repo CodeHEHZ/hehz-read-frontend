@@ -1,8 +1,8 @@
 <template>
     <div class="upload-container">
         <el-row :gutter="24">
-            <el-col :span="12" class="col-margin">
-                <h3>上传用户名单</h3>
+            <el-col :span="12">
+                <h2>上传用户名单</h2>
                 <p>如需批量上传用户名单，请按照规定格式编辑 Excel 文档并上传。</p>
                 <a href="https://baidu.com" target="_blank"><small>点击获取 Excel 文档样例</small></a>
             </el-col>
@@ -40,6 +40,10 @@
 
     .el-col:last-child {
         padding-right: 24px !important;
+    }
+
+    .el-col p {
+        margin-bottom: .5rem;
     }
 
     .upload {

@@ -112,7 +112,10 @@
                         () => {
                             this.$store.dispatch('getUserList')
                                 .then(
-                                    () => this.$message.success('操作成功')
+                                    () => {
+                                        this.selectedUser = [];
+                                        this.$message.success('操作成功');
+                                    }
                                 )
                                 .catch(
                                     error => this.$message.error(error.body.message)

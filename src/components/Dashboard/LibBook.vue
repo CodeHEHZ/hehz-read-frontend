@@ -2,7 +2,7 @@
     <el-card :body-style="{ padding: '0' }" class="book">
         <img :src="cover" class="book-cover" @click="goToDetail" @load="visible()" :style="{ opacity }">
         <div class="book-container" @click="goToDetail">
-            <el-tag :type="status === '已通过' ? 'success' : ''" v-show="status" class="tag">
+            <el-tag :type="status === '已通过' ? 'primary' : ''" v-show="status" class="tag">
                 {{ status }}
             </el-tag>
             <span>{{ name }}</span>
