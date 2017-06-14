@@ -101,15 +101,16 @@
 
         mounted() {
             let checkLoginStatus = () => {
-                if (this.$cookie.get('username'))
+                if (this.$cookie.get('username') && this.$route.name === 'Hello') {
                     this.$router.push(this.$route.query.redirect || '/dashboard');
-                else
+                } else {
                     setTimeout(checkLoginStatus, 250);
+                }
             };
 
             checkLoginStatus();
 
-            this.$store.dispatch('getBookList')
+            this.$store.dispatch('getBookList');
 
             this.$http.get(this.$store.state.api + 'captcha').then(response => {
                 if (response.status === 200) {
