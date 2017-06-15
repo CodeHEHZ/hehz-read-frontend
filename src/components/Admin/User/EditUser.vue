@@ -27,7 +27,7 @@
             <el-form-item label="学号" prop="uid">
                 <el-input v-model.number="form.uid"
                           ref="uid"
-                          @keyup.enter.native="switchFocus('password')"
+                          @keyup.enter.native="switchFocus('tag')"
                           placeholder="校园卡上显示的学号"
                 ></el-input>
             </el-form-item>
@@ -40,6 +40,26 @@
                     ></el-option>
                 </el-select>
             </el-form-item>
+            <el-form-item label="标签" prop="label">
+                <el-input v-model.number="form.tempTag"
+                          ref="tag"
+                          @keyup.enter.native="addTag"
+                          placeholder="按下回车以添加标签"
+                ></el-input>
+            </el-form-item>
+            <div :class="['tags', tags.length > 0 ? '' : 'not-shown']">
+                <transition-group name="tags" tag="div">
+                    <el-tag v-for="(tag, index) of tags"
+                            :key="tag"
+                            :closable="true"
+                            :close-transition="true"
+                            @close="removeTag(index)"
+                            class="tag"
+                    >
+                        {{ tag }}
+                    </el-tag>
+                </transition-group>
+            </div>
             <el-form-item label="设置密码" prop="password">
                 <el-input type="password"
                           v-model="form.password"
@@ -119,6 +139,7 @@
                     name: '',
                     uid: '',
                     school: '华二黄中',
+                    tempTag: '',
                     password: '',
                     checkPassword: ''
                 },
@@ -146,6 +167,9 @@
                     { label: '超级管理猿', value: 'admin' }
                 ],
                 schoolList: ['华二黄中', '华师大二附中'],
+                tags: [],
+                addTagSet: [],
+                removeTagSet: [],
                 origUser: {}
             };
         },
@@ -172,7 +196,8 @@
                                     if (this.$route.name === 'EditUser') {
                                         this.changeGroup();
                                     } else {
-                                        this.succeed();
+                                        console.log(this.addTagSet, this.removeTagSet);
+                                        this.updateTagAdded();
                                     }
                                 },
                                 error => {
@@ -181,6 +206,32 @@
                             );
                     }
                 });
+            },
+            addTag() {
+                this.form.tempTag = this.form.tempTag.toString();
+                if (this.form.tempTag !== '' && this.tags.indexOf(this.form.tempTag) < 0) {
+                    this.tags.push(this.form.tempTag);
+                } else if (this.tags.indexOf(this.form.tempTag) > -1) {
+                    this.$message('此标签已存在');
+                }
+
+                if (this.removeTagSet.indexOf(this.form.tempTag) > -1) {
+                    this.removeTagSet.splice(this.removeTagSet.indexOf(this.form.tempTag));
+                }
+                if (this.addTagSet.indexOf(this.form.tempTag) < 0) {
+                    this.addTagSet.push(this.form.tempTag);
+                }
+
+                this.form.tempTag = '';
+            },
+            removeTag(index) {
+                if (this.addTagSet.indexOf(this.tags[index]) > -1) {
+                    this.addTagSet.splice(this.addTagSet.indexOf(this.tags[index]), 1);
+                }
+                if (this.removeTagSet.indexOf(this.tags[index]) < 0) {
+                    this.removeTagSet.push(this.tags[index]);
+                }
+                this.tags.splice(index, 1);
             },
             changeGroup() {
                 if (this.form.group !== this.origUser.group) {
@@ -206,17 +257,44 @@
                     })
                         .then(
                             response => {
-                                this.succeed();
+                                this.updateTagAdded();
                             },
                             error => {
                                 this.$message.error(error.body.message);
                             }
                         );
                 } else {
+                    this.updateTagAdded();
+                }
+            },
+            updateTagAdded() {
+                if (this.addTagSet.length > 0) {
+                    this.$http.put(this.$store.state.api + 'user/tag', {
+                        user: this.form.username,
+                        tag: this.addTagSet
+                    })
+                        .then(
+                            () => this.updateTagRemoved()
+                        )
+                        .catch(
+                            error => this.$message.error(error.body.message)
+                        );
+                } else {
+                    this.updateTagRemoved();
+                }
+            },
+            updateTagRemoved() {
+                if (this.removeTagSet.length > 0) {
+                    this.$http.patch(this.$store.state.api + 'user/tag', {
+                        user: this.form.username,
+                        tag: this.removeTagSet
+                    })
+                        .then(() => this.succeed())
+                        .catch(error => this.$message.error(error.body.message));
+                } else {
                     this.succeed();
                 }
             },
-
             succeed() {
                 this.$message.success(this.$route.name === 'EditUser'
                     ? '修改成功！'
@@ -232,6 +310,7 @@
                     this.form.school = this.origUser.school;
                     this.form.group = this.origUser.group;
                     this.form.uid = this.origUser.uid;
+                    this.tags = this.origUser.tag;
                 } else {
                     this.$refs[formName].resetFields();
                 }
@@ -259,5 +338,33 @@
     .form {
         width: 100%;
         padding: 1rem;
+    }
+
+    .tags {
+        margin: .5rem 0 .5rem 100px;
+        flex-wrap: wrap;
+    }
+
+    .tags-move {
+        transition: transform 1s;
+    }
+
+    .tag {
+        margin-right: .25rem;
+        margin-bottom: .25rem;
+        transition: all .3s;
+        display: inline-block;
+    }
+
+    .not-shown {
+        display: none;
+    }
+
+    .el-form-item:nth-child(6) {
+        margin-bottom: 0;
+    }
+
+    .not-shown + .el-form-item {
+        margin-top: 22px;
     }
 </style>
